@@ -4,111 +4,86 @@
  *
  * @format
  * @flow strict-local
+ * author  Ing Leonardo Maldonado
+ * Abril 2020  tiempos de Covid19
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+var { width } = Dimensions.get("window")
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// import Components
+import Tienda from './src/tienda'
+import Carrito from './src/carrito'
+import Checkout from './src/checkout'
+import Perfil from './src/perfil'
+// unable console yellow
+console.disableYellowBox = true;
+// import icons
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const App: () => React$Node = () => {
+
+export default class app extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      module:1,
+    };
+ }
+
+ render() {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View style={{flex:1}}>
+       {
+        this.state.module==1? <Tienda />
+        :this.state.module==2? <Carrito />
+        :this.state.module==3? <Perfil />
+        :<Checkout />
+       }
+       <View style={styles.bottomTab}>
+         <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:1})}>
+           <Icon name="md-restaurant" size={30} color={this.state.module==1?"#900":"gray"} />
+           <Text>Tienda</Text>
+         </TouchableOpacity>
+         <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:2})}>
+           <Icon name="md-basket" size={30} color={this.state.module==2?"#900":"gray"} />
+           <Text>Carrito</Text>
+         </TouchableOpacity>
+         <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:3})}>
+           <Icon name="md-map" size={30} color={this.state.module==3?"#900":"gray"} />
+           <Text style={{color:'black'}}>Perfil</Text>
+         </TouchableOpacity>
+       
+       </View>
+    </View>
   );
-};
+}
+
+
+}
+
+
+
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  bottomTab:{
+    height:60,
+    width:width,
+    backgroundColor:'orange',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    elevation:8,
+    shadowOpacity:0.3,
+    shadowRadius:50,
+    
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  itemTab:{
+    width:width/3,
+    backgroundColor:'white',
+    alignItems:'center',
+    justifyContent:'center',
+    
+    
+  }
 });
 
-export default App;
