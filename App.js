@@ -19,6 +19,8 @@ import Checkout from './src/checkout'
 import Perfil from './src/perfil'
 // unable console yellow
 console.disableYellowBox = true;
+
+import AsyncStorage from '@react-native-community/async-storage';
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -46,11 +48,11 @@ export default class app extends Component {
            <Text>Tienda</Text>
          </TouchableOpacity>
          <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:2})}>
-           <Icon name="md-basket" size={30} color={this.state.module==2?"#900":"gray"} />
+           <Icon name="md-cart" size={30} color={this.state.module==2?"#900":"gray"} />
            <Text>Carrito</Text>
          </TouchableOpacity>
          <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:3})}>
-           <Icon name="md-map" size={30} color={this.state.module==3?"#900":"gray"} />
+           <Icon name="md-person" size={30} color={this.state.module==3?"#900":"gray"} />
            <Text style={{color:'black'}}>Perfil</Text>
          </TouchableOpacity>
        
