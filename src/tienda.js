@@ -18,6 +18,11 @@ import { Text,
   TouchableOpacity
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
+// import AsyncStorage
+import AsyncStorage from '@react-native-community/async-storage';
+// import icons
+import Icon from 'react-native-vector-icons/Ionicons';
+//swiper
 import Swiper from 'react-native-swiper'
 
 
@@ -59,7 +64,16 @@ export default class app extends Component {
       <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
             <Image style={{height:60,width:width/2,margin:10 }} resizeMode="contain" source={require("../image/foodapp.png")}  />
-            
+           
+              <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
+                {
+                  this.state.dataBanner.map((itembann)=>{
+                    return(
+                      <Image style={styles.imageBanner} resizeMode="contain" source={{uri:itembann}}/>
+                    )
+                  })
+                }
+              </Swiper>
             <View style={{height:20}} />
         </View>
 
@@ -121,9 +135,53 @@ _renderItemFood(item){
           </Text>
           <Text>Descp Food and Details</Text>
           <Text style={{fontSize:20,color:"green"}}>${item.price}</Text>
+          <TouchableOpacity
+            onPress={()=>this.onClickAddCart(item)}
+            style={{
+              width:(width/2)-40,
+              backgroundColor:'#33c37d',
+              flexDirection:'row',
+              alignItems:'center',
+              justifyContent:"center",
+              borderRadius:5,
+              padding:4
+            }}>
+            <Text style={{fontSize:12, color:"white", fontWeight:"bold"}}>Agregar carrito</Text>
+            <View style={{width:10}} />
+            <Icon name="ios-add-circle" size={15} color={"white"} />
+          </TouchableOpacity>
         </TouchableOpacity>
+        
       )
   }
+}
+
+
+onClickAddCart(data){
+
+  const itemcart = {
+    food: data,
+    quantity:  1,
+    price: data.price
+  }
+
+  AsyncStorage.getItem('cart').then((datacart)=>{
+      if (datacart !== null) {
+        // We have data!!
+        const cart = JSON.parse(datacart)
+        cart.push(itemcart)
+        AsyncStorage.setItem('cart',JSON.stringify(cart));
+      }
+      else{
+        const cart  = []
+        cart.push(itemcart)
+        AsyncStorage.setItem('cart',JSON.stringify(cart));
+      }
+      alert("Add Cart")
+    })
+    .catch((err)=>{
+      alert(err)
+    })
 }
 }
 

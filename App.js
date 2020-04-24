@@ -20,7 +20,7 @@ import Perfil from './src/perfil'
 // unable console yellow
 console.disableYellowBox = true;
 
-import AsyncStorage from '@react-native-community/async-storage';
+
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
 
