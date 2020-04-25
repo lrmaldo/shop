@@ -138,7 +138,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.shop1"
+        applicationId "com.miappshop.markettux"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

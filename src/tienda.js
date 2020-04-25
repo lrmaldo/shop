@@ -63,7 +63,7 @@ export default class app extends Component {
       <ScrollView>
       <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
-            <Image style={{height:60,width:width/2,margin:10 }} resizeMode="contain" source={require("../image/foodapp.png")}  />
+        <Text style={styles.titleCatg}>MarketTux</Text>
            
               <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
                 {
@@ -196,6 +196,7 @@ onClickAddCart(data){
          }else{
           cart.push(itemcart)
           console.log("no encontrado");
+          alert("Se agrego al carrito")
          }
         AsyncStorage.setItem('cart',JSON.stringify(cart));
       }

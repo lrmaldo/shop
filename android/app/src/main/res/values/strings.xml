@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">shop1</string>
+    <string name="app_name">MarketTux</string>
+    <string name="facebook_app_id">2497687450543545</string> <string name="fb_login_protocol_scheme">fb2497687450543545</string>
+
 </resources>

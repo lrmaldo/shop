@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'shop1' do
-  # Pods for shop1
+target 'MarketTux' do
+  # Pods for MarketTux
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -77,7 +77,7 @@ target 'shop1' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'shop1Tests' do
+  target 'MarketTuxTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -94,10 +94,10 @@ target 'shop1' do
   end
 end
 
-target 'shop1-tvOS' do
-  # Pods for shop1-tvOS
+target 'MarketTux-tvOS' do
+  # Pods for MarketTux-tvOS
 
-  target 'shop1-tvOSTests' do
+  target 'MarketTux-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

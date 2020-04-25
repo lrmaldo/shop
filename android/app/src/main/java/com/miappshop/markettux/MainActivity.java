@@ -1,4 +1,4 @@
-package com.shop1;
+package com.miappshop.markettux;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "shop1";
+    return "MarketTux";
   }
 }
