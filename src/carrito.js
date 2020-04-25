@@ -33,7 +33,7 @@ export default class Carrito extends Component {
     return (
         <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
            <View style={{height:20}} />
-           <Text style={{fontSize:32,fontWeight:"bold",color:"#33c37d"}}>Cart food</Text>
+           <Text style={{fontSize:32,fontWeight:"bold",color:"#33c37d"}}>Carrito</Text>
            <View style={{height:10}} />
   
            <View style={{flex:1}}>
@@ -83,7 +83,7 @@ export default class Carrito extends Component {
                      fontWeight:"bold",
                      color:'white'
                    }}>
-                   CHECKOUT
+                   Terminar compra
                  </Text>
                </TouchableOpacity>
   
@@ -120,6 +120,7 @@ export default class Carrito extends Component {
      this.setState({dataCart:dataCar})
        
     //AsyncStorage.removeItem('cart'); 
+    console.log(dataCar);
   AsyncStorage.setItem('cart',JSON.stringify(dataCar));
    //console.log(JSON.stringify(dataCar));
     } 
