@@ -1,0 +1,47 @@
+[33mcommit 479087b2c96d06e4935ccb41a8a9713803e0a60d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Mon Apr 27 16:26:30 2020 -0500
+
+    se agrego react-navigation
+
+[33mcommit eb26023e74ef6f8fbbb0f1f7cad61e71d29a327c[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Mon Apr 27 15:21:22 2020 -0500
+
+    cambios de diseño en el perfil
+
+[33mcommit cbdce8b34233ac631df68d9dae82a4a5902602d3[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Sat Apr 25 16:42:55 2020 -0500
+
+    se agrego login facebook se cambio el packege android
+
+[33mcommit 5919edbff35b04bad7d37204dfd650a7be40e816[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Sat Apr 25 14:57:51 2020 -0500
+
+    se compuso el carrito
+
+[33mcommit c4e6b696de850eed2b702581535a62c4f435db95[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Fri Apr 24 12:16:29 2020 -0500
+
+    correcion en el carrito
+
+[33mcommit f76f421394324510dac999041b4db88f637e16e2[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Thu Apr 23 18:29:57 2020 -0500
+
+    se arreglo los iconos en android
+
+[33mcommit f8d996003b723b910aba2ac598aec99ce97d309e[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Thu Apr 23 18:06:54 2020 -0500
+
+    tab-navigation
+
+[33mcommit a28dbdca35a4f0afe1413b075f23efcd77f8b5c8[m
+Author: unknown <lrmalo@gmail.com>
+Date:   Thu Apr 23 11:33:27 2020 -0500
+
+    iniciando

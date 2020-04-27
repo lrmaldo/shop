@@ -19,10 +19,16 @@ import { Text, View } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 // import Components
-import Tienda from './src/tienda'
-import Carrito from './src/carrito'
-import Checkout from './src/checkout'
-import Perfil from './src/perfil'
+import Tienda from './src/detalle_tienda/tienda'
+import Carrito from './src/detalle_tienda/carrito'
+import Checkout from './src/detalle_tienda/checkout'
+import Datos_tienda from './src/detalle_tienda/datos_tienda'
+
+
+//import de inicio
+import Inicio from './src/inicio/inicio'
+import perfil from './src/inicio/perfil'
+
 // unable console yellow
 console.disableYellowBox = true;
 
@@ -30,29 +36,11 @@ console.disableYellowBox = true;
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
 
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
-      </View>
-    );
-  }
-}
 
-class SettingsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
-      </View>
-    );
-  }
-}
 
 const TabNavigator = createBottomTabNavigator({
-  Tienda: Tienda,
-  Carrito: Carrito,
+   Inicio: Inicio,
+    Perfil: perfil,
   //Perfil:Perfil
 });
 
