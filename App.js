@@ -8,6 +8,58 @@
  * Abril 2020  tiempos de Covid19
  */
 
+
+
+
+
+
+
+import React from 'react';
+import { Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+// import Components
+import Tienda from './src/tienda'
+import Carrito from './src/carrito'
+import Checkout from './src/checkout'
+import Perfil from './src/perfil'
+// unable console yellow
+console.disableYellowBox = true;
+
+
+// import icons
+import Icon from 'react-native-vector-icons/Ionicons';
+
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Home!</Text>
+      </View>
+    );
+  }
+}
+
+class SettingsScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Settings!</Text>
+      </View>
+    );
+  }
+}
+
+const TabNavigator = createBottomTabNavigator({
+  Tienda: Tienda,
+  Carrito: Carrito,
+  //Perfil:Perfil
+});
+
+export default createAppContainer(TabNavigator);
+
+/** 
+ 
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 var { width } = Dimensions.get("window")
@@ -89,3 +141,29 @@ const styles = StyleSheet.create({
   }
 });
 
+
+
+
+
+***************************************************************
+
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Home Screen</Text>
+      </View>
+    );
+  }
+}
+
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+});
+
+export default createAppContainer(AppNavigator);
+
+
+ */
