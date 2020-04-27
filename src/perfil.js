@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
-import { Text, Dimensions,  View, TextInput, TouchableOpacity, Image } from 'react-native';
+import {  Dimensions,  Image,
+  ImageBackground,
+  Linking,
+  ListView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,} from 'react-native';
 var { width } = Dimensions.get("window")
 import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
+import { Card, Icon } from 'react-native-elements'
+
 
 export default class Perfil extends Component {
 
+   
   constructor(props) {
      super(props);
      this.state = {
@@ -12,29 +23,73 @@ export default class Perfil extends Component {
       picture:null,
       name:null,
       email:null,
-      token:null
+      accessToken: null
     };
   }
+  
+  componentDidMount() {
+    this._setDataFB()
+  }
+
+  
 
   render() {
+    const dhis = this
     return (
-      <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flex:1}}>
+
+
+      
 
       {
         this.state.id_facebook?
-        <View style={{justifyContent:'center'}}>
-          <Image source={{uri: this.state.picture.data.url}} style={{width:200,height:200}} />
-          <View style={{height:20}} />
-          <Text style={{fontSize:20,fontWeight:"bold"}}>{this.state.name}</Text>
-          <Text style={{fontSize:20}}>{this.state.email}</Text>
-          <View style={{height:20}} />
-          <Text >facebook ID</Text>
-          <Text >{this.state.id_facebook}</Text>
+        <View style={{flex:.2}}>
+        <View style={styles.headerContainer}>
+        <ImageBackground
+          style={styles.headerBackgroundImage}
+          blurRadius={10}
+          source={{uri: this.state.picture.data.url}}
+        > 
+        
+          <View style={styles.headerColumn}>
+            <Image
+              style={styles.userImage}
+              source={{uri: this.state.picture.data.url}}
+            />
+            <Text style={styles.userNameText}>{this.state.name}</Text>
+            <View style={styles.userAddressRow}>
+              <View>
+                <Icon
+                  name="place"
+                  underlayColor="transparent"
+                  iconStyle={styles.placeIcon}
+                 
+                />
+              </View>
+              <View style={styles.userCityRow}>
+                <Text style={styles.userCityText}>
+                  San Juan Tuxtepec, Oaxaca
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+         <LoginButton  onLogoutFinished={() => console.log("logout.")}/>
           
-        </View>
-        :
+           </View>
        
-<View>
+        </View>
+        
+        </View>
+     
+          
+        
+        :
+        <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+
+
+        
         <LoginButton
           onLoginFinished={
             (error, result) => {
@@ -43,24 +98,15 @@ export default class Perfil extends Component {
               } else if (result.isCancelled) {
                 console.log("login is cancelled.");
               } else {
-                AccessToken.getCurrentAccessToken().then(
-                  (data) => {
-                    const data_fb =  {
-                      id_facebook: data.id,
-                      email : data.email,
-                      name  : data.name,
-                      picture: data.picture
-                    }
-                    this.setState(data_fb);
-
-                    console.log(data.accessToken.toString())
-                  }
-                )
+                
+                
+                dhis._setDataFB()
               }
             }
           }
           onLogoutFinished={() => console.log("logout.")}/>
-      </View>
+          </View>
+      
 
       }
 
@@ -68,6 +114,7 @@ export default class Perfil extends Component {
 
    </View>
     );
+    
   }
 
 
@@ -143,3 +190,78 @@ export default class Perfil extends Component {
    return resface;
  }
 }
+const styles = StyleSheet.create({
+  cardContainer: {
+    backgroundColor: '#FFF',
+    borderWidth: 0,
+    flex: 1,
+    margin: 0,
+    padding: 0,
+  },
+  container: {
+    flex: 1,
+  },
+  emailContainer: {
+    backgroundColor: '#FFF',
+    flex: 1,
+    paddingTop: 30,
+  },
+  headerBackgroundImage: {
+    paddingBottom: 20,
+    paddingTop: 35,
+  },
+  headerContainer: {},
+  headerColumn: {
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      ios: {
+        alignItems: 'center',
+        elevation: 1,
+        marginTop: -1,
+      },
+      android: {
+        alignItems: 'center',
+      },
+    }),
+  },
+  placeIcon: {
+    color: 'white',
+    fontSize: 26,
+  },
+  scroll: {
+    backgroundColor: '#FFF',
+  },
+  telContainer: {
+    backgroundColor: '#FFF',
+    flex: 1,
+    paddingTop: 30,
+  },
+  userAddressRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  userCityRow: {
+    backgroundColor: 'transparent',
+  },
+  userCityText: {
+    color: '#A5A5A5',
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  userImage: {
+    borderColor: '#FF3B30',
+    borderRadius: 85,
+    borderWidth: 3,
+    height: 170,
+    marginBottom: 15,
+    width: 170,
+  },
+  userNameText: {
+    color: '#FFF',
+    fontSize: 22,
+    fontWeight: 'bold',
+    paddingBottom: 8,
+    textAlign: 'center',
+  },
+})
