@@ -28,6 +28,9 @@ import Swiper from 'react-native-swiper'
 
 import SafeAreaView from 'react-native-safe-area-view';
 
+//recarga gradante
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
 
 export default class app extends Component {
   constructor(props)
@@ -71,7 +74,7 @@ export default class app extends Component {
       <SafeAreaView  style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
         <Text style={styles.titleCatg}></Text>
-           
+        <ShimmerPlaceHolder autoRun={true}  visible={false} duration={3000}>
               <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
                 {
                   this.state.dataBanner.map((itembann)=>{
@@ -81,6 +84,7 @@ export default class app extends Component {
                   })
                 }
               </Swiper>
+          </ShimmerPlaceHolder>
             <View style={{height:20}} />
         </View>
 
