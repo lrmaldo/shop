@@ -15,7 +15,8 @@ import { Text,
   View,
   ScrollView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Button
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -24,6 +25,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 //swiper
 import Swiper from 'react-native-swiper'
+
+import SafeAreaView from 'react-native-safe-area-view';
 
 
 export default class app extends Component {
@@ -38,7 +41,9 @@ export default class app extends Component {
     }
   }
 
+
   componentDidMount(){
+    
     const url = "http://tutofox.com/foodapp/api.json"
     return fetch(url)
     .then((response) => response.json())
@@ -56,14 +61,16 @@ export default class app extends Component {
     .catch((error) =>{
       console.error(error);
     });
+
+    
   }
 
   render() {
     return (
       <ScrollView>
-      <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
+      <SafeAreaView  style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
-        <Text style={styles.titleCatg}>MarketTux</Text>
+        <Text style={styles.titleCatg}></Text>
            
               <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
                 {
@@ -99,7 +106,7 @@ export default class app extends Component {
         </View>
        
 
-      </View>
+      </SafeAreaView >
     </ScrollView>
     );
 
@@ -124,7 +131,7 @@ _renderItemFood(item){
   if(catg==0||catg==item.categorie)
   {
     return(
-      <TouchableOpacity style={styles.divFood}>
+      <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda')}>
         <Image
           style={styles.imageFood}
           resizeMode="contain"
@@ -136,7 +143,7 @@ _renderItemFood(item){
           <Text>Descp Food and Details</Text>
           <Text style={{fontSize:20,color:"green"}}>${item.price}</Text>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Tienda')}
+           
             style={{
               width:(width/2)-40,
               backgroundColor:'#33c37d',

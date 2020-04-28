@@ -15,7 +15,8 @@ import { Text,
   View,
   ScrollView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Button
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -38,6 +39,11 @@ export default class app extends Component {
     }
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title: 'Carrito',
+    headerRight:(<Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>)
+  })
+  
   componentDidMount(){
     const url = "http://tutofox.com/foodapp/api.json"
     return fetch(url)
@@ -63,7 +69,7 @@ export default class app extends Component {
       <ScrollView>
       <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
-        <Text style={styles.titleCatg}>MarketTux</Text>
+        <Text style={styles.titleCatg}></Text>
            
               <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
                 {
@@ -213,6 +219,8 @@ onClickAddCart(data){
     })
 }
 }
+
+
 
 
 

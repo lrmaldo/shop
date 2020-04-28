@@ -15,7 +15,7 @@
 
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -24,6 +24,8 @@ import Tienda from './src/detalle_tienda/tienda'
 import Carrito from './src/detalle_tienda/carrito'
 import Checkout from './src/detalle_tienda/checkout'
 import Datos_tienda from './src/detalle_tienda/datos_tienda'
+
+//import index_tienda from './src/detalle_tienda'
 
 
 //import de inicio
@@ -50,11 +52,19 @@ const TabIconPerfil = (props) => (
   
 )
 
+const IconCarrito = (props) => (
+  <Icon name="md-cart" size={30} color= 'white'    onPress={() => this.props.navigation.navigate('Inicio')}/>
+  
+)
+
+
+
 const HomeNavigator = createStackNavigator({
   Home:{
     screen: Inicio,
     navigationOptions:{
-          title:"Marketux",
+          title:"M@rkettux",
+          
           headerTitleAlign:'center',
           headerTitleStyle: {
             fontWeight: 'bold',
@@ -62,17 +72,60 @@ const HomeNavigator = createStackNavigator({
         headerTintColor:"white",
         headerBackground:<View>
         <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
-        <View style={{height:55, backgroundColor:"#c51d34", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
       </View>,
 
       
         
         
     },
+
+  },
+    Tienda:{
+    screen: Tienda,
+    navigationOptions:{
+          title:"M@rkettux",
+          
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+           
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+      
+    },
+    
+  },
+
+  Carrito:{
+    screen: Carrito,
+    navigationOptions:{
+          title:"",
+          
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+           
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+      
+    },
+    
   },
   
   
+  
 });
+
+
 
 
 const PerfilNavigator = createStackNavigator({
@@ -87,7 +140,7 @@ const PerfilNavigator = createStackNavigator({
         headerTintColor:"white",
         headerBackground:<View>
         <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
-        <View style={{height:55, backgroundColor:"#c51d34", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
       </View>,
 
       
@@ -154,7 +207,7 @@ const BottonNavegation = createBottomTabNavigator({
     fontSize: 12,
   },
   style: {
-    backgroundColor: '#c51d34',
+    backgroundColor: '#ffa500',
   },
 }
 }
