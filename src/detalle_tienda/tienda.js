@@ -39,7 +39,7 @@ export default class app extends Component {
     }
   }
 
-  static navigationOptions = ({navigation}) => ({
+   static navigationOptions = ({navigation}) => ({
     title: 'Carrito',
     headerRight:(<Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>)
   })

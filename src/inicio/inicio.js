@@ -16,7 +16,9 @@ import { Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Button
+  Button,
+  ActivityIndicator
+
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -37,23 +39,33 @@ export default class app extends Component {
   {
     super(props);
     this.state = {
+      isLoading: true,
       dataBanner:[],
       dataCategories:[],
       dataFood:[],
-      selectCatg:0
+      selectCatg:0,
+      visible:false
     }
   }
-
+componentWillMount(){
+  setTimeout(()=>{
+    this.setState({
+      isLoading:false
+    })
+  },300)
+}
 
   componentDidMount(){
+   
     
     const url = "http://tutofox.com/foodapp/api.json"
     return fetch(url)
     .then((response) => response.json())
     .then((responseJson) => {
-      //   console.log(responseJson);
+      
+      console.log(responseJson);
       this.setState({
-        isLoading: false,
+       // isLoading: true,
         dataBanner: responseJson.banner,
         dataCategories: responseJson.categories,
         dataFood:responseJson.food
@@ -69,28 +81,37 @@ export default class app extends Component {
   }
 
   render() {
+
+    if (this.state.isLoading) {
+      return  <ActivityIndicator size="large" color="#0000ff" />
+    } else {
     return (
       <ScrollView>
       <SafeAreaView  style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
+    
         <View style={{width: width, alignItems:'center'}} >
         <Text style={styles.titleCatg}></Text>
-        <ShimmerPlaceHolder autoRun={true}  visible={false} duration={3000}>
+        
               <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
                 {
                   this.state.dataBanner.map((itembann)=>{
                     return(
+                    
                       <Image style={styles.imageBanner} resizeMode="contain" source={{uri:itembann}}/>
+                  
                     )
                   })
                 }
               </Swiper>
-          </ShimmerPlaceHolder>
+            
             <View style={{height:20}} />
         </View>
-
+       
         <View style={{width:width, borderRadius:20, paddingVertical:20, backgroundColor:'white'}}>
+       
           <Text style={styles.titleCatg}>Categorias {this.state.selectCatg}</Text>
-          <FlatList
+         
+            <FlatList
             horizontal={true}
             data={this.state.dataCategories}
             renderItem={({ item }) => this._renderItem(item)}
@@ -108,16 +129,18 @@ export default class app extends Component {
          
             
         </View>
-       
+
+        
 
       </SafeAreaView >
     </ScrollView>
     );
 
-
-  }
+   }
+}
 
   _renderItem(item){
+    
     return(
       <TouchableOpacity style={[styles.divCategorie,{backgroundColor:item.color}]}
       onPress={()=>this.setState({selectCatg:item.id})}>
@@ -144,7 +167,7 @@ _renderItemFood(item){
           <Text style={{fontWeight:'bold',fontSize:22,textAlign:'center'}}>
             {item.name}
           </Text>
-          <Text>Descp Food and Details</Text>
+          <Text>Descp Food and Detailsg</Text>
           <Text style={{fontSize:20,color:"green"}}>${item.price}</Text>
           <TouchableOpacity
            

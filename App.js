@@ -71,7 +71,7 @@ const HomeNavigator = createStackNavigator({
         },
         headerTintColor:"white",
         headerBackground:<View>
-        <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
         <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
       </View>,
 
@@ -93,7 +93,7 @@ const HomeNavigator = createStackNavigator({
         },
         headerTintColor:"white",
         headerBackground:<View>
-        <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
         <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
       </View>,
       
@@ -113,7 +113,7 @@ const HomeNavigator = createStackNavigator({
         },
         headerTintColor:"white",
         headerBackground:<View>
-        <View style={{height:60, backgroundColor:"#007bff", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
         <View style={{height:55, backgroundColor:"#ffa500", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
       </View>,
       
