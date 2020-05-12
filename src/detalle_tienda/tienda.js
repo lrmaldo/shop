@@ -16,7 +16,9 @@ import { Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Button
+  Button,
+  NativeModules, 
+  findNodeHandle 
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -26,7 +28,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 //swiper
 import Swiper from 'react-native-swiper'
 
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
+const UIManager = NativeModules.UIManager;
 export default class app extends Component {
   constructor(props)
   {
@@ -35,16 +39,41 @@ export default class app extends Component {
       dataBanner:[],
       dataCategories:[],
       dataFood:[],
-      selectCatg:0
+      selectCatg:0,
+      
+
     }
   }
+ 
+ 
+   static navigationOptions = ({navigation}) => {
+    const { params = {} } = navigation.state;
+    return{title: 'Carrito',
+    headerRight:(<Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>),
+      //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)
+    headerLeft: (
+        <Icon
+        name="md-arrow-back"
+        size={30}
+        color="white"
+        style ={{margin:20}}
+        onPress={() => params.regresar()}
+        //onPress={()=> navigation.navigate('Home')}  AsyncStorage.removeItem('cart')
+        
+          //title="Info"
+          //color="#fff"
+        />)}
+    
+    }
 
-   static navigationOptions = ({navigation}) => ({
-    title: 'Carrito',
-    headerRight:(<Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>)
-  })
-  
+    _regresar = () => {
+     // alert('funciones');
+     AsyncStorage.removeItem('cart');
+     this.props.navigation.navigate('Home'); 
+    
+    }
   componentDidMount(){
+    this.props.navigation.setParams({ regresar: this._regresar.bind(this)  });
     const url = "http://tutofox.com/foodapp/api.json"
     return fetch(url)
     .then((response) => response.json())
@@ -65,6 +94,7 @@ export default class app extends Component {
   }
 
   render() {
+    
     return (
       <ScrollView>
       <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
@@ -111,6 +141,8 @@ export default class app extends Component {
 
 
   }
+
+
 
   _renderItem(item){
     return(
@@ -161,6 +193,8 @@ _renderItemFood(item){
       )
   }
 }
+
+
 
 
 onClickAddCart(data){

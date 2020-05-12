@@ -33,7 +33,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 //recarga gradante
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
-
+import SwiperFlatList from 'react-native-swiper-flatlist';
 export default class app extends Component {
   constructor(props)
   {
@@ -53,12 +53,8 @@ componentWillMount(){
       isLoading:false
     })
   },300)
-}
-
-  componentDidMount(){
-   
-    
-    const url = "http://tutofox.com/foodapp/api.json"
+    //const url = "http://tutofox.com/foodapp/api.json"
+    const url ="http://markettux.sattlink.com/api/recursos";
     return fetch(url)
     .then((response) => response.json())
     .then((responseJson) => {
@@ -66,9 +62,9 @@ componentWillMount(){
       console.log(responseJson);
       this.setState({
        // isLoading: true,
-        dataBanner: responseJson.banner,
-        dataCategories: responseJson.categories,
-        dataFood:responseJson.food
+        dataBanner: responseJson.bannerP,
+        dataCategories: responseJson.giro,
+        dataFood:responseJson.tiendas
         
       });
 
@@ -77,11 +73,13 @@ componentWillMount(){
       console.error(error);
     });
 
-    
-  }
+  
+}
+
+ 
 
   render() {
-
+    console.log(this.state.dataBanner)
     if (this.state.isLoading) {
       return  <ActivityIndicator size="large" color="#0000ff" />
     } else {
@@ -92,48 +90,55 @@ componentWillMount(){
         <View style={{width: width, alignItems:'center'}} >
         <Text style={styles.titleCatg}></Text>
         
-              <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
-                {
-                  this.state.dataBanner.map((itembann)=>{
-                    return(
-                    
-                      <Image style={styles.imageBanner} resizeMode="contain" source={{uri:itembann}}/>
-                  
-                    )
-                  })
-                }
-              </Swiper>
+        <SwiperFlatList
+        autoplay
+        autoplayDelay={3}
+        index={0}
+        autoplayLoop
+        data={ this.state.dataBanner}
+        renderItem={({item}) => // Standard Image
+                           
+                                <Image
+                                    source={{uri:item.img_url}}
+                                    style={styles.imageBanner}
+                                />
+                              
+                            
+                        }
+        showPagination
+      />
             
             <View style={{height:20}} />
         </View>
-       
         <View style={{width:width, borderRadius:20, paddingVertical:20, backgroundColor:'white'}}>
        
-          <Text style={styles.titleCatg}>Categorias {this.state.selectCatg}</Text>
+       <Text style={styles.titleCatg}>Categorias {this.state.selectCatg}</Text>
+      
+         <FlatList
+         horizontal={true}
+         data={this.state.dataCategories}
+         renderItem={({ item }) => this._renderItem(item)}
+         keyExtractor = { (item,index) => index.toString() }
+       />
+        <FlatList
+           //horizontal={true}
+           data={this.state.dataFood}
+           numColumns={2}
+           renderItem={({ item }) => this._renderItemFood(item)}
+           keyExtractor = { (item,index) => index.toString() }
+         />
+       
+       <View style={{height:20}} />
+      
          
-            <FlatList
-            horizontal={true}
-            data={this.state.dataCategories}
-            renderItem={({ item }) => this._renderItem(item)}
-            keyExtractor = { (item,index) => index.toString() }
-          />
-           <FlatList
-              //horizontal={true}
-              data={this.state.dataFood}
-              numColumns={2}
-              renderItem={({ item }) => this._renderItemFood(item)}
-              keyExtractor = { (item,index) => index.toString() }
-            />
-          
-          <View style={{height:20}} />
-         
-            
-        </View>
+     </View>
 
+       
         
 
       </SafeAreaView >
-    </ScrollView>
+      </ScrollView>
+    
     );
 
    }
@@ -147,28 +152,28 @@ componentWillMount(){
         <Image
           style={{width:100,height:80}}
           resizeMode="contain"
-          source={{uri : item.image}} />
-        <Text style={{fontWeight:'bold',fontSize:22}}>{item.name}</Text>
+          source={{uri : item.img_url}} />
+        <Text style={{fontWeight:'bold',fontSize:22}}>{item.nombre}</Text>
       </TouchableOpacity>
     )
   }
   
 _renderItemFood(item){
   let catg = this.state.selectCatg 
-  if(catg==0||catg==item.categorie)
+  if(catg==0||catg==item.id_giro)
   {
     return(
       <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda')}>
         <Image
           style={styles.imageFood}
           resizeMode="contain"
-          source={{uri:item.image}} />
+          source={{uri:item.foto_url}} />
           <View style={{height:((width/2)-20)-90, backgroundColor:'transparent', width:((width/2)-20)-10}} />
           <Text style={{fontWeight:'bold',fontSize:22,textAlign:'center'}}>
-            {item.name}
+            {item.nombre}
           </Text>
-          <Text>Descp Food and Detailsg</Text>
-          <Text style={{fontSize:20,color:"green"}}>${item.price}</Text>
+          <Text>{item.descripcion}</Text>
+          <Text style={{fontSize:10,color:"green"}}>telefono {item.telefono}</Text>
           <TouchableOpacity
            
             style={{
@@ -180,7 +185,7 @@ _renderItemFood(item){
               borderRadius:5,
               padding:4
             }}>
-            <Text style={{fontSize:12, color:"white", fontWeight:"bold"}}>Agregar carrito</Text>
+            
             <View style={{width:10}} />
             <Icon name="ios-add-circle" size={15} color={"white"} />
           </TouchableOpacity>
@@ -292,3 +297,17 @@ const styles = StyleSheet.create({
   }
 });
 
+/*
+
+<Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
+                {
+                  this.state.dataBanner.map((itembann ,index)=>{
+                    return(
+                    
+                      <Image  key={index} style={styles.imageBanner} resizeMode="contain" source={{uri:itembann.img_url}}/>
+                  
+                    )
+                  })
+                }
+              </Swiper>
+*/
