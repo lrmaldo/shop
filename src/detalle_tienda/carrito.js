@@ -44,14 +44,14 @@ export default class Carrito extends Component {
                  this.state.dataCart.map((item,i)=>{
                    return(
                      <View style={{width:width-20,margin:10,backgroundColor:'transparent', flexDirection:'row', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}}>
-                       <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.image}} />
+                       <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.url_foto}} />
                        <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
                          <View>
-                           <Text style={{fontWeight:"bold", fontSize:20}}>{item.food.name}</Text>
-                           <Text>Lorem Ipsum de food</Text>
+                           <Text style={{fontWeight:"bold", fontSize:20}}>{item.food.titulo}</Text>
+                           <Text>{item.food.descripcion}</Text>
                          </View>
                          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                           <Text style={{fontWeight:'bold',color:"#33c37d",fontSize:20}}>${item.price*item.quantity}</Text>
+                           <Text style={{fontWeight:'bold',color:"#33c37d",fontSize:20}}>${item.precio*item.quantity}</Text>
                            <View style={{flexDirection:'row', alignItems:'center'}}>
                              <TouchableOpacity onPress={()=>this.onChangeQual(i,false)}>
                                <Icon name="ios-remove-circle" size={35} color={"#33c37d"} />

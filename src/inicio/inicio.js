@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import { Text,
   FlatList,
   Image,
@@ -17,8 +17,8 @@ import { Text,
   TextInput,
   TouchableOpacity,
   Button,
-  ActivityIndicator
-
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -35,6 +35,7 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 import SwiperFlatList from 'react-native-swiper-flatlist';
 export default class app extends Component {
+  //const [refreshing, setRefreshing] = useState(0);
   constructor(props)
   {
     super(props);
@@ -44,16 +45,13 @@ export default class app extends Component {
       dataCategories:[],
       dataFood:[],
       selectCatg:0,
-      visible:false
+      visible:false,
+      refreshing: true,    
     }
+    this.GetData();
   }
-componentWillMount(){
-  setTimeout(()=>{
-    this.setState({
-      isLoading:false
-    })
-  },300)
-    //const url = "http://tutofox.com/foodapp/api.json"
+  GetData = () => {
+    //Service to get the data from the server to render
     const url ="http://markettux.sattlink.com/api/recursos";
     return fetch(url)
     .then((response) => response.json())
@@ -64,8 +62,8 @@ componentWillMount(){
        // isLoading: true,
         dataBanner: responseJson.bannerP,
         dataCategories: responseJson.giro,
-        dataFood:responseJson.tiendas
-        
+        dataFood:responseJson.tiendas,
+        refreshing: false,
       });
 
     })
@@ -73,20 +71,47 @@ componentWillMount(){
       console.error(error);
     });
 
+  };
+
+componentWillMount(){
+  
+    //const url = "http://tutofox.com/foodapp/api.json"
+   
   
 }
 
- 
+onRefresh() {
+  //Clear old data of the list
+  this.setState({ dataBanner:[],
+    dataCategories:[],
+    dataFood:[], });
+  //Call the Service to get the latest data
+  this.GetData();
+}
 
   render() {
     console.log(this.state.dataBanner)
-    if (this.state.isLoading) {
-      return  <ActivityIndicator size="large" color="#0000ff" />
-    } else {
+    if (this.state.refreshing) {
+      return (
+        //loading view while data is loading
+        //loading view while data is loading
+        <View style={[styles.container, styles.horizontal]}>
+        <ActivityIndicator size="large" color="#f2682a" />
+         
+        </View>
+      );
+    }
     return (
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl
+          //refresh control used for the Pull to Refresh
+          refreshing={this.state.refreshing}
+          onRefresh={this.onRefresh.bind(this)}
+          colors={['#f2682a', '#00ff00', '#0000ff']}
+        />
+      }>
       <SafeAreaView  style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
-    
+     
         <View style={{width: width, alignItems:'center'}} >
         <Text style={styles.titleCatg}></Text>
         
@@ -119,6 +144,7 @@ componentWillMount(){
          data={this.state.dataCategories}
          renderItem={({ item }) => this._renderItem(item)}
          keyExtractor = { (item,index) => index.toString() }
+         
        />
         <FlatList
            //horizontal={true}
@@ -141,7 +167,7 @@ componentWillMount(){
     
     );
 
-   }
+   
 }
 
   _renderItem(item){
@@ -163,7 +189,7 @@ _renderItemFood(item){
   if(catg==0||catg==item.id_giro)
   {
     return(
-      <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda')}>
+      <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert})}>
         <Image
           style={styles.imageFood}
           resizeMode="contain"
@@ -294,6 +320,15 @@ const styles = StyleSheet.create({
     shadowOpacity:0.3,
     shadowRadius:50,
     backgroundColor:'white',
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
   }
 });
 
