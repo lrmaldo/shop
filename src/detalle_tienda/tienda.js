@@ -30,6 +30,9 @@ import Swiper from 'react-native-swiper'
 
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
+//animacion al cargar vista
+import AnimatedLoader from "react-native-animated-loader";
+
 const UIManager = NativeModules.UIManager;
 export default class app extends Component {
   constructor(props)
@@ -43,6 +46,7 @@ export default class app extends Component {
       dataFood:this.props.navigation.getParam('productos'),
       selectCatg:0,
       refreshing: false,
+      visible:true
     }
     
    // this.GetData();
@@ -77,7 +81,7 @@ export default class app extends Component {
     dataBanner: this.props.navigation.getParam('bannert'),
     dataCategories: this.props.navigation.getParam('categorias'),
     dataFood:this.props.navigation.getParam('productos'),
-    refreshing:false
+   // visible: false
     
   });
   };
@@ -111,32 +115,25 @@ export default class app extends Component {
     }
   componentDidMount(){
     this.props.navigation.setParams({ regresar: this._regresar.bind(this)  });
+    setInterval(() => {
+      this.setState({
+        visible: false
+      });
+    }, 1500);
   }
   onRefresh() {
     //Clear old data of the list
     this.setState({ dataBanner:[],
       dataCategories:[],
-      dataFood:[], });
+      dataFood:[],});
     //Call the Service to get the latest data
     this.GetData();
   }
   render() {
-    console.log(this.state.dataFood);
-    if (this.state.refreshing) {
-      return (
-        //loading view while data is loading
-        <View style={[styles.container, styles.horizontal]}>
-        <ActivityIndicator size="large" color="#f2682a"/>
-        
-        
-        
-        
-      </View>
-      
-      );
-    }
-    
+    //console.log(this.state.dataFood);
+     
     return (
+     
       <ScrollView  refreshControl={
         <RefreshControl
           //refresh control used for the Pull to Refresh
@@ -147,6 +144,14 @@ export default class app extends Component {
           colors={['#f2682a', '#00ff00', '#0000ff']}
         />
       }>
+         <AnimatedLoader 
+        visible={this.state.visible}
+        overlayColor="rgba(255,255,255,0.75)"
+        source={require("../../res/lo-cart.json")}
+        animationStyle={styles.lottie}
+        speed={1}
+        
+      />
       <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
         <Text style={styles.titleCatg}></Text>
@@ -190,7 +195,10 @@ export default class app extends Component {
       </View>
     </ScrollView>
     );
+    
 
+    
+//pegar aqui codigo que esta en el bloc de notas
 
   }
 
@@ -364,6 +372,11 @@ const styles = StyleSheet.create({
     
     justifyContent: "center",
     padding: 10
+  },
+  lottie: {
+    width: 220,
+    height: 220,
+    aspectRatio:4
   }
 
 });
