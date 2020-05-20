@@ -4,6 +4,8 @@ import {Platform,ScrollView, StyleSheet, Text, TextInput, View,
         ImageBackground,StatusBar, TouchableHighlightBase} from 'react-native';
 import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
 
+//toast
+import Toast from 'react-native-simple-toast';
 
 export default class app extends Component {
 
@@ -45,7 +47,7 @@ export default class app extends Component {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
   };
-  
+
   handleSubmit = () => {
 
     if(this.state.nombre && this.state.correo && this.state.colonia && this.state.direccion && this.state.referencias &&this.state.telefono ){
@@ -53,14 +55,16 @@ export default class app extends Component {
       
         if(this.validateEmail(this.state.correo)){
 
-          Alert.alert("siguiente if")
- 
+         // Alert.alert("siguiente if")
+          Toast.showWithGravity('This is a long toast at the top.', Toast.LONG, Toast.TOP);
         }else{
-          Alert.alert('correo invalido')
+          
+          Toast.showWithGravity('This is a long toast at the top.', Toast.LONG, Toast.TOP);
         }
 
       }else{
-        Alert.alert("llene los campos")
+        //Toast.showWithGravity('Llene todo los campos', Toast.LONG, Toast.CENTER);
+       
         //Alert.alert('correo valido')
 
       }
