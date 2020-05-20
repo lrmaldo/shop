@@ -31,7 +31,7 @@ import Datos_tienda from './src/detalle_tienda/datos_tienda'
 //import de inicio
 import Inicio from './src/inicio/inicio'
 import Perfil from './src/inicio/perfil'
-
+import EditPerfil from './src/inicio/editarperfil'
 // unable console yellow
 //console.disableYellowBox = true;
 
@@ -148,6 +148,25 @@ const PerfilNavigator = createStackNavigator({
         
     },
   },
+  EditPerfil:{
+    screen: EditPerfil,
+    navigationOptions:{
+          title:"Editar Perfil",
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+
+      
+        
+        
+    },
+  },
   
   
 });
@@ -202,19 +221,20 @@ const BottonNavegation = createBottomTabNavigator({
 
 {tabBarOptions: {
   activeTintColor: 'white',
-  //inactiveTintColor:'#6c757d',
+  inactiveTintColor:'#ff9958',
   labelStyle: {
     fontSize: 12,
   },
   style: {
-    backgroundColor: '#ffa500',
+    backgroundColor: '#f2682a',
   },
 }
 }
 
 )
-
-
+//color primary  #f2682a
+// color accent  #ff9958
+//color dark #b83700
 export default  createAppContainer(BottonNavegation)
 
 

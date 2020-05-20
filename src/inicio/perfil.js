@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {  Dimensions,  Image,
   ImageBackground,
-  Linking,
-  ListView,
+ 
   Platform,
   ScrollView,
   TouchableOpacity,
@@ -11,8 +10,8 @@ import {  Dimensions,  Image,
   View,} from 'react-native';
 var { width } = Dimensions.get("window")
 import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
-import { Card, Icon } from 'react-native-elements'
-
+import { Card, Avatar ,Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class Perfil extends Component {
 
@@ -29,8 +28,9 @@ export default class Perfil extends Component {
     };
   }
   
-  componentWillMount() {
+  componentDidMount() {
     this._setDataFB()
+    const { params } = this.props.navigation.state;
   }
 
   
@@ -64,6 +64,7 @@ export default class Perfil extends Component {
           style={styles.headerBackgroundImage}
           blurRadius={10}
           source={{uri: this.state.picture.data.url}}
+          defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
         > 
         
           <View style={styles.headerColumn}>
@@ -71,14 +72,31 @@ export default class Perfil extends Component {
               key={new Date()}
               style={styles.userImage}
               source={{uri: this.state.picture.data.url}}
+              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
             />
             <Text style={styles.userNameText}>{this.state.name}</Text>
          
           </View>
         </ImageBackground>
         <View style={styles.productRow}>
-         <LoginButton  onLogoutFinished={() =>{ console.log("logout."); this.setState({isLoggedin:false})}}/>
+         <LoginButton  onLogoutFinished={() =>{ this.logout()}}/>
           
+           </View>
+           <View style={styles.productRow}>
+
+           <Button
+            style={{size:10,aspectRatio:30}}
+              icon={
+                <Icon
+                name="md-arrow-back"
+                size={25}
+                color="white"
+                //style={{marginStart:20}}
+                />
+                    }
+          title="   editar perfil"
+          onPress={() => this.props.navigation.navigate('EditPerfil') }
+/>
            </View>
 
            <Text style={styles.info}>UX Designer / Mobile developer</Text>
@@ -128,24 +146,23 @@ export default class Perfil extends Component {
          
           </View>
         </ImageBackground>
-        <View style={styles.productRow}>
-        <LoginButton
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                console.log("presiono")
-                this.setState({isLoggedin:true})
-                dhis._setDataFB()
-              }
-            }
-          }
-          />
-          
-           </View>
+      
+           <View style={styles.productRow}>
+
+                <Button
+                style={{size:10,aspectRatio:30}}
+                  icon={
+                    <Icon
+                    name="md-arrow-back"
+                    size={25}
+                    color="white"
+                    //style={{marginStart:20}}
+                    />
+                        }
+                title="   editar perfil"
+                onPress={() => this.props.navigation.navigate('EditPerfil') }
+                />
+            </View>
 
            <Text style={styles.info}>UX Designer / Mobile developer</Text>
               <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
