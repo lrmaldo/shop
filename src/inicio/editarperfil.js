@@ -7,6 +7,9 @@ import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
 //toast
 import Toast from 'react-native-simple-toast';
 
+
+  import AsyncStorage from '@react-native-community/async-storage';
+
 export default class app extends Component {
 
   constructor(props)
@@ -28,10 +31,12 @@ export default class app extends Component {
       direccion: '',
       referencias:'',
       telefono:'',
+      cruzamientos:'',
       colonia:'',
       status: '',
       wholeResult: '',
-      isFocused:false
+      isFocused:false,
+      text:''
     }
   }
 
@@ -42,11 +47,72 @@ export default class app extends Component {
    
     
   }
+  componentDidMount(){
+    this.retrieveData();
+  }
 
   validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
   };
+
+  save = async name => {
+    try {
+
+      
+
+      await AsyncStorage.setItem("perfil", JSON.stringify(name))
+      alert('Data successfully saved!')
+     // this.setState({ nombre: name })
+    } catch (e) {
+      alert('Failed to save name.')
+    }
+  }
+
+  retrieveData = async () => {
+    try {
+      const name = await AsyncStorage.getItem("perfil")
+
+      if (name !== null) {
+        const e = JSON.parse(name)
+        console.log(e)
+        this.setState({ 
+          nombre:e.nombre, 
+          correo:e.correo,
+          direccion:e.direccion,
+          cruzamientos:e.cruzamientos,
+          referencias:e.referencias,
+          colonia:e.colonia,
+          telefono:e.telefono
+
+        })
+      }
+    } catch (e) {
+      alert('Failed to load name.')
+    }
+  }
+  onChangeText = text => this.setState({ text })
+
+  onSubmitEditing = () => {
+      const onSave = this.save
+      const { nombre,correo,direccion,cruzamientos,colonia,referencias,telefono } = this.state
+
+      //if (!nombre && !correo) return
+      let perfil ={
+        nombre:nombre,
+        correo:correo,
+        direccion:direccion,
+        cruzamientos:cruzamientos,
+        colonia:colonia,
+        referencias:referencias,
+        telefono:telefono
+        
+      }
+      onSave(perfil)
+     
+      
+      //this.setState({ nombre: '' })
+  }
 
   handleSubmit = () => {
 
@@ -56,16 +122,18 @@ export default class app extends Component {
         if(this.validateEmail(this.state.correo)){
 
          // Alert.alert("siguiente if")
-          Toast.showWithGravity('This is a long toast at the top.', Toast.LONG, Toast.TOP);
-        }else{
           
-          Toast.showWithGravity('This is a long toast at the top.', Toast.LONG, Toast.TOP);
+         Toast.showWithGravity('Guardando...', Toast.LONG, Toast.CENTER);
+        }else{
+          Toast.showWithGravity('No es un correo valido', Toast.LONG, Toast.CENTER);
+         
         }
 
       }else{
         //Toast.showWithGravity('Llene todo los campos', Toast.LONG, Toast.CENTER);
        
         //Alert.alert('correo valido')
+        Toast.showWithGravity('Llena todos los campos.', Toast.LONG, Toast.CENTER);
 
       }
     // use that ref to get the form value
@@ -84,6 +152,99 @@ export default class app extends Component {
  Alert.alert("Please enter username");
 }*/
     //this.props.navigation.navigate('Perfil')
+  }
+
+  guardar(){
+    var that = this;
+    //var url = that.state.baseUrl + 'register.php';
+     //console.log("url:"+url);
+
+     AsyncStorage.getItem('i').then((dataPerfil)=>{
+      if (dataPerfil !== null) {
+        if(this.state.id_facebook){
+          let perfil = {
+            id_face:this.state.id_facebook,
+            nombre_face:this.state.name,
+            nombre: this.state.nombre,
+            email: this.state.correo,
+            direccion: this.state.direccion,
+            referencias: this.state.referencias,
+            colonia:this.state.colonia,
+            telefono:this.state.colonia,
+            };
+
+            AsyncStorage.setItem('i',perfil);
+        }else{ 
+            let perfil = {
+              nombre: this.state.nombre,
+              email: this.state.correo,
+              direccion: this.state.direccion,
+              referencias: this.state.referencias,
+              colonia:this.state.colonia,
+              telefono:this.state.colonia,
+              };
+              AsyncStorage.setItem('ii',perfil);
+        }
+      
+      }else{
+
+        if(this.state.isLoggedin){
+          let perfil = {
+            id_face:this.state.id_facebook,
+            nombre_face:this.state.name,
+            nombre: this.state.nombre,
+            email: this.state.correo,
+            direccion: this.state.direccion,
+            referencias: this.state.referencias,
+            colonia:this.state.colonia,
+            telefono:this.state.colonia,
+            };
+
+            AsyncStorage.setItem('pl',perfil);
+        }else{ 
+            let perfil = {
+              nombre: this.state.nombre,
+              email: this.state.correo,
+              direccion: this.state.direccion,
+              referencias: this.state.referencias,
+              colonia:this.state.colonia,
+              telefono:this.state.colonia,
+              };
+              AsyncStorage.setItem('l',perfil);
+        }
+      }
+
+
+
+     })
+  
+    
+  }
+
+
+  guardarapi(){
+    var that = this;
+    fetch(url,{
+      method: 'POST',
+      body: JSON.stringify({"name": this.state.Usrname, "email": this.state.email,"password": this.state.password})
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) { 
+        // console.log(result);
+        if(!result.error){
+         that.setState({ status: result.error,
+                         wholeResult: result,
+                      });
+         Alert.alert("User register successfully \n userId: "+that.state.wholeResult.user.uid);
+         console.log(that.state.wholeResult.user.uid);
+     }else{
+      Alert.alert(result.error_msg);
+      console.log(result);
+}
+}).catch(function (error) {
+console.log("-------- error ------- "+error);
+alert("result:"+error)
+});
   }
 
 handleFocus = event => {
@@ -123,7 +284,7 @@ handleValidation(value) {
     const {isFocused} = this.state.isFocused;
     const {isLoggedin} = this.state.isLoggedin;
     const {onFocus,onOrange, ...otherProps} = this.props;
-     
+    const { text, nombre, correo, direccion,referencias,cruzamientos,telefono,colonia } = this.state;
 
      
       //  console.log('es null')
@@ -131,27 +292,13 @@ handleValidation(value) {
           <ScrollView>
           <View style={styles.container}>
           <View style={styles.productRow}>
-          <LoginButton  
-          
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                console.log("presiono")
-                
-                dhis._setDataFB()
-              }
-            }
-          }
-          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
-          />
+         
           
            </View>
            
            <View style={styles.inputContainer}>
+
+         
               <TextInput style={styles.inputs}
                 
                 placeholder="Nombre"
@@ -165,12 +312,10 @@ handleValidation(value) {
                 onFocus ={this.handleFocus}
                 onOrange={this.handleOrange}
                 onChangeText={(nombre) => this.setState({nombre})}
-                defaultValue={
-                  isLoggedin ? "" :this.state.name
-                }
-                
+                value={nombre}
                 
               />
+           
           </View>
           <View style={styles.inputContainer}>
               <TextInput style={styles.inputs}
@@ -185,9 +330,8 @@ handleValidation(value) {
                 onFocus ={this.handleFocus}
                 onOrange={this.handleOrange}
                 onChangeText={(correo) => this.setState({correo})}
-                defaultValue={
-                  isLoggedin ? "" :this.state.email
-                }
+               
+                value={correo}
                 />
                 
           </View>
@@ -199,13 +343,31 @@ handleValidation(value) {
                 multiline={ true}
                 underlineColorAndroid='transparent'
                 selectionColor={"orange"}
-                numberOfLines={2}
+                numberOfLines={1}
                 underlineColorAndroid={
                   isFocused ? "orange" : "#f9aa34"
                 }
                 onFocus ={this.handleFocus}
                 onOrange={this.handleOrange}
-                onChangeText={(direccion) => this.setState({direccion})}/>
+                onChangeText={(direccion) => this.setState({direccion})}
+                defaultValue={direccion}/>
+          </View>
+          <View style={styles.inputContainer}>
+              <TextInput style={styles.inputs}
+                fontSize={20}
+                multiline={ true}
+                placeholder="Cruzamientos"
+                keyboardType="default"
+                underlineColorAndroid='transparent'
+                selectionColor={"orange"}
+                underlineColorAndroid={
+                  isFocused ? "orange" : "#f9aa34"
+                }
+                onFocus ={this.handleFocus}
+                onOrange={this.handleOrange}
+                onChangeText={(cruzamientos) => this.setState({cruzamientos})}
+                defaultValue={cruzamientos}
+                />
           </View>
           <View style={styles.inputContainer}>
               <TextInput style={styles.inputs}
@@ -221,6 +383,7 @@ handleValidation(value) {
                 onFocus ={this.handleFocus}
                 onOrange={this.handleOrange}
                 onChangeText={(referencias) => this.setState({referencias})}
+                defaultValue={referencias}
                 />
           </View>
           <View style={styles.inputContainer}>
@@ -235,7 +398,9 @@ handleValidation(value) {
                 }
                 onFocus ={this.handleFocus}
                 onOrange={this.handleOrange}
-                onChangeText={(colonia) => this.setState({colonia})}/>
+                onChangeText={(colonia) => this.setState({colonia})}
+                defaultValue={colonia}
+                />
           </View>
           <View style={styles.inputContainer}>
               <TextInput style={styles.inputs}
@@ -249,12 +414,14 @@ handleValidation(value) {
                 }
                 onFocus ={this.handleFocus}
                 onOrange={this.handleOrange}
-                onChangeText={(telefono) => this.setState({telefono})}/>
+                onChangeText={(telefono) => this.setState({telefono})}
+                defaultValue={telefono}
+                />
           </View>
 
          
 
-        <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#ffa500'>
+        <TouchableHighlight style={styles.button} onPress={this.onSubmitEditing} underlayColor='#ffa500'>
           <Text style={styles.buttonText}>Guardar</Text>
         </TouchableHighlight>
         </View>

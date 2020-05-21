@@ -13,6 +13,7 @@ import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
 import { Card, Avatar ,Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 
+import AsyncStorage from '@react-native-community/async-storage';
 export default class Perfil extends Component {
 
    url ="https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1367133923474897&width=500&ext=1592067816&hash=AeRMb6U0xNeU_qWB"
@@ -24,15 +25,59 @@ export default class Perfil extends Component {
       name:null,
       email:null,
       accessToken: null,
-      isLoggedin:false
+      isLoggedin:false,
+
+      nombre:"", 
+      correo:"",
+      direccion:"",
+      cruzamientos:"",
+      referencias:"",
+      colonia:"",
+      telefono:""
     };
   }
   
   componentDidMount() {
+    this.retrieveData();
     this._setDataFB()
     const { params } = this.props.navigation.state;
+
+    AsyncStorage.getItem('perfil').then((perfil)=>{
+      if (perfil !== null) {
+        // We have data!!
+        //const cartfood = JSON.parse(cart)
+        console.log(perfil);
+        this.setState({dataperfil:perfil})
+      }
+    })
+    .catch((err)=>{
+      alert(err)
+    })
   }
 
+
+  retrieveData = async () => {
+    try {
+      const name = await AsyncStorage.getItem("perfil")
+
+      if (name !== null) {
+        const e = JSON.parse(name)
+        console.log(e.nombre)
+        this.setState({ 
+          nombre:e.nombre, 
+          correo:e.correo,
+          direccion:e.direccion,
+          cruzamientos:e.cruzamientos,
+          referencias:e.referencias,
+          colonia:e.colonia,
+          telefono:e.telefono
+
+        })
+      }
+    } catch (e) {
+      alert('Failed to load name.')
+    }
+  }
   
 
   renderDescription = () => {
@@ -49,8 +94,10 @@ export default class Perfil extends Component {
 
   render() {
     const dhis = this
+
+   
     return (
-      <View style={{flex:1}}>
+      <ScrollView style={{flex:1}}>
 
 
       
@@ -75,6 +122,7 @@ export default class Perfil extends Component {
               defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
             />
             <Text style={styles.userNameText}>{this.state.name}</Text>
+        
          
           </View>
         </ImageBackground>
@@ -99,8 +147,8 @@ export default class Perfil extends Component {
 />
            </View>
 
-           <Text style={styles.info}>UX Designer / Mobile developer</Text>
-              <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
+                  <Text style={styles.info}>{this.state.nombre}</Text>
+              <Text style={styles.description}>Dirección</Text>
               
               <View style={styles.userAddressRow}>
               <View>
@@ -111,11 +159,7 @@ export default class Perfil extends Component {
                  
                 />
               </View>
-              <View style={styles.userCityRow}>
-                <Text style={styles.userCityText}>
-                  San Juan Tuxtepec, Oaxaca
-                </Text>
-              </View>
+              
             </View>
         </View>
         
@@ -147,8 +191,28 @@ export default class Perfil extends Component {
           </View>
         </ImageBackground>
       
-           <View style={styles.productRow}>
 
+        <View style={styles.productRow}> 
+        <LoginButton  
+          
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                console.log("presiono")
+                
+                dhis._setDataFB()
+              }
+            }
+          }
+          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
+          />
+         </View>
+           <View style={styles.productRow}>
+                    
                 <Button
                 style={{size:10,aspectRatio:30}}
                   icon={
@@ -164,13 +228,16 @@ export default class Perfil extends Component {
                 />
             </View>
 
-           <Text style={styles.info}>UX Designer / Mobile developer</Text>
-              <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
-              
+           <Text style={styles.info}>Nombre: {this.state.nombre}</Text>
+              <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
+              <Text style={styles.description}>Cruzamientos: {this.state.cruzamientos}  </Text>
+              <Text style={styles.description}>Referencias: {this.state.referencias}  </Text>
+              <Text style={styles.description}>Colonia: {this.state.colonia}  </Text>
+              <Text style={styles.description}>Teléfono: {this.state.telefono}  </Text>
               <View style={styles.userAddressRow}>
               <View>
                 <Icon
-                  name="place"
+                  name="md-place"
                   underlayColor="transparent"
                   iconStyle={styles.placeIcon}
                  
@@ -192,7 +259,7 @@ export default class Perfil extends Component {
 
 
 
-   </View>
+   </ScrollView>
     );
   }
 
