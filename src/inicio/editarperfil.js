@@ -51,6 +51,9 @@ export default class app extends Component {
     this.retrieveData();
   }
 
+
+
+
   validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
@@ -62,10 +65,12 @@ export default class app extends Component {
       
 
       await AsyncStorage.setItem("perfil", JSON.stringify(name))
-      alert('Data successfully saved!')
+
+      Toast.showWithGravity('Guardando datos...', Toast.LONG, Toast.CENTER);
+     // alert('Data successfully saved!')
      // this.setState({ nombre: name })
     } catch (e) {
-      alert('Failed to save name.')
+      //alert('Ocurrio un error no se pudo guardar los datos.')
     }
   }
 
@@ -88,7 +93,7 @@ export default class app extends Component {
         })
       }
     } catch (e) {
-      alert('Failed to load name.')
+      alert('Error al cargar los datos.')
     }
   }
   onChangeText = text => this.setState({ text })
@@ -123,7 +128,8 @@ export default class app extends Component {
 
          // Alert.alert("siguiente if")
           
-         Toast.showWithGravity('Guardando...', Toast.LONG, Toast.CENTER);
+       
+         this.onSubmitEditing();
         }else{
           Toast.showWithGravity('No es un correo valido', Toast.LONG, Toast.CENTER);
          
@@ -136,88 +142,17 @@ export default class app extends Component {
         Toast.showWithGravity('Llena todos los campos.', Toast.LONG, Toast.CENTER);
 
       }
-    // use that ref to get the form value
-    //console.log('value: ', value.nombre);
-   /**  if(this.state.nombre || this.state.nombre != " "){
-      if(!this.validateEmail(this.state.correo)){
-       if(this.state.direccion){
-           this.registerCall();
-        }else{
-       Alert.alert("acomplete el campo de ");
-      }
-      }else{
-     Alert.alert("correo invalido");
-     }
-   }else{
- Alert.alert("Please enter username");
-}*/
-    //this.props.navigation.navigate('Perfil')
+   
   }
 
   guardar(){
     var that = this;
-    //var url = that.state.baseUrl + 'register.php';
-     //console.log("url:"+url);
+    if(this.state.id_facebook){}else{
 
-     AsyncStorage.getItem('i').then((dataPerfil)=>{
-      if (dataPerfil !== null) {
-        if(this.state.id_facebook){
-          let perfil = {
-            id_face:this.state.id_facebook,
-            nombre_face:this.state.name,
-            nombre: this.state.nombre,
-            email: this.state.correo,
-            direccion: this.state.direccion,
-            referencias: this.state.referencias,
-            colonia:this.state.colonia,
-            telefono:this.state.colonia,
-            };
+    }
 
-            AsyncStorage.setItem('i',perfil);
-        }else{ 
-            let perfil = {
-              nombre: this.state.nombre,
-              email: this.state.correo,
-              direccion: this.state.direccion,
-              referencias: this.state.referencias,
-              colonia:this.state.colonia,
-              telefono:this.state.colonia,
-              };
-              AsyncStorage.setItem('ii',perfil);
-        }
-      
-      }else{
-
-        if(this.state.isLoggedin){
-          let perfil = {
-            id_face:this.state.id_facebook,
-            nombre_face:this.state.name,
-            nombre: this.state.nombre,
-            email: this.state.correo,
-            direccion: this.state.direccion,
-            referencias: this.state.referencias,
-            colonia:this.state.colonia,
-            telefono:this.state.colonia,
-            };
-
-            AsyncStorage.setItem('pl',perfil);
-        }else{ 
-            let perfil = {
-              nombre: this.state.nombre,
-              email: this.state.correo,
-              direccion: this.state.direccion,
-              referencias: this.state.referencias,
-              colonia:this.state.colonia,
-              telefono:this.state.colonia,
-              };
-              AsyncStorage.setItem('l',perfil);
-        }
-      }
-
-
-
-     })
-  
+     ///aqui tiene  que preguntar si se logeo con facebook o no 
+    
     
   }
 
@@ -421,7 +356,7 @@ handleValidation(value) {
 
          
 
-        <TouchableHighlight style={styles.button} onPress={this.onSubmitEditing} underlayColor='#ffa500'>
+        <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#ffa500'>
           <Text style={styles.buttonText}>Guardar</Text>
         </TouchableHighlight>
         </View>

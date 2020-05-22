@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {  Dimensions,  Image,
   ImageBackground,
- 
+  StatusBar,
   Platform,
   ScrollView,
   TouchableOpacity,
@@ -12,6 +12,7 @@ var { width } = Dimensions.get("window")
 import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
 import { Card, Avatar ,Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
+import LottieView from 'lottie-react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 export default class Perfil extends Component {
@@ -33,26 +34,17 @@ export default class Perfil extends Component {
       cruzamientos:"",
       referencias:"",
       colonia:"",
-      telefono:""
+      telefono:"",
+      datos_vacio:true
     };
   }
   
   componentDidMount() {
-    this.retrieveData();
+    
     this._setDataFB()
     const { params } = this.props.navigation.state;
 
-    AsyncStorage.getItem('perfil').then((perfil)=>{
-      if (perfil !== null) {
-        // We have data!!
-        //const cartfood = JSON.parse(cart)
-        console.log(perfil);
-        this.setState({dataperfil:perfil})
-      }
-    })
-    .catch((err)=>{
-      alert(err)
-    })
+   
   }
 
 
@@ -62,7 +54,8 @@ export default class Perfil extends Component {
 
       if (name !== null) {
         const e = JSON.parse(name)
-        console.log(e.nombre)
+        
+       
         this.setState({ 
           nombre:e.nombre, 
           correo:e.correo,
@@ -70,10 +63,19 @@ export default class Perfil extends Component {
           cruzamientos:e.cruzamientos,
           referencias:e.referencias,
           colonia:e.colonia,
-          telefono:e.telefono
+          telefono:e.telefono,
+          datos_vacio:false
+        })
 
+
+       
+        //console.log(this.state.datos_vacio);
+      }else{
+        this.setState({
+          datos_vacio:true
         })
       }
+      
     } catch (e) {
       alert('Failed to load name.')
     }
@@ -94,168 +96,121 @@ export default class Perfil extends Component {
 
   render() {
     const dhis = this
+    this.retrieveData();
+  
+    
+    return (
+     
+      <ScrollView style={{flex:1}}>
+         <StatusBar barStyle="light-content" backgroundColor="#f4511e" />
+
+        <View style={{flex:.1}}>
+                  <View style={styles.headerContainer}>
+                    
+                      <ImageBackground
+                        key={new Date()}
+                        style={styles.headerBackgroundImage}
+                        blurRadius={10}
+                        source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                        defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                      > 
+                  
+                            <View style={styles.headerColumn}>
+                            <Image
+                              key={new Date()}
+                              style={styles.userImage}
+                              source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                            />
+                            <Text style={styles.userNameText}>{this.state.name}</Text>
+                        
+                        
+                          </View>
+                     </ImageBackground>
+                        
+                    
+
+                          
+                         
+                           
+                          { this.state.datos_vacio ?
+                          <View>
+                            <View style={styles.productRow}></View>
+                          <LottieView  style={{ position: 'relative', alignSelf: 'center', bottom: 10, width: 100, height: 100 }}
+                          source={require('../../res/1869-file-error.json')} autoPlay loop />
+
+                          <Text style={styles.descriptionText}> No encontramos tus datos   </Text>
+                          </View>
+                          :
+                          <View>  
+                           
+                             
+                              <Text style={styles.descriptionText}>  
+                              <Icon
+                                name="md-pin"
+                               
+                                size={25}
+                                color="oracle"
+                              
+                              /> Datos</Text>
+                           
+                          <Text style={styles.info}>Nombre: {this.state.nombre}</Text>
+                          <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
+                          <Text style={styles.description}>Cruzamientos: {this.state.cruzamientos}  </Text>
+                          <Text style={styles.description}>Referencias: {this.state.referencias}  </Text>
+                          <Text style={styles.description}>Colonia: {this.state.colonia}  </Text>
+                          <Text style={styles.description}>Teléfono: {this.state.telefono}  </Text>
+                          </View>
+
+                          }
+                        <View style={styles.productRow}>
+                                <Button
+                                  style={{size:10,aspectRatio:30, backgroundColor:'#f9aa34'}}
+                                    icon={
+                                      <Icon
+                                      name="md-create"
+                                      size={25}
+                                      color="white"
+                                      //style={{marginStart:20}}
+                                      />
+                                          }
+                                title="   Editar perfil"
+                                onPress={() => this.props.navigation.navigate('EditPerfil') }
+                                />
+                             <View style={styles.productRow1}>
+                       
+                          
+                       </View>
+                          <LoginButton  
+                            
+                          onLoginFinished={
+                            (error, result) => {
+                              if (error) {
+                                console.log("login has error: " + result.error);
+                              } else if (result.isCancelled) {
+                                console.log("login is cancelled.");
+                              } else {
+                                console.log("presiono")
+                                
+                                dhis._setDataFB()
+                              }
+                            }
+                          }
+                          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
+                          />
+                        </View>
+                  </View>
+        
+        </View>
+          
+          
+          
+          
+          
+         
+      
 
    
-    return (
-      <ScrollView style={{flex:1}}>
-
-
-      
-
-      {
-        this.state.isLoggedin?
-        <View style={{flex:.1}}> 
-        <View style={styles.headerContainer}>
-        <ImageBackground
-          key={new Date()}
-          style={styles.headerBackgroundImage}
-          blurRadius={10}
-          source={{uri: this.state.picture.data.url}}
-          defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-        > 
-        
-          <View style={styles.headerColumn}>
-            <Image
-              key={new Date()}
-              style={styles.userImage}
-              source={{uri: this.state.picture.data.url}}
-              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-            />
-            <Text style={styles.userNameText}>{this.state.name}</Text>
-        
-         
-          </View>
-        </ImageBackground>
-        <View style={styles.productRow}>
-         <LoginButton  onLogoutFinished={() =>{ this.logout()}}/>
-          
-           </View>
-           <View style={styles.productRow}>
-
-           <Button
-            style={{size:10,aspectRatio:30}}
-              icon={
-                <Icon
-                name="md-arrow-back"
-                size={25}
-                color="white"
-                //style={{marginStart:20}}
-                />
-                    }
-          title="   editar perfil"
-          onPress={() => this.props.navigation.navigate('EditPerfil') }
-/>
-           </View>
-
-                  <Text style={styles.info}>{this.state.nombre}</Text>
-              <Text style={styles.description}>Dirección</Text>
-              
-              <View style={styles.userAddressRow}>
-              <View>
-                <Icon
-                  name="place"
-                  underlayColor="transparent"
-                  iconStyle={styles.placeIcon}
-                 
-                />
-              </View>
-              
-            </View>
-        </View>
-        
-        </View>
-     
-          
-        
-        :
-        <View style={{flex:1}}>
-
-<View style={styles.headerContainer}>
-        <ImageBackground
-          key={new Date()}
-          style={styles.headerBackgroundImage}
-          blurRadius={10}
-          source={{uri: 'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-          defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-        > 
-        
-          <View style={styles.headerColumn}>
-            <Image
-              key={new Date()}
-              style={styles.userImage}
-              source={{uri: 'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-            />
-            <Text style={styles.userNameText}>{this.state.name}</Text>
-         
-          </View>
-        </ImageBackground>
-      
-
-        <View style={styles.productRow}> 
-        <LoginButton  
-          
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                console.log("presiono")
-                
-                dhis._setDataFB()
-              }
-            }
-          }
-          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
-          />
-         </View>
-           <View style={styles.productRow}>
-                    
-                <Button
-                style={{size:10,aspectRatio:30}}
-                  icon={
-                    <Icon
-                    name="md-arrow-back"
-                    size={25}
-                    color="white"
-                    //style={{marginStart:20}}
-                    />
-                        }
-                title="   editar perfil"
-                onPress={() => this.props.navigation.navigate('EditPerfil') }
-                />
-            </View>
-
-           <Text style={styles.info}>Nombre: {this.state.nombre}</Text>
-              <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
-              <Text style={styles.description}>Cruzamientos: {this.state.cruzamientos}  </Text>
-              <Text style={styles.description}>Referencias: {this.state.referencias}  </Text>
-              <Text style={styles.description}>Colonia: {this.state.colonia}  </Text>
-              <Text style={styles.description}>Teléfono: {this.state.telefono}  </Text>
-              <View style={styles.userAddressRow}>
-              <View>
-                <Icon
-                  name="md-place"
-                  underlayColor="transparent"
-                  iconStyle={styles.placeIcon}
-                 
-                />
-              </View>
-              <View style={styles.userCityRow}>
-                <Text style={styles.userCityText}>
-                  San Juan Tuxtepec, Oaxaca
-                </Text>
-              </View>
-            </View>
-        </View>
-        
-        
-          </View>
-     
-
-      }
 
 
 
@@ -287,7 +242,7 @@ export default class Perfil extends Component {
               result.grantedPermissions.toString()
           );
           dhis._setDataFB()
-          this.setState({isLoggedin:true});
+         
           
         }
       },
@@ -352,6 +307,11 @@ export default class Perfil extends Component {
  }
 }
 const styles = StyleSheet.create({
+  name:{
+    fontSize:28,
+    color: "#696969",
+    fontWeight: "600"
+  },
   cardContainer: {
     backgroundColor: '#FFF',
     borderWidth: 0,
@@ -387,7 +347,7 @@ const styles = StyleSheet.create({
   },
   placeIcon: {
     color: 'orange',
-    fontSize: 26,
+    fontSize:43,
   },
   scroll: {
     backgroundColor: '#FFF',
@@ -426,11 +386,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   descriptionText: {
-    marginBottom: 4,
-    color: "gray",
-    fontSize: 16,
-    fontWeight: '400',
-    letterSpacing: 1,
+    fontSize:21,
+    color: "orange",
+    marginTop:1,
+    textAlign: 'center'
   },
   priceText: {
     marginBottom: 5,
@@ -442,6 +401,11 @@ const styles = StyleSheet.create({
   },
   productRow: {
     margin: 35,
+  },
+  productRow1: {
+    position:"relative",
+    alignContent:'center',
+    margin: 10,
   },
   detailText: {
     marginBottom: 4,
@@ -460,7 +424,7 @@ const styles = StyleSheet.create({
   info:{
     textAlign:'center',
     fontSize:16,
-    color: "#00BFFF",
+    color: "#696969",
     marginTop:10
   },
   description:{
@@ -469,6 +433,11 @@ const styles = StyleSheet.create({
     marginTop:10,
     textAlign: 'center'
   },
+  lottie: {
+    width: 220,
+    height: 220,
+    aspectRatio:4
+  }
 })
 
 
@@ -566,4 +535,165 @@ const styles = StyleSheet.create({
   },
 });
  
+
+
+
+
+
+
+
+
+
+   {
+        this.state.isLoggedin?
+        <View style={{flex:.1}}> 
+        <View style={styles.headerContainer}>
+        <ImageBackground
+          key={new Date()}
+          style={styles.headerBackgroundImage}
+          blurRadius={10}
+          source={{uri: this.state.picture.data.url}}
+          defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+        > 
+        
+          <View style={styles.headerColumn}>
+            <Image
+              key={new Date()}
+              style={styles.userImage}
+              source={{uri: this.state.picture.data.url}}
+              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+            />
+            <Text style={styles.userNameText}>{this.state.name}</Text>
+        
+         
+          </View>
+        </ImageBackground>
+        <View style={styles.productRow}>
+         <LoginButton  onLogoutFinished={() =>{ this.logout()}}/>
+          
+           </View>
+           
+
+                  <Text style={styles.info}>{this.state.nombre}</Text>
+              <Text style={styles.description}>Dirección</Text>
+              
+              <View style={styles.userAddressRow}>
+              <View>
+                <Icon
+                  name="md-place"
+                  underlayColor="transparent"
+                  iconStyle={styles.placeIcon}
+                 
+                />
+              </View>
+              
+            </View>
+            <View style={styles.productRow}>
+
+           <Button
+            style={{size:10,aspectRatio:30}}
+              icon={
+                <Icon
+                name="md-arrow-back"
+                size={25}
+                color="white"
+                //style={{marginStart:20}}
+                />
+                    }
+          title="   editar perfil"
+          onPress={() => this.props.navigation.navigate('EditPerfil') }
+/>
+           </View>
+        </View>
+        
+        </View>
+     
+          
+        
+        :
+        <View style={{flex:1}}>
+
+        <View style={styles.headerContainer}>
+                <ImageBackground
+                  key={new Date()}
+                  style={styles.headerBackgroundImage}
+                  blurRadius={10}
+                  source={{uri: 'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                  defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                > 
+                
+                  <View style={styles.headerColumn}>
+                    <Image
+                      key={new Date()}
+                      style={styles.userImage}
+                      source={{uri: 'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                      defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                    />
+                    <Text style={styles.userNameText}>{this.state.name}</Text>
+                
+                  </View>
+                </ImageBackground>
+
+                <View style={styles.productRow}> 
+                        <LoginButton  
+                          
+                          onLoginFinished={
+                            (error, result) => {
+                              if (error) {
+                                console.log("login has error: " + result.error);
+                              } else if (result.isCancelled) {
+                                console.log("login is cancelled.");
+                              } else {
+                                console.log("presiono")
+                                
+                                dhis._setDataFB()
+                              }
+                            }
+                          }
+                          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
+                          />
+               </View>
+          
+            
+              {
+                this.state.datos_vacio?
+                <View>  <Text> no hay datos, </Text></View>
+
+                :
+                <Text style={styles.info}>Nombre: {this.state.nombre}</Text>
+              <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
+              <Text style={styles.description}>Cruzamientos: {this.state.cruzamientos}  </Text>
+              <Text style={styles.description}>Referencias: {this.state.referencias}  </Text>
+              <Text style={styles.description}>Colonia: {this.state.colonia}  </Text>
+              <Text style={styles.description}>Teléfono: {this.state.telefono}  </Text>
+            
+
+
+           
+              
+                }
+                            
+              
+         </View>
+        
+        </View>
+     
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 */
