@@ -65,7 +65,7 @@ export default class app extends Component {
       
 
       await AsyncStorage.setItem("perfil", JSON.stringify(name))
-
+      this.guardar();
       Toast.showWithGravity('Guardando datos...', Toast.LONG, Toast.CENTER);
      // alert('Data successfully saved!')
      // this.setState({ nombre: name })
@@ -147,8 +147,10 @@ export default class app extends Component {
 
   guardar(){
     var that = this;
-    if(this.state.id_facebook){}else{
-
+    if(this.state.id_facebook){
+      this.guardarapiF();
+    }else{
+      this.guardarapi();
     }
 
      ///aqui tiene  que preguntar si se logeo con facebook o no 
@@ -157,11 +159,68 @@ export default class app extends Component {
   }
 
 
-  guardarapi(){
-    var that = this;
+guardarapi(){
+  var that = this;
+    var url ="http://markettux.sattlink.com/api/recursos/usersApp";
     fetch(url,{
       method: 'POST',
-      body: JSON.stringify({"name": this.state.Usrname, "email": this.state.email,"password": this.state.password})
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombre: this.state.nombre,
+        correo: this.state.correo,
+        direccion: this.state.direccion,
+        cruzamientos:this.state.cruzamientos,
+        colonia:this.state.colonia,
+        referencias:this.state.referencias,
+        telefono:this.state.telefono,
+        id_facebook:"no datos",
+        correoF:"no datos",
+        nombreF:"no datos"})
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) { 
+        console.log(result);
+        if(!result.error){
+         that.setState({ status: result.error,
+                         wholeResult: result,
+                      });
+         Alert.alert(result.message);
+         //console.log(that.state.wholeResult.user.uid);
+     }else{
+     // Alert.alert(result.error_msg);
+      console.log(result);
+}
+}).catch(function (error) {
+console.log("-------- error ------- "+error);
+alert("result:"+error)
+});
+}
+  //
+  guardarapiF(){
+    var that = this;
+    var url ="http://markettux.sattlink.com/api/recursos/usersApp";
+    fetch(url,{
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombre: this.state.nombre,
+        correo: this.state.correo,
+        direccion: this.state.direccion,
+        cruzamientos:this.state.cruzamientos,
+        colonia:this.state.colonia,
+        referencias:this.state.referencias,
+        telefono:this.state.telefono,
+        id_facebook:this.state.id_facebook,
+        correoF:this.state.email,
+        nombreF:this.state.name})
       }).then(function (response) {
         return response.json();
       }).then(function (result) { 
@@ -170,10 +229,9 @@ export default class app extends Component {
          that.setState({ status: result.error,
                          wholeResult: result,
                       });
-         Alert.alert("User register successfully \n userId: "+that.state.wholeResult.user.uid);
-         console.log(that.state.wholeResult.user.uid);
+                      Alert.alert(result.message);
      }else{
-      Alert.alert(result.error_msg);
+     // Alert.alert(result.error_msg);
       console.log(result);
 }
 }).catch(function (error) {
