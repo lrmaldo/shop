@@ -66,7 +66,7 @@ export default class app extends Component {
 
       await AsyncStorage.setItem("perfil", JSON.stringify(name))
       this.guardar();
-      Toast.showWithGravity('Guardando datos...', Toast.LONG, Toast.CENTER);
+    
      // alert('Data successfully saved!')
      // this.setState({ nombre: name })
     } catch (e) {
@@ -230,6 +230,7 @@ alert("result:"+error)
                          wholeResult: result,
                       });
                       Alert.alert(result.message);
+                      //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
      }else{
      // Alert.alert(result.error_msg);
       console.log(result);
@@ -284,10 +285,7 @@ handleValidation(value) {
         return (
           <ScrollView>
           <View style={styles.container}>
-          <View style={styles.productRow}>
-         
-          
-           </View>
+        <View style={styles.productRow}></View>
            
            <View style={styles.inputContainer}>
 

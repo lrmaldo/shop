@@ -120,6 +120,25 @@ const HomeNavigator = createStackNavigator({
     },
     
   },
+  Checkout:{
+    screen: Checkout,
+    navigationOptions:{
+          title:"Terminar compra",
+          
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+           
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+      
+    },
+    
+  },
   
   
   

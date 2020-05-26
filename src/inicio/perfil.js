@@ -24,6 +24,7 @@ export default class Perfil extends Component {
       id_facebook:null,
       picture:null,
       name:null,
+      name1:null,
       email:null,
       accessToken: null,
       isLoggedin:false,
@@ -122,7 +123,7 @@ export default class Perfil extends Component {
                               source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
                               defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
                             />
-                            <Text style={styles.userNameText}>{this.state.name}</Text>
+                            <Text style={styles.userNameText}>Hola {this.state.name}</Text>
                         
                         
                           </View>
@@ -152,7 +153,7 @@ export default class Perfil extends Component {
                                 size={25}
                                 color="oracle"
                               
-                              /> Datos</Text>
+                              /> Tus Datos</Text>
                            
                           <Text style={styles.info}>Nombre: {this.state.nombre}</Text>
                           <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
@@ -165,7 +166,7 @@ export default class Perfil extends Component {
                           }
                         <View style={styles.productRow}>
                                 <Button
-                                  style={{size:10,aspectRatio:30, backgroundColor:'#f9aa34'}}
+                                  buttonStyle={{ backgroundColor:'#f9aa34'}}
                                     icon={
                                       <Icon
                                       name="md-create"
@@ -181,23 +182,25 @@ export default class Perfil extends Component {
                        
                           
                        </View>
+                       <View style={{alignItems:"center"}}>
                           <LoginButton  
-                            
-                          onLoginFinished={
-                            (error, result) => {
-                              if (error) {
-                                console.log("login has error: " + result.error);
-                              } else if (result.isCancelled) {
-                                console.log("login is cancelled.");
-                              } else {
-                                console.log("presiono")
-                                
-                                dhis._setDataFB()
-                              }
-                            }
-                          }
-                          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
-                          />
+                                          onLoginFinished={
+                                            (error, result) => {
+                                              if (error) {
+                                                console.log("login has error: " + result.error);
+                                              } else if (result.isCancelled) {
+                                                console.log("login is cancelled.");
+                                              } else {
+                                                console.log("presiono")
+                                                
+                                                dhis._setDataFB()
+                                              }
+                                            }
+                                          }
+                                          onLogoutFinished={() =>{{ this.setState({isLoggedin:false,name:null,email:null} ); console.log("salio")  }}}
+                                          />
+          
+                         </View>
                         </View>
                   </View>
         
@@ -270,6 +273,7 @@ export default class Perfil extends Component {
           id_facebook: datajson.data.id,
           email : datajson.data.email,
           name  : datajson.data.name,
+          //name1 :datajson.data.firstname,
           picture: datajson.data.picture
         }
         

@@ -17,6 +17,7 @@ import { Text,
   TextInput,
   TouchableOpacity,
   Button,
+  StatusBar,
   ActivityIndicator,
   RefreshControl
 } from 'react-native';
@@ -110,6 +111,7 @@ onRefresh() {
           colors={['#f2682a', '#00ff00', '#0000ff']}
         />
       }>
+        <StatusBar barStyle="light-content" backgroundColor="#f4511e" />
       <SafeAreaView  style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
      
         <View style={{width: width, alignItems:'center'}} >
@@ -137,7 +139,7 @@ onRefresh() {
         </View>
         <View style={{width:width, borderRadius:20, paddingVertical:20, backgroundColor:'white'}}>
        
-       <Text style={styles.titleCatg}>Categorias {this.state.selectCatg}</Text>
+       <Text style={styles.titleCatg}>Categorias</Text>
       
          <FlatList
          horizontal={true}
@@ -190,6 +192,7 @@ _renderItemFood(item){
   {
     return(
       <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert})}>
+       
         <Image
           style={styles.imageFood}
           resizeMode="contain"

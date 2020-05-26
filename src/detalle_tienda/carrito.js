@@ -5,23 +5,33 @@ var { width } = Dimensions.get("window")
 import Icon from 'react-native-vector-icons/Ionicons';
 //recibir los productos agregados
 import AsyncStorage from '@react-native-community/async-storage';
-
+import LottieView from 'lottie-react-native';
 export default class Carrito extends Component {
 
   constructor(props) {
      super(props);
      this.state = {
         dataCart:[],
+        carritovacio:false,
+        total:0,
      };
   }
 
-  componentDidMount()
+  componentWillMount()
   {
     AsyncStorage.getItem('cart').then((cart)=>{
       if (cart !== null) {
         // We have data!!
         const cartfood = JSON.parse(cart)
-        this.setState({dataCart:cartfood})
+       
+        console.log(cartfood)
+        if(cartfood.length === 0){
+          this.setState({carritovacio:true})
+          //console.log("se checho")
+        }else{
+          this.setState({dataCart:cartfood})
+        }
+       
       }
     })
     .catch((err)=>{
@@ -30,10 +40,25 @@ export default class Carrito extends Component {
   }
 
   render() {
-    return (
+    this.total()
+    const {carritovacio} = this.state;
+    console.log(carritovacio)
+    if(carritovacio){ 
+      return(  <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
+        
+        <LottieView  style={{ position: 'relative', alignSelf: 'center', bottom: 10, width:150, height: 150 }}
+                          source={require('../../res/2056-gagaha.json')} autoPlay loop  />
+
+                        
+        <Text style={{fontSize:32,fontWeight:"bold",color:"#f9aa34"}}>Carrito vacio</Text>
+        
+        </View>)
+    }else{
+      return (
+      
         <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
-           <View style={{height:20}} />
-           <Text style={{fontSize:32,fontWeight:"bold",color:"#33c37d"}}>Carrito</Text>
+             <View style={{height:20}} />
+           <Text style={{fontSize:32,fontWeight:"bold",color:"#f9aa34"}}>Carrito</Text>
            <View style={{height:10}} />
   
            <View style={{flex:1}}>
@@ -51,39 +76,41 @@ export default class Carrito extends Component {
                            <Text>{item.food.descripcion}</Text>
                          </View>
                          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                           <Text style={{fontWeight:'bold',color:"#33c37d",fontSize:20}}>${item.precio*item.quantity}</Text>
+                           <Text style={{fontWeight:'bold',color:"#f9aa34",fontSize:20}}>${item.precio*item.quantity}</Text>
                            <View style={{flexDirection:'row', alignItems:'center'}}>
                              <TouchableOpacity onPress={()=>this.onChangeQual(i,false)}>
-                               <Icon name="ios-remove-circle" size={35} color={"#33c37d"} />
+                               <Icon name="ios-remove-circle" size={35} color={"#f9aa34"} />
                              </TouchableOpacity>
                              <Text style={{paddingHorizontal:8, fontWeight:'bold', fontSize:18}}>{item.quantity}</Text>
                              <TouchableOpacity onPress={()=>this.onChangeQual(i,true)}>
-                               <Icon name="ios-add-circle" size={35} color={"#33c37d"} />
+                               <Icon name="ios-add-circle" size={35} color={"#f9aa34"} />
                              </TouchableOpacity>
                            </View>
                          </View>
+                   <Text></Text>
                        </View>
                      </View>
                    )
                  })
                }
+               <View style={{height:10}}><Text></Text></View>
   
                <View style={{height:20}} />
   
                <TouchableOpacity style={{
-                   backgroundColor:"#33c37d",
+                   backgroundColor:"#f9aa34",
                    width:width-40,
                    alignItems:'center',
                    padding:10,
                    borderRadius:5,
                    margin:20
-                 }}>
+                 }} onPress={() => this.props.navigation.navigate('Checkout',{productos: this.total()})}>
                  <Text style={{
                      fontSize:24,
                      fontWeight:"bold",
                      color:'white'
                    }}>
-                   Terminar compra
+                  (${this.total()}) Terminar compra
                  </Text>
                </TouchableOpacity>
   
@@ -94,8 +121,29 @@ export default class Carrito extends Component {
   
         </View>
       );
+    }
+
+    
   }
 
+
+   total(){
+      
+      var arr =this.state.dataCart;
+      //const cart = this.state.datacart;
+      console.log("dentro de  la funcion"+JSON.stringify(arr))
+     var total = 0;
+      for (var i in arr){
+        //console.log(arr.push(object[i].food.titulo));
+        total = total +(arr[i].food.precio*arr[i].quantity);
+        console.log(arr[i].food.precio*arr[i].quantity);
+        console.log(total);
+       
+      }
+      return total;
+   
+    
+  }
   onChangeQual(i,type)
   {
     const dataCar = this.state.dataCart
@@ -119,10 +167,13 @@ export default class Carrito extends Component {
     dataCar.splice(i,1)
      this.setState({dataCart:dataCar})
        
-    //AsyncStorage.removeItem('cart'); 
+    
     console.log(dataCar);
   AsyncStorage.setItem('cart',JSON.stringify(dataCar));
-   //console.log(JSON.stringify(dataCar));
-    } 
+       }
+    //mostrar vista de carrito vacio
+    if(dataCar.length===0){
+      this.setState({carritovacio:true})
+    }
   }
 }

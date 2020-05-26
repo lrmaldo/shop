@@ -18,7 +18,8 @@ import { Text,
   TouchableOpacity,
   Button,
   NativeModules, 
-  RefreshControl
+  RefreshControl,
+  Alert
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -90,7 +91,9 @@ export default class app extends Component {
    static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state;
     return{title: 'Carrito',
-    headerRight:(<Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>),
+    headerRight:(
+      <Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>
+    ),
       //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)
     headerLeft: (
         <Icon
@@ -103,7 +106,12 @@ export default class app extends Component {
         
           //title="Info"
           //color="#fff"
-        />)}
+        />
+        
+        
+        )
+      
+      }
     
     }
 
@@ -169,7 +177,7 @@ export default class app extends Component {
         </View>
 
         <View style={{width:width, borderRadius:20, paddingVertical:20, backgroundColor:'white'}}>
-          <Text style={styles.titleCatg}>Categorias {this.state.selectCatg}</Text>
+          <Text style={styles.titleCatg}>Categorias</Text>
           <FlatList
             horizontal={true}
             data={this.state.dataCategories}
@@ -232,12 +240,12 @@ _renderItemFood(item){
             {item.titulo}
           </Text>
           <Text>{item.descripcion}</Text>
-          <Text style={{fontSize:20,color:"green"}}>${item.precio}</Text>
+          <Text style={{fontSize:20,color:"#f9aa34"}}>${item.precio}</Text>
           <TouchableOpacity
             onPress={()=>this.onClickAddCart(item)}
             style={{
               width:(width/2)-40,
-              backgroundColor:'#33c37d',
+              backgroundColor:'#f9aa34',
               flexDirection:'row',
               alignItems:'center',
               justifyContent:"center",
@@ -291,12 +299,12 @@ onClickAddCart(data){
          }
          var x  = encontrar(cart,data.titulo);
          if(x ===true){
-          alert("Ya lo agregaste al carrito")
+          Alert.alert("Ya lo agregaste al carrito")
           console.log("encontrado");
          }else{
           cart.push(itemcart)
           console.log("no encontrado");
-          alert("Se agrego al carrito")
+          Alert.alert("Se agrego al carrito")
          }
         AsyncStorage.setItem('cart',JSON.stringify(cart));
       }
@@ -304,7 +312,7 @@ onClickAddCart(data){
         const cart  = []
         cart.push(itemcart)
         AsyncStorage.setItem('cart',JSON.stringify(cart));
-        alert("Se agrego al carrito")
+        Alert.alert("Se agrego al carrito")
       }
     
     })
