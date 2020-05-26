@@ -25,11 +25,15 @@ export default class Carrito extends Component {
         const cartfood = JSON.parse(cart)
        
         console.log(cartfood)
+
+        this.setState({dataCart:cartfood})
         if(cartfood.length === 0){
+        
           this.setState({carritovacio:true})
-          //console.log("se checho")
+          console.log("se checho")
         }else{
-          this.setState({dataCart:cartfood})
+        
+         
         }
        
       }
@@ -37,11 +41,21 @@ export default class Carrito extends Component {
     .catch((err)=>{
       alert(err)
     })
+
   }
+
+
+  construirData = async () => {
+   
+  }
+  
 
   render() {
     this.total()
+    this.construirData()
+  
     const {carritovacio} = this.state;
+
     console.log(carritovacio)
     if(carritovacio){ 
       return(  <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
@@ -87,7 +101,7 @@ export default class Carrito extends Component {
                              </TouchableOpacity>
                            </View>
                          </View>
-                   <Text></Text>
+                   
                        </View>
                      </View>
                    )

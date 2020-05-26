@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {Component, useState} from 'react';
+import React, {Component, } from 'react';
 import { Text,
   FlatList,
   Image,
@@ -19,7 +19,10 @@ import { Text,
   Button,
   StatusBar,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+
+  Alert,
+  TouchableNativeFeedbackBase
 } from 'react-native';
 var {height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -31,12 +34,16 @@ import Swiper from 'react-native-swiper'
 
 import SafeAreaView from 'react-native-safe-area-view';
 
-//recarga gradante
-import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
 
 import SwiperFlatList from 'react-native-swiper-flatlist';
+
+
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 export default class app extends Component {
-  //const [refreshing, setRefreshing] = useState(0);
+
+  
+
   constructor(props)
   {
     super(props);
@@ -47,10 +54,71 @@ export default class app extends Component {
       dataFood:[],
       selectCatg:0,
       visible:false,
-      refreshing: true,    
+      refreshing: true,
+      icon: null    
     }
     this.GetData();
   }
+
+  _menu = null;
+
+    setMenuRef = ref => {
+      console.log("r")
+      this._menu = ref;
+    };
+  
+    hideMenu = () => {
+      this._menu.hide();
+      console.log("c")
+    };
+  
+    showMenu = () => {
+      this._menu.show();
+      console.log("rds")
+    };
+
+
+  static navigationOptions = ({navigation}) => {
+    const { params = {} } = navigation.state;
+    return{
+    headerRight:
+    <Menu
+      ref={navigation.getParam('setMenuRef')}
+      button={<Icon name="md-more" size={40} style={{margin:15}} color= 'white' onPress={navigation.getParam('showMenu')} />}
+    >
+      <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 1</MenuItem>
+      <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 2</MenuItem>
+      <MenuItem onPress={navigation.getParam("hideMenu")} disabled>
+        Menu item 3
+      </MenuItem>
+      <MenuDivider />
+      <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 4</MenuItem>
+    </Menu>
+  ,
+      //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)
+    
+      
+      }
+    
+    }
+
+  
+
+    _qmenu=()=>{
+      console.log("menu")
+      
+       
+      
+    }
+    onRef = icon => {
+      //calback with icon component as reference
+      console.log(icon);
+      if (!this.state.icon) {
+        this.setState({ icon })
+      }
+    }
+
+
   GetData = () => {
     //Service to get the data from the server to render
     const url ="http://markettux.sattlink.com/api/recursos";
@@ -75,7 +143,9 @@ export default class app extends Component {
   };
 
 componentWillMount(){
-  
+  this.props.navigation.setParams({ showMenu: this.showMenu, setMenuRef:this.setMenuRef, hideMenu:this.hideMenu });
+
+
     //const url = "http://tutofox.com/foodapp/api.json"
    
   

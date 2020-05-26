@@ -123,7 +123,7 @@ const HomeNavigator = createStackNavigator({
   Checkout:{
     screen: Checkout,
     navigationOptions:{
-          title:"Terminar compra",
+          title:"Confirmar compra",
           
           headerTitleAlign:'center',
           headerTitleStyle: {
