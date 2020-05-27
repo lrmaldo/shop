@@ -257,11 +257,13 @@ onRefresh() {
   }
   
 _renderItemFood(item){
+  console.log(item.direccion);
   let catg = this.state.selectCatg 
   if(catg==0||catg==item.id_giro)
   {
     return(
-      <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert})}>
+      <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert,
+       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url })}>
        
         <Image
           style={styles.imageFood}

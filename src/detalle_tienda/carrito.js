@@ -14,6 +14,8 @@ export default class Carrito extends Component {
         dataCart:[],
         carritovacio:false,
         total:0,
+        //direccionTienda: this.props.navigation.state.params.direccionTienda
+        //direccionTienda:this.props.navigation.getParam('direccionTienda')
      };
   }
 
@@ -42,21 +44,24 @@ export default class Carrito extends Component {
       alert(err)
     })
 
+    
+
   }
 
 
-  construirData = async () => {
-   
-  }
   
+  
+
+  static navigationOptions = ({ navigation }) => ({
+    direccion: navigation.state.params.direccionTienda,
+  });
 
   render() {
     this.total()
-    this.construirData()
-  
+    
+    console.log(this.state.direccionTienda)
     const {carritovacio} = this.state;
-
-    console.log(carritovacio)
+   
     if(carritovacio){ 
       return(  <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
         

@@ -29,12 +29,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 //swiper
 import Swiper from 'react-native-swiper'
 
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+
 
 //animacion al cargar vista
 import AnimatedLoader from "react-native-animated-loader";
+import { Thumbnail } from 'native-base';
 
-const UIManager = NativeModules.UIManager;
+
 export default class app extends Component {
   constructor(props)
   {
@@ -47,7 +48,14 @@ export default class app extends Component {
       dataFood:this.props.navigation.getParam('productos'),
       selectCatg:0,
       refreshing: false,
-      visible:true
+      visible:true,
+      
+      
+      direccionTienda:this.props.navigation.getParam('direccion'),
+      nombretienda:this.props.navigation.getParam('nombretienda'),
+      descripcion: this.props.navigation.getParam('descripcion'),
+      fotoTienda: this.props.navigation.getParam('fotoTienda'),
+      telefonoTienda: this.props.navigation.getParam('telefonoT')
     }
     
    // this.GetData();
@@ -90,11 +98,13 @@ export default class app extends Component {
  
    static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state;
+   //const {direccionTienda} =this.state
+    //console.log(direccionTienda)
     return{title: 'Carrito',
     headerRight:(
-      <Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito')}/>
+      <Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito',{direccionTienda:"sa"})}/>
     ),
-      //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)
+      //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)  
     headerLeft: (
         <Icon
         name="md-arrow-back"
@@ -121,6 +131,21 @@ export default class app extends Component {
      this.props.navigation.navigate('Home'); 
     
     }
+
+    save = async datos => {
+      try {
+  
+        
+  
+        await AsyncStorage.setItem("datostienda", JSON.stringify(datos))
+        
+      
+       // alert('Data successfully saved!')
+       // this.setState({ nombre: name })
+      } catch (e) {
+        //alert('Ocurrio un error no se pudo guardar los datos.')
+      }
+    }
   componentDidMount(){
     this.props.navigation.setParams({ regresar: this._regresar.bind(this)  });
     setInterval(() => {
@@ -128,7 +153,20 @@ export default class app extends Component {
         visible: false
       });
     }, 1500);
+   
+    let datosT = {
+      nombreTienda: this.state.nombretienda,
+      direccionT: this.state.direccionTienda,
+      descripcionT: this.state.descripcion,
+      fotoTienda: this.state.fotoTienda,
+      telefonoTienda: this.state.telefonoTienda,
+    }
+    this.save(datosT)
+
   }
+
+
+
   onRefresh() {
     //Clear old data of the list
     this.setState({ dataBanner:[],
@@ -138,7 +176,7 @@ export default class app extends Component {
     this.GetData();
   }
   render() {
-    //console.log(this.state.dataFood);
+   // console.log("tienda"+this.state.direccionTienda);
      
     return (
      
