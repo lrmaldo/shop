@@ -50,7 +50,7 @@ export default class app extends Component {
       refreshing: false,
       visible:true,
       
-      
+      id_tienda:this.props.navigation.getParam('id_tienda'),
       direccionTienda:this.props.navigation.getParam('direccion'),
       nombretienda:this.props.navigation.getParam('nombretienda'),
       descripcion: this.props.navigation.getParam('descripcion'),
@@ -155,6 +155,7 @@ export default class app extends Component {
     }, 1500);
    
     let datosT = {
+      id_tienda:this.state.id_tienda,
       nombreTienda: this.state.nombretienda,
       direccionT: this.state.direccionTienda,
       descripcionT: this.state.descripcion,

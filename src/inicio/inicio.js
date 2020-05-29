@@ -1,6 +1,6 @@
 /**
  * Sample React Native App
- * https://github.com/facebook/react-native
+ * https://github.c m/facebook/react-native
  *
  * @format
  * @flow strict-local
@@ -84,7 +84,7 @@ export default class app extends Component {
     headerRight:
     <Menu
       ref={navigation.getParam('setMenuRef')}
-      button={<Icon name="md-more" size={40} style={{margin:15}} color= 'white' onPress={navigation.getParam('showMenu')} />}
+      button={<Icon name="md-more" size={40} style={{marginRight:25}} color= 'white' onPress={navigation.getParam('showMenu')} />}
     >
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 1</MenuItem>
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 2</MenuItem>
@@ -120,6 +120,7 @@ export default class app extends Component {
 
 
   GetData = () => {
+   // AsyncStorage.removeItem('cart');
     //Service to get the data from the server to render
     const url ="http://markettux.sattlink.com/api/recursos";
     return fetch(url)
@@ -144,7 +145,7 @@ export default class app extends Component {
 
 componentWillMount(){
   this.props.navigation.setParams({ showMenu: this.showMenu, setMenuRef:this.setMenuRef, hideMenu:this.hideMenu });
-
+  AsyncStorage.removeItem('cart');
 
     //const url = "http://tutofox.com/foodapp/api.json"
    
@@ -161,6 +162,7 @@ onRefresh() {
 }
 
   render() {
+    
     console.log(this.state.dataBanner)
     if (this.state.refreshing) {
       return (
@@ -263,8 +265,8 @@ _renderItemFood(item){
   {
     return(
       <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert,
-       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url })}>
-       
+       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url, id_tienda:item.id })}>
+        
         <Image
           style={styles.imageFood}
           resizeMode="contain"

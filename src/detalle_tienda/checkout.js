@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, 
     TouchableOpacity,
     ScrollView,
+    Alert,
   StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ButtonGroup } from 'react-native-elements';
@@ -9,6 +10,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements'
 //import { ScrollView } from 'react-native-gesture-handler';
+
+import AnimatedLoader from 'react-native-animated-loader';
 export default class Checkout extends Component {
 
   constructor(props) {
@@ -24,12 +27,14 @@ export default class Checkout extends Component {
        referencias:"",
        colonia:"",
        telefono:"",
+       email:"",
        datos_vacio:true,
        cartconfirmado:[],
-       
+       id_tieda:"",
        nombretienda:"",
        direccionTienda:"",
-       telefonoTienda:""
+       telefonoTienda:"",
+       visible: false
      };
      this.updateIndex = this.updateIndex.bind(this)
     
@@ -73,9 +78,10 @@ export default class Checkout extends Component {
       if (datos !== null) {
         // We have data!!
         const e = JSON.parse(datos)
-        
+        console.log(e)
         this.setState({
-          nombretienda:e.nombretienda,
+          id_tienda:e.id_tienda,
+          nombretienda:e.nombreTienda,
           direccionTienda:e.direccionT,
           telefonoTienda:e.telefonoTienda,
         })
@@ -121,6 +127,7 @@ retrieveData = async () => {
         referencias:e.referencias,
         colonia:e.colonia,
         telefono:e.telefono,
+        email:e.correo,
         datos_vacio:false,
        total:this.props.navigation.getParam('productos'),
        // direccion:this.props.navigation.getItem('direccionTienda')
@@ -141,7 +148,113 @@ retrieveData = async () => {
   }
 }
 
+metodotienda = async() =>{
+  this.setState({ visible: !this.state.visible });
+  var that = this;
+  let enviotienda = {
+    datoscliente:{
+      nombre:this.state.nombre,
+      telefono:this.state.telefono,
+      email:this.state.email,
+    },
+    datostienda:{
+      id_tienda:this.state.id_tienda,
+      nombretienda:this.state.nombretienda
+    },
+    pedido:this.state.cartconfirmado,
+    total:this.state.total,
+    tipo:"Recoger en tienda"
+  }
 
+
+  var that = this;
+  var url ="http://markettux.sattlink.com/api/recursos/store";
+  fetch(url,{
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(enviotienda)
+    }).then(function (response) {
+      return response.json();
+    }).then(function (result) { 
+      // console.log(result);
+      if(!result.error){
+     
+                  that.setState({ visible: false });
+                    Alert.alert(result.message);
+                    that.props.navigation.navigate('Finalizar');
+                    //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
+   }else{
+   // Alert.alert(result.error_msg);
+    console.log(result);
+}
+}).catch(function (error) {
+console.log("-------- error ------- "+error);
+alert("result:"+error)
+});
+
+
+
+  console.log(JSON.stringify(enviotienda))
+}
+metododomicio= async () =>{
+  this.setState({ visible: !this.state.visible });
+  var that = this;
+  let enviotienda = {
+    datoscliente:{
+      nombre:this.state.nombre,
+      telefono:this.state.telefono,
+      email:this.state.email,
+      direccion:this.state.direccion,
+      cruzamientos:this.state.cruzamientos,
+      referencias:this.state.referencias,
+      colonia:this.state.colonia
+    },
+    datostienda:{
+      id_tienda:this.state.id_tienda,
+      nombretienda:this.state.nombretienda
+    },
+    pedido:this.state.cartconfirmado,
+    total:this.state.total,
+    tipo:"Servicio a domicilio"
+  }
+
+  var that = this;
+  var url ="http://markettux.sattlink.com/api/recursos/storedomicilio";
+  fetch(url,{
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(enviotienda)
+    }).then(function (response) {
+      return response.json();
+    }).then(function (result) { 
+       console.log(result);
+      if(!result.error){
+                    that.setState({ visible: false });
+                    Alert.alert(result.message);
+                    that.props.navigation.navigate('Finalizar');
+                    //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
+   }else{
+   // Alert.alert(result.error_msg);
+    console.log(result);
+}
+}).catch(function (error) {
+console.log("-------- error ------- "+error);
+alert("result:"+error)
+});
+
+
+
+  console.log(JSON.stringify(enviotienda))
+
+}
 
 
   render() {
@@ -154,6 +267,14 @@ retrieveData = async () => {
     return (
       <ScrollView>
       <View style={{flex:1, justifyContent: 'flex-start',  borderRadius:20, paddingVertical:20, backgroundColor:'white'}}>
+      <AnimatedLoader 
+        visible={this.state.visible}
+        overlayColor="rgba(255,255,255,0.75)"
+        source={require("../../res/3321-shipment.json")}
+        animationStyle={styles.lottie}
+        speed={1}
+        
+      />
        
           <View style={ styles.productRow} >
          { this.state.cartconfirmado.map((item,i)=>{
@@ -231,7 +352,7 @@ retrieveData = async () => {
                                       />
                                           }
                                 title="  Finalizar"
-                               // onPress={() => this.props.navigation.navigate('EditPerfil') }
+                                onPress= {this.metodotienda} 
                                 />
                           </View>
           </View>
@@ -273,11 +394,13 @@ retrieveData = async () => {
                                       name="md-checkmark-circle"
                                       size={25}
                                       color="white"
+
                                       //style={{marginStart:20}}
                                       />
                                           }
                                 title="  Finalizar"
-                               // onPress={() => this.props.navigation.navigate('EditPerfil') }
+                                loading={this.state.cargando?true:false}
+                                onPress= {this.metododomicio} 
                                 />
                           </View>
              </View>
@@ -288,7 +411,14 @@ retrieveData = async () => {
       </ScrollView>
     );
   }
+
+  
 }
+
+
+
+
+
 const styles = StyleSheet.create({
   container: {
       flex: 1,
@@ -340,4 +470,9 @@ const styles = StyleSheet.create({
     fontWeight:"bold",
     marginTop:5,
   },
+  lottie: {
+    width: 220,
+    height: 220,
+    aspectRatio:4
+  }
 });
