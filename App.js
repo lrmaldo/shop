@@ -23,7 +23,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Tienda from './src/detalle_tienda/tienda'
 import Carrito from './src/detalle_tienda/carrito'
 import Checkout from './src/detalle_tienda/checkout'
-import Datos_tienda from './src/detalle_tienda/datos_tienda'
+import Datos_tienda from './src/detalle_tienda/detalle_item'
 import Finalizar from './src/finalizar/finalizar'
 //import index_tienda from './src/detalle_tienda'
 
@@ -84,7 +84,26 @@ const HomeNavigator = createStackNavigator({
     Tienda:{
     screen: Tienda,
     navigationOptions:{
-          title:"M@rkettux",
+         // title:"M@rkettux",
+          
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+           
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+      
+    },
+    
+  },
+  Detalle:{
+    screen: Datos_tienda,
+    navigationOptions:{
+         // title:"Pedido exitoso",
           
           headerTitleAlign:'center',
           headerTitleStyle: {

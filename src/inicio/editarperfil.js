@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Platform,ScrollView, StyleSheet, Text, TextInput, View,
-        Dimensions,TouchableOpacity,TouchableHighlight,Button,Alert,Image,
+        Dimensions,TouchableOpacity,TouchableHighlight,Alert,Image,
         ImageBackground,StatusBar, TouchableHighlightBase} from 'react-native';
 import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
 
@@ -9,6 +9,10 @@ import Toast from 'react-native-simple-toast';
 
 
   import AsyncStorage from '@react-native-community/async-storage';
+  import AnimatedLoader from 'react-native-animated-loader';
+
+import Icon2 from 'react-native-vector-icons/Ionicons';
+import { Button } from 'react-native-elements'
 
 export default class app extends Component {
 
@@ -25,6 +29,7 @@ export default class app extends Component {
       accessToken: null,
       isLoggedin:false,
       value:{},
+      visible: false,
       
       nombre: '',
       correo : '',
@@ -147,6 +152,7 @@ export default class app extends Component {
 
   guardar(){
     var that = this;
+    this.setState({ visible: !this.state.visible });
     if(this.state.id_facebook){
       this.guardarapiF();
     }else{
@@ -188,6 +194,7 @@ guardarapi(){
          that.setState({ status: result.error,
                          wholeResult: result,
                       });
+                      that.setState({ visible: false });
          Alert.alert(result.message);
          //console.log(that.state.wholeResult.user.uid);
      }else{
@@ -229,6 +236,7 @@ alert("result:"+error)
          that.setState({ status: result.error,
                          wholeResult: result,
                       });
+                      that.setState({ visible: false });
                       Alert.alert(result.message);
                       //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
      }else{
@@ -285,6 +293,7 @@ handleValidation(value) {
         return (
           <ScrollView>
           <View style={styles.container}>
+        
         <View style={styles.productRow}></View>
            
            <View style={styles.inputContainer}>
@@ -411,10 +420,24 @@ handleValidation(value) {
           </View>
 
          
+        
+                                <Button
+                                  buttonStyle={styles.button}
+                                    icon={
+                                      <Icon2
+                                      name="md-checkmark-circle"
+                                      size={25}
+                                      color="white"
 
-        <TouchableHighlight style={styles.button} onPress={this.handleSubmit} underlayColor='#ffa500'>
-          <Text style={styles.buttonText}>Guardar</Text>
-        </TouchableHighlight>
+                                      //style={{marginStart:20}}
+                                      />
+                                          }
+                                title="  Finalizar"
+                                loading={this.state.visible? true:false}
+                                onPress={this.handleSubmit}
+                                />
+
+        
         </View>
         </ScrollView>
            ) 

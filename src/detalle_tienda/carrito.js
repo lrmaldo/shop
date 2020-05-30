@@ -19,7 +19,7 @@ export default class Carrito extends Component {
      };
   }
 
-  componentWillMount()
+  UNSAFE_componentWillMount()
   {
     AsyncStorage.getItem('cart').then((cart)=>{
       if (cart !== null) {
@@ -27,14 +27,16 @@ export default class Carrito extends Component {
         const cartfood = JSON.parse(cart)
        
         console.log(cartfood)
+        
 
         this.setState({dataCart:cartfood})
         if(cartfood.length === 0){
         
-          this.setState({carritovacio:true})
+         
           console.log("se checho")
+          this.setState({carritovacio:true})
         }else{
-        
+          this.setState({carritovacio:false})
          
         }
        
@@ -57,16 +59,16 @@ export default class Carrito extends Component {
   });
 
   render() {
-    this.total()
-    
-    console.log(this.state.direccionTienda)
-    const {carritovacio} = this.state;
+    //this.total()
+    this.comprobarcarro()
+   console.log(this.state.carritovacio)
+   // const {carritovacio} = this.state;
    
-    if(carritovacio){ 
+    if(this.state.carritovacio){ 
       return(  <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
         
         <LottieView  style={{ position: 'relative', alignSelf: 'center', bottom: 10, width:150, height: 150 }}
-                          source={require('../../res/2056-gagaha.json')} autoPlay loop  />
+                          source={require('../../res/7938-empty-data.json')} autoPlay loop  />
 
                         
         <Text style={{fontSize:32,fontWeight:"bold",color:"#f9aa34"}}>Carrito vacio</Text>
@@ -144,13 +146,27 @@ export default class Carrito extends Component {
 
     
   }
+  comprobarcarro  = async () =>{
+     that =this;
 
+     if(this.total()==0){
+      console.log("no hay");
+      this.setState({carritovacio:true})
+      
+     }else{
+       console.log("si hay");
+     }
+    
+    
+    
+  }
 
    total(){
       
       var arr =this.state.dataCart;
       //const cart = this.state.datacart;
       console.log("dentro de  la funcion"+JSON.stringify(arr))
+     
      var total = 0;
       for (var i in arr){
         //console.log(arr.push(object[i].food.titulo));
@@ -193,6 +209,7 @@ export default class Carrito extends Component {
     //mostrar vista de carrito vacio
     if(dataCar.length===0){
       this.setState({carritovacio:true})
+      console.log("entro")
     }
   }
 }

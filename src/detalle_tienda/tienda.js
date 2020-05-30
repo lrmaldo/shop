@@ -97,10 +97,12 @@ export default class app extends Component {
  
  
    static navigationOptions = ({navigation}) => {
+     that =this;
     const { params = {} } = navigation.state;
    //const {direccionTienda} =this.state
     //console.log(direccionTienda)
-    return{title: 'Carrito',
+    return{
+    title:params.titulo,
     headerRight:(
       <Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito',{direccionTienda:"sa"})}/>
     ),
@@ -146,8 +148,12 @@ export default class app extends Component {
         //alert('Ocurrio un error no se pudo guardar los datos.')
       }
     }
+
+    titienda =() =>{
+      this.state.nombretienda;
+    }
   componentDidMount(){
-    this.props.navigation.setParams({ regresar: this._regresar.bind(this)  });
+    this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda  });
     setInterval(() => {
       this.setState({
         visible: false
@@ -269,7 +275,8 @@ _renderItemFood(item){
   if(catg==0||catg==item.id_categoria)
   {
     return(
-      <TouchableOpacity style={styles.divFood}>
+      <TouchableOpacity style={styles.divFood} onPress={()=>this.props.navigation.navigate("Detalle",{fotoitem:item.url_foto, titulo:item.titulo,
+      descripcion:item.descripcion,precio:item.precio})}>
         <Image
           style={styles.imageFood}
           resizeMode="contain"

@@ -84,7 +84,7 @@ export default class app extends Component {
     headerRight:
     <Menu
       ref={navigation.getParam('setMenuRef')}
-      button={<Icon name="md-more" size={40} style={{marginRight:25}} color= 'white' onPress={navigation.getParam('showMenu')} />}
+      button={<Icon name="md-more" size={30} style={{marginRight:30}} color= 'white' onPress={navigation.getParam('showMenu')} />}
     >
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 1</MenuItem>
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 2</MenuItem>
