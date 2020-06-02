@@ -11,7 +11,7 @@ import {
   Text,
   View,
 } from 'react-native'
-import { parse } from '@babel/core';
+
 
 
 
@@ -26,7 +26,7 @@ export default class Perfil extends Component {
   }
   
   componentDidMount() {
-     const data = JSON.parse(this.props.navigation.getParam('Tienda'))
+     const data = JSON.stringify(this.props.navigation.getParam('Tienda'))
      this.setState({
        datos_tienda:data
      })
@@ -53,7 +53,7 @@ export default class Perfil extends Component {
           style={styles.headerBackgroundImage}
           blurRadius={10}
           source={{
-            uri: avatarBackground,
+            uri: this.state.datos_tienda.foto_url,
           }}
         >
           <View style={styles.headerColumn}>
@@ -92,12 +92,18 @@ export default class Perfil extends Component {
 
   render() {
     const dhis = this
+    /// hay que mapear el state para obtener los datos de la tienda  agregar los elementos en el render 
     console.log(this.state.datos_tienda)
   return (
   
-  
-  
-  <Text>{JSON.stringify(this.state.datos_tienda)}</ Text>)
+    <ScrollView style={styles.scroll}>
+    <View style={styles.container}>
+      <Card containerStyle={styles.cardContainer}>
+        
+       
+      </Card>
+    </View>
+  </ScrollView>)
   }
 }
 
@@ -163,7 +169,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   userImage: {
-    borderColor: mainColor,
+    borderColor: "orange",
     borderRadius: 85,
     borderWidth: 3,
     height: 170,
