@@ -9,60 +9,106 @@ import {
   ScrollView,
   FlatList,
   Button,
+  TouchableHighlight,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/Fontisto';
+import {
+  HeaderButtons,
+  HeaderButton,
+  Item,
+  HiddenItem,
+  OverflowMenu,
+  defaultOnOverflowMenuPress,
+  OverflowMenuProvide
+} from 'react-navigation-header-buttons';
+
+
+const IoniconsHeaderButton = passMeFurther => (
+  // the `passMeFurther` variable here contains props from <Item .../> as well as <HeaderButtons ... />
+  // and it is important to pass those props to `HeaderButton`
+  // then you may add some information like icon size or color (if you use icons)
+  <HeaderButton {...passMeFurther} IconComponent={Icon} iconSize={32} color="white" />
+);
+
+
 
 export default class ProductDetail extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+        foto: this.props.navigation.getParam('fotoitem'),
+        descripcion: this.props.navigation.getParam('descripcion'),
+        precio: this.props.navigation.getParam('precio'),
+        titulo: this.props.navigation.getParam('titulo')
+
+    }
+    
   }
 
+
+  static navigationOptions = ({navigation}) => {
+    that =this;
+   const { params = {} } = navigation.state;
+   return{
+    
+    title: params.titulo,
+    headerRight: () => (
+      <View style={{flexDirection:"row"}}>
+        <TouchableOpacity underlayColor="white">
+          <View>
+       <Icon2 underlayColor='white' name="shopping-store" size={20} style={{marginRight:30}} color= 'white'  />
+       </View>
+       </TouchableOpacity>
+      <TouchableOpacity underlayColor="white" ><View>
+       <Icon name="md-cart" size={28} style={{marginRight:10}} color= 'white'  />
+       </View></TouchableOpacity>
+      </View>
+    ),
+   }
+  }
   clickEventListener() {
     Alert.alert("Success", "Product has beed added to cart")
+  
   }
+
+  componentDidMount()
+  {
+    this.props.navigation.setParams({titulo: this.state.titulo  });
+  }
+
+
+
+  
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView>
           <View style={{alignItems:'center', marginHorizontal:30}}>
-            <Image style={styles.productImg} source={{uri:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3v7KDJN7TAoJa5sFaPWcp1HX8JFcpF3z5K3ngz4L6kWoEP7Ca"}}/>
-            <Text style={styles.name}>Super Soft T-Shirt</Text>
-            <Text style={styles.price}>$ 12.22</Text>
+            <Image style={styles.productImg} source={{uri:this.state.foto}}/>
+            <Text style={styles.name}>{this.state.titulo}</Text>
+            <Text style={styles.price}>$ {this.state.precio}</Text>
             <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
-              Aenean commodo ligula eget dolor. Aenean massa. Cum sociis 
-              natoque penatibus et magnis dis parturient montes, 
-              nascetur ridiculus mus. Donec quam felis, ultricies nec
+              {this.state.descripcion}
             </Text>
           </View>
           <View style={styles.starContainer}>
-            <Image style={styles.star} source={{uri:"https://img.icons8.com/color/40/000000/star.png"}}/>
-            <Image style={styles.star} source={{uri:"https://img.icons8.com/color/40/000000/star.png"}}/>
-            <Image style={styles.star} source={{uri:"https://img.icons8.com/color/40/000000/star.png"}}/>
-            <Image style={styles.star} source={{uri:"https://img.icons8.com/color/40/000000/star.png"}}/>
-            <Image style={styles.star} source={{uri:"https://img.icons8.com/color/40/000000/star.png"}}/>
-          </View>
-          <View style={styles.contentColors}>
-            <TouchableOpacity style={[styles.btnColor, {backgroundColor:"#00BFFF"}]}></TouchableOpacity> 
-            <TouchableOpacity style={[styles.btnColor, {backgroundColor:"#FF1493"}]}></TouchableOpacity> 
-            <TouchableOpacity style={[styles.btnColor, {backgroundColor:"#00CED1"}]}></TouchableOpacity> 
-            <TouchableOpacity style={[styles.btnColor, {backgroundColor:"#228B22"}]}></TouchableOpacity> 
-            <TouchableOpacity style={[styles.btnColor, {backgroundColor:"#20B2AA"}]}></TouchableOpacity> 
-            <TouchableOpacity style={[styles.btnColor, {backgroundColor:"#FF4500"}]}></TouchableOpacity> 
+            
           </View>
           <View style={styles.contentSize}>
-            <TouchableOpacity style={styles.btnSize}><Text>S</Text></TouchableOpacity> 
-            <TouchableOpacity style={styles.btnSize}><Text>M</Text></TouchableOpacity> 
-            <TouchableOpacity style={styles.btnSize}><Text>L</Text></TouchableOpacity> 
-            <TouchableOpacity style={styles.btnSize}><Text>XL</Text></TouchableOpacity> 
+            <TouchableOpacity><Text>cantidad</Text></TouchableOpacity> 
+            
           </View>
           <View style={styles.separator}></View>
           <View style={styles.addToCarContainer}>
             <TouchableOpacity style={styles.shareButton} onPress={()=> this.clickEventListener()}>
-              <Text style={styles.shareButtonText}>Add To Cart</Text>  
+              <Text style={styles.shareButtonText}>Agregar al carrito</Text>  
             </TouchableOpacity>
           </View> 
+          <View style={styles.separator}></View>
         </ScrollView>
       </View>
     );
@@ -75,21 +121,23 @@ const styles = StyleSheet.create({
     marginTop:20,
   },
   productImg:{
-    width:200,
-    height:200,
+    width:300,
+    height:250,
+    resizeMode:'contain'
   },
   name:{
-    fontSize:28,
+    fontSize:30,
     color:"#696969",
     fontWeight:'bold'
   },
   price:{
     marginTop:10,
-    fontSize:18,
-    color:"green",
+    fontSize:25,
+    color:"orange",
     fontWeight:'bold'
   },
   description:{
+    fontSize:18,
     textAlign:'center',
     marginTop:10,
     color:"#696969",
@@ -148,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius:30,
-    backgroundColor: "#00BFFF",
+    backgroundColor: "orange",
   },
   shareButtonText:{
     color: "#FFFFFF",

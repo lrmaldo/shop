@@ -26,6 +26,7 @@ var {height, width } = Dimensions.get('window');
 import AsyncStorage from '@react-native-community/async-storage';
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/Fontisto';
 //swiper
 import Swiper from 'react-native-swiper'
 
@@ -55,7 +56,8 @@ export default class app extends Component {
       nombretienda:this.props.navigation.getParam('nombretienda'),
       descripcion: this.props.navigation.getParam('descripcion'),
       fotoTienda: this.props.navigation.getParam('fotoTienda'),
-      telefonoTienda: this.props.navigation.getParam('telefonoT')
+      telefonoTienda: this.props.navigation.getParam('telefonoT'),
+      tienda:this.props.navigation.getParam('tienda')
     }
     
    // this.GetData();
@@ -103,23 +105,40 @@ export default class app extends Component {
     //console.log(direccionTienda)
     return{
     title:params.titulo,
-    headerRight:(
-      <Icon name="md-cart" size={30} style={{margin:23}} color= 'white' onPress={() => navigation.navigate('Carrito',{direccionTienda:"sa"})}/>
+    headerRight:() => (   
+   <View style={{flexDirection:"row"}}> 
+       <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Datos_tienda',{Tienda:params.tienda1})}>
+          <View>
+            <Icon2 underlayColor='white' name="shopping-store" size={26} style={{marginRight:30}} color= 'white'  />
+         </View>
+       </TouchableOpacity>
+
+      <TouchableOpacity underlayColor="white"  onPress={() => navigation.navigate('Carrito')} ><View>
+      <Icon name="md-cart" size={30}
+       style={{marginRight:23}}
+       underlayColor={'#64b5f6'}
+       activeOpacity={true}
+       color= 'white'
+      />
+       </View></TouchableOpacity>
+      </View>
+     
     ),
-      //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)  
+     
     headerLeft: (
-        <Icon
-        name="md-arrow-back"
-        size={30}
-        color="white"
-        style ={{margin:20}}
-        onPress={() => params.regresar()}
-        //onPress={()=> navigation.navigate('Home')}  AsyncStorage.removeItem('cart')
+      <View style={{flexDirection:"row"}}> 
+       
+      <TouchableOpacity underlayColor="white"  onPress={() => params.regresar()} ><View>
+          <Icon
+            name="md-arrow-back"
+            size={30}
+            color="white"
+            style ={{margin:20}}
+           
         
-          //title="Info"
-          //color="#fff"
-        />
-        
+            />
+       </View></TouchableOpacity>
+      </View>
         
         )
       
@@ -129,8 +148,19 @@ export default class app extends Component {
 
     _regresar = () => {
      // alert('funciones');
-     AsyncStorage.removeItem('cart');
-     this.props.navigation.navigate('Home'); 
+     Alert.alert("Regresar","Si tienes artículos en el carrito de esta tienda se van a eliminar ¿Estas seguro?",
+     [
+     
+      {
+        text: "Cancelar",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel"
+      },
+      { text: "OK", onPress: () =>{  AsyncStorage.removeItem('cart'); AsyncStorage.removeItem('datostienda');
+      this.props.navigation.navigate('Home'); } }
+    ],
+    { cancelable: false })
+   
     
     }
 
@@ -153,7 +183,7 @@ export default class app extends Component {
       this.state.nombretienda;
     }
   componentDidMount(){
-    this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda  });
+    this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda,tienda1:this.state.tienda });
     setInterval(() => {
       this.setState({
         visible: false
@@ -184,7 +214,7 @@ export default class app extends Component {
   }
   render() {
    // console.log("tienda"+this.state.direccionTienda);
-     
+     //console.log("tienda: "+JSON.stringify(this.state.tienda));
     return (
      
       <ScrollView  refreshControl={
@@ -276,7 +306,7 @@ _renderItemFood(item){
   {
     return(
       <TouchableOpacity style={styles.divFood} onPress={()=>this.props.navigation.navigate("Detalle",{fotoitem:item.url_foto, titulo:item.titulo,
-      descripcion:item.descripcion,precio:item.precio})}>
+      descripcion:item.descripcion,precio:item.precio,Tienda:this.state.tienda})}>
         <Image
           style={styles.imageFood}
           resizeMode="contain"

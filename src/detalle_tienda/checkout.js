@@ -34,7 +34,9 @@ export default class Checkout extends Component {
        nombretienda:"",
        direccionTienda:"",
        telefonoTienda:"",
-       visible: false
+       visible: false,
+       total:this.props.navigation.getParam('total'),
+       botonactivo:true,
      };
      this.updateIndex = this.updateIndex.bind(this)
     
@@ -62,9 +64,7 @@ export default class Checkout extends Component {
        
         //console.log(this.state.datos_vacio);
       }else{
-        this.setState({
-          datos_vacio:true
-        })
+       
       }
       
     } catch (e) {
@@ -84,6 +84,7 @@ export default class Checkout extends Component {
           nombretienda:e.nombreTienda,
           direccionTienda:e.direccionT,
           telefonoTienda:e.telefonoTienda,
+          total:this.props.navigation.getParam('total'),
         })
        
       }
@@ -129,7 +130,9 @@ retrieveData = async () => {
         telefono:e.telefono,
         email:e.correo,
         datos_vacio:false,
-       total:this.props.navigation.getParam('productos'),
+        total:this.props.navigation.getParam('total'),
+        datos_vacio:false,
+        botonactivo:false
        // direccion:this.props.navigation.getItem('direccionTienda')
       })
 
@@ -138,7 +141,8 @@ retrieveData = async () => {
       //console.log(this.state.datos_vacio);
     }else{
       this.setState({
-        datos_vacio:true
+        datos_vacio:true,
+        botonactivo:true
       })
     }
 
@@ -184,7 +188,7 @@ metodotienda = async() =>{
       if(!result.error){
      
                   that.setState({ visible: false });
-                    Alert.alert(result.message);
+                  //  Alert.alert(result.message);
                     that.props.navigation.navigate('Finalizar');
                     //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
    }else{
@@ -238,7 +242,7 @@ metododomicio= async () =>{
        console.log(result);
       if(!result.error){
                     that.setState({ visible: false });
-                    Alert.alert(result.message);
+                    //Alert.alert(result.message);
                     that.props.navigation.navigate('Finalizar');
                     //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
    }else{
@@ -262,7 +266,7 @@ alert("result:"+error)
   const { selectedIndex } = this.state
   this.retrieveData();
  //this.recargarDatostienda();
-  //console.log(this.state.direccionTienda)
+  //console.log(this.state.nombre)
     //console.log(selectedIndex);  al primer view se le tiene que agregar esto --> alignItems: 'center'
     return (
       <ScrollView>
@@ -327,11 +331,23 @@ alert("result:"+error)
             color="oracle"
           
           /> </Text>
-          <Text style={styles.description}>Retirar a nombre de: {this.state.nombre}</Text>
-          <Text style={styles.description}> en:</Text>
-          <Text style={styles.description}> {this.state.direccionTienda}</Text>
-          <Text style={styles.description}>Telefono de contacto</Text>
-          <Text style={styles.description}>{this.state.telefonoTienda}</Text>
+
+          {this.state.datos_vacio ? 
+          <View><Text style={styles.description}>No encontramos tu datos para </Text>
+            <Text style={styles.description}>poder enviarle al vendedor</Text>
+            <Text style={styles.info}  onPress={()=>this.props.navigation.navigate('EditPerfil')} >Ingresalo aquí</Text>   
+            
+          </View> 
+          :
+          <View>  
+            <Text style={styles.description}>Retirar a nombre de: {this.state.nombre}</Text>
+            <Text style={styles.description}> en:</Text>
+            <Text style={styles.description}> {this.state.direccionTienda}</Text>
+            <Text style={styles.description}>Telefono de contacto</Text>
+            <Text style={styles.description}>{this.state.telefonoTienda}</Text>
+          </View>
+          }
+       
           <View style={styles.productRow}>
                             <View style={{height:3, backgroundColor:"#000000",  top:0, left:0, right:0, borderBottomRightRadius:0}}/>
                           </View>
@@ -342,16 +358,19 @@ alert("result:"+error)
 
                           <View style={styles.productRow}>
                                 <Button
+                                //disabled={true}
                                   buttonStyle={{ backgroundColor:'#f9aa34'}}
                                     icon={
                                       <Icon2
                                       name="md-checkmark-circle"
                                       size={25}
                                       color="white"
+                                      
                                       //style={{marginStart:20}}
                                       />
                                           }
                                 title="  Finalizar"
+                                disabled={this.state.botonactivo?true:false}
                                 onPress= {this.metodotienda} 
                                 />
                           </View>
@@ -367,17 +386,28 @@ alert("result:"+error)
                                 color="oracle"
                               
                               /> </Text>
-                              <Text style={styles.description}>  
-                              Se te enviará en la siguiente dirección:</Text>
-                           
-                          <Text style={styles.description}>A nombre de: {this.state.nombre}</Text>
-                          <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
-                          <Text style={styles.description}>Cruzamientos: {this.state.cruzamientos}  </Text>
-                          <Text style={styles.description}>Referencias: {this.state.referencias}  </Text>
-                          <Text style={styles.description}>Colonia: {this.state.colonia}  </Text>
-                          <Text style={styles.description}>Teléfono: {this.state.telefono}  </Text>
-                          
-                          <Text style={styles.info} onPress={()=>this.props.navigation.navigate('EditPerfil')}>Modificar datos</Text>
+                              {this.state.datos_vacio ?
+                               <View>
+                                  <Text style={styles.description}>No encontramos tu datos para </Text>
+                                  <Text style={styles.description}>poder enviarle al vendedor</Text>
+                                  <Text style={styles.info}  onPress={()=>this.props.navigation.navigate('EditPerfil')} >Ingresalo aquí</Text> 
+                               </View>
+                               :
+                               <View>
+                                    <Text style={styles.description}>  
+                                    Se te enviará en la siguiente dirección:</Text>
+                                
+                                <Text style={styles.description}>A nombre de: {this.state.nombre}</Text>
+                                <Text style={styles.description}>Dirección: {this.state.direccion}  </Text>
+                                <Text style={styles.description}>Cruzamientos: {this.state.cruzamientos}  </Text>
+                                <Text style={styles.description}>Referencias: {this.state.referencias}  </Text>
+                                <Text style={styles.description}>Colonia: {this.state.colonia}  </Text>
+                                <Text style={styles.description}>Teléfono: {this.state.telefono}  </Text>
+                                
+                                <Text style={styles.info} onPress={()=>this.props.navigation.navigate('EditPerfil')}>Modificar datos</Text>
+                               </View>
+                               }
+                             
                           <View style={styles.productRow}>
                             <View style={{height:3, backgroundColor:"#000000",  top:0, left:0, right:0, borderBottomRightRadius:0}}/>
                           </View>
@@ -399,6 +429,7 @@ alert("result:"+error)
                                       />
                                           }
                                 title="  Finalizar"
+                                disabled={this.state.botonactivo?true:false}
                                 loading={this.state.cargando?true:false}
                                 onPress= {this.metododomicio} 
                                 />

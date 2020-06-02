@@ -81,10 +81,12 @@ export default class app extends Component {
   static navigationOptions = ({navigation}) => {
     const { params = {} } = navigation.state;
     return{
-    headerRight:
+    headerRight: () => (
+    <View style={{flexDirection:"row"}}> 
+    <TouchableOpacity underlayColor="white"  onPress={navigation.getParam('showMenu')} style={{marginRight:20}} ><View>
     <Menu
       ref={navigation.getParam('setMenuRef')}
-      button={<Icon name="md-more" size={30} style={{marginRight:30}} color= 'white' onPress={navigation.getParam('showMenu')} />}
+      button={<Icon name="md-more" size={30}  color= 'white'/>}
     >
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 1</MenuItem>
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 2</MenuItem>
@@ -94,6 +96,9 @@ export default class app extends Component {
       <MenuDivider />
       <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 4</MenuItem>
     </Menu>
+     </View></TouchableOpacity>
+    </View>
+    )
   ,
       //headerRight:(<Button onPress={() => setCount(c => c + 1)} title="Update count" />)
     
@@ -265,7 +270,7 @@ _renderItemFood(item){
   {
     return(
       <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert,
-       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url, id_tienda:item.id })}>
+       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url, id_tienda:item.id,tienda:item })}>
         
         <Image
           style={styles.imageFood}
@@ -364,7 +369,9 @@ const styles = StyleSheet.create({
     height:width/2,
     width:width-40,
     borderRadius:10,
-    marginHorizontal:20
+    marginHorizontal:20,
+    resizeMode:'contain'
+    
   }, 
   divCategorie:{
     backgroundColor:'red',

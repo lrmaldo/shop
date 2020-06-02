@@ -54,9 +54,7 @@ export default class Carrito extends Component {
   
   
 
-  static navigationOptions = ({ navigation }) => ({
-    direccion: navigation.state.params.direccionTienda,
-  });
+ 
 
   render() {
     //this.total()
@@ -125,7 +123,7 @@ export default class Carrito extends Component {
                    padding:10,
                    borderRadius:5,
                    margin:20
-                 }} onPress={() => this.props.navigation.navigate('Checkout',{productos: this.total()})}>
+                 }} onPress={() => this.props.navigation.navigate('Checkout',{total: this.total()})}>
                  <Text style={{
                      fontSize:24,
                      fontWeight:"bold",

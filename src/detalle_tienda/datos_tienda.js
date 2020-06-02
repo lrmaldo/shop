@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {  Dimensions,  Image,
+import { Card, Icon } from 'react-native-elements'
+import {
+  Image,
   ImageBackground,
   Linking,
   ListView,
@@ -7,10 +9,10 @@ import {  Dimensions,  Image,
   ScrollView,
   StyleSheet,
   Text,
-  View,} from 'react-native';
-var { width } = Dimensions.get("window")
-import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
-import { Card, Icon } from 'react-native-elements'
+  View,
+} from 'react-native'
+import { parse } from '@babel/core';
+
 
 
 export default class Perfil extends Component {
@@ -19,177 +21,88 @@ export default class Perfil extends Component {
   constructor(props) {
      super(props);
      this.state = {
-      id_facebook:null,
-      picture:null,
-      name:null,
-      email:null,
-      accessToken: null
+     datos_tienda: null,
     };
   }
   
   componentDidMount() {
-    this._setDataFB()
+     const data = JSON.parse(this.props.navigation.getParam('Tienda'))
+     this.setState({
+       datos_tienda:data
+     })
   }
 
+  static navigationOptions = ({navigation}) => {
+    that =this;
+   const { params = {} } = navigation.state;
+  //const {direccionTienda} =this.state
+   //console.log(direccionTienda)
+   return{
+     header:null
+   }
   
+  }
+  
+  
+  renderHeader = () => {
+    
 
-  render() {
-    const dhis = this
     return (
-      <View style={{flex:1}}>
-
-
-      
-
-      {
-        this.state.id_facebook?
-        <View style={{flex:.2}}>
-        <View style={styles.headerContainer}>
+      <View style={styles.headerContainer}>
         <ImageBackground
           style={styles.headerBackgroundImage}
           blurRadius={10}
-          source={{uri: this.state.picture.data.url}}
-        > 
-        
+          source={{
+            uri: avatarBackground,
+          }}
+        >
           <View style={styles.headerColumn}>
             <Image
               style={styles.userImage}
-              source={{uri: this.state.picture.data.url}}
+              source={{
+                uri: this.state.datos_tienda.foto_url,
+              }}
             />
-            <Text style={styles.userNameText}>{this.state.name}</Text>
+            <Text style={styles.userNameText}>{this.state.datos_tienda.nombre}</Text>
             <View style={styles.userAddressRow}>
               <View>
                 <Icon
                   name="place"
                   underlayColor="transparent"
                   iconStyle={styles.placeIcon}
-                 
+                  onPress={this.onPressPlace}
                 />
               </View>
               <View style={styles.userCityRow}>
                 <Text style={styles.userCityText}>
-                  San Juan Tuxtepec, Oaxaca
+                  {city}, {country}
                 </Text>
               </View>
             </View>
           </View>
         </ImageBackground>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-         <LoginButton  onLogoutFinished={() => console.log("logout.")}/>
-          
-           </View>
-       
-        </View>
-        
-        </View>
-     
-          
-        
-        :
-        <View style={{flex:1,alignItems: 'center', justifyContent: 'center'}}>
-
-
-        
-        <LoginButton
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                
-                
-                dhis._setDataFB()
-              }
-            }
-          }
-          onLogoutFinished={() => console.log("logout.")}/>
-          </View>
-      
-
-      }
-
-
-
-   </View>
-    );
-    
-  }
-
-
-  
-
-  _authFB()
-  {
-    const dhis = this
-    LoginManager.logInWithPermissions(["public_profile"]).then(
-      function(result) {
-        if (result.isCancelled) {
-          console.log("Login cancelled");
-        } else {
-          console.log(
-            "Login success with permissions: " +
-              result.grantedPermissions.toString()
-          );
-          dhis._setDataFB()
-        }
-      },
-      function(error) {
-        console.log("Login fail with error: " + error);
-      }
-    );
-  }
-
-  async _setDataFB()
-  {
-    // get token from facebook
-    const tokenData = await AccessToken.getCurrentAccessToken().then(
-      (data) => {
-        return  data.accessToken.toString()
-      }
+      </View>
     )
-    // get data about profile from api graph
-    const datajson = await this.apiGraphFace(tokenData)
-
-    if (datajson.success) {
-        console.log(datajson.data);
-       // variable para enviar post
-        const data_fb =  {
-          id_facebook: datajson.data.id,
-          email : datajson.data.email,
-          name  : datajson.data.name,
-          picture: datajson.data.picture
-        }
-        this.setState(data_fb);
-    }
-    else {
-      console.log("Error get data");
-    }
   }
 
-  async apiGraphFace (token)  {
 
-    const resface = await fetch('https://graph.facebook.com/v2.10/me?fields=id,name,email,picture.width(500)&access_token='+token)
-   .then((response) => response.json())
-   .then((json) => {
-     const data = {
-       data: json,
-       success: true
-     }
-     return data ;
-   })
-   .catch((error) => {
-     const data = {
-       message: error,
-       success: false
-     }
-     return data;
-   })
 
-   return resface;
- }
+
+
+
+  render() {
+    const dhis = this
+    console.log(this.state.datos_tienda)
+  return (
+  
+  
+  
+  <Text>{JSON.stringify(this.state.datos_tienda)}</ Text>)
+  }
 }
+
+
+
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: '#FFF',
@@ -250,7 +163,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   userImage: {
-    borderColor: '#FF3B30',
+    borderColor: mainColor,
     borderRadius: 85,
     borderWidth: 3,
     height: 170,
