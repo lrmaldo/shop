@@ -30,7 +30,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
 //swiper
-import Swiper from 'react-native-swiper'
+
 
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -40,6 +40,7 @@ import SwiperFlatList from 'react-native-swiper-flatlist';
 
 
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import acerca from '../acerca/terminos'
 export default class app extends Component {
 
   
@@ -71,8 +72,18 @@ export default class app extends Component {
       this._menu.hide();
       console.log("c")
     };
-  
+  terminos = () =>{
+    
+  this._menu.hide();
+  this.props.navigation.navigate("Terminos")
+  }
+
+  info = ()=>{
+    this._menu.hide();
+    this.props.navigation.navigate("Info")
+  }
     showMenu = () => {
+      //return(<acerca></acerca>)
       this._menu.show();
       console.log("rds")
     };
@@ -83,18 +94,19 @@ export default class app extends Component {
     return{
     headerRight: () => (
     <View style={{flexDirection:"row"}}> 
-    <TouchableOpacity underlayColor="white"  onPress={navigation.getParam('showMenu')} style={{marginRight:20}} ><View>
+    <TouchableOpacity underlayColor="black"  onPress={params.showMenu} style={{ height: 25,
+    width: 25, marginRight:10, borderRadius:25}} ><View>
     <Menu
-      ref={navigation.getParam('setMenuRef')}
+      ref={params.setMenuRef}
       button={<Icon name="md-more" size={30}  color= 'white'/>}
     >
-      <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 1</MenuItem>
-      <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 2</MenuItem>
-      <MenuItem onPress={navigation.getParam("hideMenu")} disabled>
-        Menu item 3
+      <MenuItem onPress={params.hideMenu}>Contactanos</MenuItem>
+      <MenuItem onPress={params.terminos}>Politicas de privacidad</MenuItem>
+      <MenuItem onPress={params.info} >
+        Info de la aplicación
       </MenuItem>
       <MenuDivider />
-      <MenuItem onPress={navigation.getParam("hideMenu")}>Menu item 4</MenuItem>
+     
     </Menu>
      </View></TouchableOpacity>
     </View>
@@ -149,8 +161,11 @@ export default class app extends Component {
   };
 
 componentWillMount(){
-  this.props.navigation.setParams({ showMenu: this.showMenu, setMenuRef:this.setMenuRef, hideMenu:this.hideMenu });
+  this.props.navigation.setParams({ showMenu: this.showMenu, setMenuRef:this.setMenuRef, hideMenu:this.hideMenu,
+    terminos:this.terminos, info:this.info });
+  
   AsyncStorage.removeItem('cart');
+      AsyncStorage.removeItem('datostienda');
 
     //const url = "http://tutofox.com/foodapp/api.json"
    
@@ -166,9 +181,31 @@ onRefresh() {
   this.GetData();
 }
 
+comprobarcarro  = async () =>{
+ // that =this;
+ this.funcion()
+  
+ console.log("hdola")
+ 
+ 
+}
+
+funcion(){
+  const c =  AsyncStorage.getItem('cart');
+  if(c.length == 0){
+    console.log("checo")
+    AsyncStorage.removeItem('cart')
+  }else{
+    console.log("falso")
+  } 
+}
+
+
   render() {
+    const dhis = this
+   this.comprobarcarro()
     
-    console.log(this.state.dataBanner)
+    //console.log(this.state.dataBanner)
     if (this.state.refreshing) {
       return (
         //loading view while data is loading
@@ -264,39 +301,25 @@ onRefresh() {
   }
   
 _renderItemFood(item){
-  console.log(item.direccion);
+ // console.log(item.direccion);
   let catg = this.state.selectCatg 
   if(catg==0||catg==item.id_giro)
   {
     return(
-      <TouchableOpacity style={styles.divFood}  onPress={() => this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert,
-       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url, id_tienda:item.id,tienda:item })}>
+      <TouchableOpacity style={styles.divFood}  onPress={() =>{ AsyncStorage.removeItem('cart');  this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert,
+       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url, id_tienda:item.id,tienda:item })}}>
         
         <Image
           style={styles.imageFood}
           resizeMode="contain"
           source={{uri:item.foto_url}} />
           <View style={{height:((width/2)-20)-90, backgroundColor:'transparent', width:((width/2)-20)-10}} />
-          <Text style={{fontWeight:'bold',fontSize:22,textAlign:'center'}}>
+          <Text style={{fontWeight:'bold',fontSize:25,textAlign:'center'}}>
             {item.nombre}
           </Text>
-          <Text>{item.descripcion}</Text>
-          <Text style={{fontSize:10,color:"green"}}>telefono {item.telefono}</Text>
-          <TouchableOpacity
-           
-            style={{
-              width:(width/2)-40,
-              backgroundColor:'#33c37d',
-              flexDirection:'row',
-              alignItems:'center',
-              justifyContent:"center",
-              borderRadius:5,
-              padding:4
-            }}>
-            
-            <View style={{width:10}} />
-            <Icon name="ios-add-circle" size={15} color={"white"} />
-          </TouchableOpacity>
+          <Text style={{fontSize:18,color:"black", textAlign:"center"}}>{item.descripcion}</Text>
+          
+         
         </TouchableOpacity>
         
       )

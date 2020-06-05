@@ -56,7 +56,7 @@ export default class Perfil extends Component {
       if (name !== null) {
         const e = JSON.parse(name)
         
-       
+       //console.log("hola")
         this.setState({ 
           nombre:e.nombre, 
           correo:e.correo,
@@ -83,16 +83,7 @@ export default class Perfil extends Component {
   }
   
 
-  renderDescription = () => {
-    return (
-      <View>
-        <Text style={styles.priceText}>$1,175,000</Text>
-        <Text style={styles.descriptionText}>1 Bed, 2 Bath, 1088 soft</Text>
-        <Text style={styles.descriptionText}>Condo, 342 Days on Trulia</Text>
-        <Text style={styles.descriptionText}>Est. Mortgage $52,604</Text>
-      </View>
-    )
-  }
+  
 
 
   render() {

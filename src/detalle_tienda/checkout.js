@@ -9,8 +9,8 @@ import { ButtonGroup } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements'
-//import { ScrollView } from 'react-native-gesture-handler';
 
+import Toast from 'react-native-simple-toast';
 import AnimatedLoader from 'react-native-animated-loader';
 export default class Checkout extends Component {
 
@@ -30,13 +30,16 @@ export default class Checkout extends Component {
        email:"",
        datos_vacio:true,
        cartconfirmado:[],
-       id_tieda:"",
-       nombretienda:"",
-       direccionTienda:"",
-       telefonoTienda:"",
+       id_tienda:this.props.navigation.getParam('id_tienda'),
+       nombretienda:this.props.navigation.getParam('nombre'),
+       direccionTienda:this.props.navigation.getParam('direccionT'),
+       telefonoTienda:this.props.navigation.getParam('telefonot'),
        visible: false,
        total:this.props.navigation.getParam('total'),
        botonactivo:true,
+
+
+
      };
      this.updateIndex = this.updateIndex.bind(this)
     
@@ -46,52 +49,11 @@ export default class Checkout extends Component {
     this.setState({selectedIndex})
   }
 
-  recargarDatostienda = async () => {
-    try {
-      const datos = await AsyncStorage.getItem("datostienda")
-
-      if (datos !== null) {
-        const e = JSON.parse(datos)
-        
-       this.setState({
-         nombretienda:e.nombretienda,
-         direccionTienda:e.direccionT,
-         telefonoTienda:e.telefonoTienda,
-       })
-       // console.log(e)
-
-
-       
-        //console.log(this.state.datos_vacio);
-      }else{
-       
-      }
-      
-    } catch (e) {
-      alert('Failed to load name.')
-    }
-  }
+ 
 
   componentDidMount()
   {
-    AsyncStorage.getItem('datostienda').then((datos)=>{
-      if (datos !== null) {
-        // We have data!!
-        const e = JSON.parse(datos)
-        console.log(e)
-        this.setState({
-          id_tienda:e.id_tienda,
-          nombretienda:e.nombreTienda,
-          direccionTienda:e.direccionT,
-          telefonoTienda:e.telefonoTienda,
-          total:this.props.navigation.getParam('total'),
-        })
-       
-      }
-    })
-    .catch((err)=>{
-      alert(err)
-    })
+ 
 
 
 
@@ -148,7 +110,7 @@ retrieveData = async () => {
 
     
   } catch (e) {
-    alert('Failed to load name.')
+    Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
   }
 }
 
@@ -176,7 +138,7 @@ metodotienda = async() =>{
   fetch(url,{
     method: 'POST',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Accept-encoding': 'gzip, deflate',
       'Content-Type': 'application/json',
     },
@@ -197,7 +159,9 @@ metodotienda = async() =>{
 }
 }).catch(function (error) {
 console.log("-------- error ------- "+error);
-alert("result:"+error)
+
+Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
+
 });
 
 
@@ -231,7 +195,7 @@ metododomicio= async () =>{
   fetch(url,{
     method: 'POST',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Accept-encoding': 'gzip, deflate',
       'Content-Type': 'application/json',
     },
@@ -251,7 +215,9 @@ metododomicio= async () =>{
 }
 }).catch(function (error) {
 console.log("-------- error ------- "+error);
-alert("result:"+error)
+that.setState({ visible: false });
+Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
+
 });
 
 
@@ -266,7 +232,7 @@ alert("result:"+error)
   const { selectedIndex } = this.state
   this.retrieveData();
  //this.recargarDatostienda();
-  //console.log(this.state.nombre)
+ // console.log(this.state.direccionTienda)
     //console.log(selectedIndex);  al primer view se le tiene que agregar esto --> alignItems: 'center'
     return (
       <ScrollView>
@@ -345,6 +311,7 @@ alert("result:"+error)
             <Text style={styles.description}> {this.state.direccionTienda}</Text>
             <Text style={styles.description}>Telefono de contacto</Text>
             <Text style={styles.description}>{this.state.telefonoTienda}</Text>
+            <Text style={styles.info}  onPress={()=>this.props.navigation.navigate('EditPerfil')} >Editar nombre</Text> 
           </View>
           }
        

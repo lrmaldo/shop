@@ -36,11 +36,15 @@ import EditPerfil from './src/inicio/editarperfil'
 // unable console yellow
 //console.disableYellowBox = true;
 
+//import de layout de  acerc
+import Contactanos from './src/acerca/contactanos'
+import  Info from './src/acerca/info'
+import  Terminos from './src/acerca/terminos'
 
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
 
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -61,7 +65,7 @@ const IconCarrito = (props) => (
 
 
 const HomeNavigator = createStackNavigator({
-  Home:{
+  'Home':{
     screen: Inicio,
     navigationOptions:{
           title:"M@rkettux",
@@ -82,7 +86,7 @@ const HomeNavigator = createStackNavigator({
     },
 
   },
-    Tienda:{
+    'Tienda':{
     screen: Tienda,
     navigationOptions:{
          // title:"M@rkettux",
@@ -101,7 +105,7 @@ const HomeNavigator = createStackNavigator({
     },
     
   },
-  Detalle:{
+  'Detalle':{
     screen: Detalle_item,
     navigationOptions:{
          // title:"Pedido exitoso",
@@ -120,7 +124,7 @@ const HomeNavigator = createStackNavigator({
     },
     
   },
-  Datos_tienda:{
+  'Datos_tienda':{
     screen: Datos_tienda,
     navigationOptions:{
          // title:"Pedido exitoso",
@@ -140,7 +144,7 @@ const HomeNavigator = createStackNavigator({
     
   },
 
-  Carrito:{
+  'Carrito':{
     screen: Carrito,
     navigationOptions:{
           title:"",
@@ -159,7 +163,7 @@ const HomeNavigator = createStackNavigator({
     },
     
   },
-  Checkout:{
+  'Checkout':{
     screen: Checkout,
     navigationOptions:{
           title:"Confirmar compra",
@@ -178,7 +182,7 @@ const HomeNavigator = createStackNavigator({
     },
     
   },
-  Finalizar:{
+  'Finalizar':{
     screen: Finalizar,
     navigationOptions:{
           title:"Pedido exitoso",
@@ -197,10 +201,75 @@ const HomeNavigator = createStackNavigator({
     },
     
   },
-  
+  'Contactanos':{
+    screen:Contactanos,
+    navigationOptions:{
+          title:"Contactanos",
+          
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+           
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+      
+    },
+    
+    
+  },
+
+  'Info':{
+    screen:Info,
+    navigationOptions:{
+          header:null,
+          //tabBarVisible: false,
+          
+          
+      
+    },
+
+   
+          },
+    'Terminos':{
+        screen:Terminos,
+        navigationOptions:{
+              title:"Politicas de privacidad",
+              
+              headerTitleAlign:'center',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                
+            },
+            headerTintColor:"white",
+            headerBackground:<View>
+            <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+            <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+          </View>,
+          
+        },
+        
+        
+      },
   
   
 });
+
+
+HomeNavigator.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
+  let navigationOptions = {};
+
+  if (routeName === 'Info') {
+    navigationOptions.tabBarVisible = false;
+  }
+
+  return navigationOptions;
+};
+
 
 
 
@@ -248,6 +317,8 @@ const PerfilNavigator = createStackNavigator({
   
 });
 
+
+
 const BottonNavegation = createBottomTabNavigator({
   
   Home:{
@@ -255,6 +326,7 @@ const BottonNavegation = createBottomTabNavigator({
     navigationOptions:{
       title:'Inicio',
       tabBarIcon: TabIconInicio,
+     
      // tabBarIcon: ({activeTintColor}) => <FontAwesome name="home" color={"white"}></FontAwesome>
     },
     
@@ -265,9 +337,11 @@ const BottonNavegation = createBottomTabNavigator({
     navigationOptions:{
       title:'Perfil',
       tabBarIcon: TabIconPerfil,
+      
      // tabBarIcon: ({activeTintColor}) => <FontAwesome name="home" color={"white"}></FontAwesome>
     },
   },
+  
   
   /**Notificacion: {
     screen:NotificacionNavigator,

@@ -34,7 +34,7 @@ import Swiper from 'react-native-swiper'
 
 //animacion al cargar vista
 import AnimatedLoader from "react-native-animated-loader";
-import { Thumbnail } from 'native-base';
+
 
 
 export default class app extends Component {
@@ -99,7 +99,7 @@ export default class app extends Component {
  
  
    static navigationOptions = ({navigation}) => {
-     that =this;
+     
     const { params = {} } = navigation.state;
    //const {direccionTienda} =this.state
     //console.log(direccionTienda)
@@ -107,15 +107,17 @@ export default class app extends Component {
     title:params.titulo,
     headerRight:() => (   
    <View style={{flexDirection:"row"}}> 
-       <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Datos_tienda',{Tienda:params.tienda1})}>
+       <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Datos_tienda',{nombre:params.titulo,
+        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot})}>
           <View>
             <Icon2 underlayColor='white' name="shopping-store" size={26} style={{marginRight:30}} color= 'white'  />
          </View>
        </TouchableOpacity>
 
-      <TouchableOpacity underlayColor="white"  onPress={() => navigation.navigate('Carrito')} ><View>
+      <TouchableOpacity underlayColor="white"  onPress={() => navigation.navigate('Carrito',{id_tienda:params.id_tienda,nombre:params.titulo,
+        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot})} ><View>
       <Icon name="md-cart" size={30}
-       style={{marginRight:23}}
+       style={{marginRight:20}}
        underlayColor={'#64b5f6'}
        activeOpacity={true}
        color= 'white'
@@ -140,7 +142,8 @@ export default class app extends Component {
        </View></TouchableOpacity>
       </View>
         
-        )
+        ),
+    
       
       }
     
@@ -179,11 +182,10 @@ export default class app extends Component {
       }
     }
 
-    titienda =() =>{
-      this.state.nombretienda;
-    }
+   
   componentDidMount(){
-    this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda,tienda1:this.state.tienda });
+    this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda,direccionT:this.state.direccionTienda,
+    fotoT:this.state.fotoTienda,telefonot:this.state.telefonoTienda,id_tienda:this.state.id_tienda });
     setInterval(() => {
       this.setState({
         visible: false
@@ -214,7 +216,7 @@ export default class app extends Component {
   }
   render() {
    // console.log("tienda"+this.state.direccionTienda);
-     //console.log("tienda: "+JSON.stringify(this.state.tienda));
+     //console.log("tienda: "+ this.state.id_tienda);
     return (
      
       <ScrollView  refreshControl={
@@ -261,7 +263,7 @@ export default class app extends Component {
            
           />
            <FlatList
-              //horizontal={true}
+             // horizontal={false}
               data={this.state.dataFood}
               numColumns={2}
               renderItem={({ item }) => this._renderItemFood(item)}
@@ -306,7 +308,7 @@ _renderItemFood(item){
   {
     return(
       <TouchableOpacity style={styles.divFood} onPress={()=>this.props.navigation.navigate("Detalle",{fotoitem:item.url_foto, titulo:item.titulo,
-      descripcion:item.descripcion,precio:item.precio,Tienda:this.state.tienda})}>
+      descripcion:item.descripcion,precio:item.precio,Tienda:this.state.tienda, datos:item})}>
         <Image
           style={styles.imageFood}
           resizeMode="contain"

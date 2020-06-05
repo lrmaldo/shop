@@ -23,14 +23,8 @@ import {
   defaultOnOverflowMenuPress,
   OverflowMenuProvide
 } from 'react-navigation-header-buttons';
+import AsyncStorage from '@react-native-community/async-storage';
 
-
-const IoniconsHeaderButton = passMeFurther => (
-  // the `passMeFurther` variable here contains props from <Item .../> as well as <HeaderButtons ... />
-  // and it is important to pass those props to `HeaderButton`
-  // then you may add some information like icon size or color (if you use icons)
-  <HeaderButton {...passMeFurther} IconComponent={Icon} iconSize={32} color="white" />
-);
 
 
 
@@ -42,7 +36,8 @@ export default class ProductDetail extends Component {
         foto: this.props.navigation.getParam('fotoitem'),
         descripcion: this.props.navigation.getParam('descripcion'),
         precio: this.props.navigation.getParam('precio'),
-        titulo: this.props.navigation.getParam('titulo')
+        titulo: this.props.navigation.getParam('titulo'),
+        datos:this.props.navigation.getParam('datos')
 
     }
     
@@ -57,21 +52,17 @@ export default class ProductDetail extends Component {
     title: params.titulo,
     headerRight: () => (
       <View style={{flexDirection:"row"}}>
-        <TouchableOpacity underlayColor="white">
-          <View>
-       <Icon2 underlayColor='white' name="shopping-store" size={20} style={{marginRight:30}} color= 'white'  />
-       </View>
-       </TouchableOpacity>
-      <TouchableOpacity underlayColor="white" ><View>
-       <Icon name="md-cart" size={28} style={{marginRight:10}} color= 'white'  />
+        
+      <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Carrito')} ><View>
+       <Icon name="md-cart" size={30} style={{marginRight:20}} color= 'white'  />
        </View></TouchableOpacity>
       </View>
     ),
    }
   }
   clickEventListener() {
-    Alert.alert("Success", "Product has beed added to cart")
-  
+    //Alert.alert("Success", "Product has beed added to cart")
+    this.onClickAddCart(this.state.datos)
   }
 
   componentDidMount()
@@ -80,6 +71,61 @@ export default class ProductDetail extends Component {
   }
 
 
+  onClickAddCart(data){
+
+    const itemcart = {
+      
+      food: data,
+      quantity:  1,
+      precio: data.precio
+    }
+  
+  //console.log(data)
+    AsyncStorage.getItem('cart').then((datacart)=>{
+        if (datacart !== null) {
+          
+          // We have data!!
+          const cart = JSON.parse(datacart)
+          
+  
+         // cart.push(itemcart)
+          //console.log (JSON.stringify(cart))
+         /* cart.map((info,i) => {
+            return console.log(info)
+           })
+           */
+  
+           function encontrar(object, nombre){
+             var arr = [];
+             for (var i in object){
+               console.log(arr.push(object[i].food.titulo));
+              console.log(object[i].food.titulo);
+             }
+             return arr.indexOf(nombre) >-1;
+           }
+           var x  = encontrar(cart,data.titulo);
+           if(x ===true){
+            Alert.alert("Ya lo agregaste al carrito")
+            console.log("encontrado");
+           }else{
+            cart.push(itemcart)
+            console.log("no encontrado");
+            Alert.alert("Se agrego al carrito")
+           }
+          AsyncStorage.setItem('cart',JSON.stringify(cart));
+        }
+        else{
+          const cart  = []
+          cart.push(itemcart)
+          AsyncStorage.setItem('cart',JSON.stringify(cart));
+          Alert.alert("Se agrego al carrito")
+        }
+      
+      })
+      .catch((err)=>{
+        alert(err)
+      })
+  }
 
   
 
@@ -99,7 +145,7 @@ export default class ProductDetail extends Component {
             
           </View>
           <View style={styles.contentSize}>
-            <TouchableOpacity><Text>cantidad</Text></TouchableOpacity> 
+           
             
           </View>
           <View style={styles.separator}></View>

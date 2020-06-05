@@ -10,9 +10,10 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native'
-
-
+import Icon2 from 'react-native-vector-icons/Ionicons'
+import Icon3 from 'react-native-vector-icons/FontAwesome5'
 
 
 export default class Perfil extends Component {
@@ -21,15 +22,19 @@ export default class Perfil extends Component {
   constructor(props) {
      super(props);
      this.state = {
-     datos_tienda: null,
+     nombre: this.props.navigation.getParam('nombre'),
+     direccion: this.props.navigation.getParam('direccionT'),
+     foto:this.props.navigation.getParam('fotot'),
+     telefono:this.props.navigation.getParam('telefonot'),
     };
   }
   
   componentDidMount() {
-     const data = JSON.stringify(this.props.navigation.getParam('Tienda'))
-     this.setState({
-       datos_tienda:data
-     })
+     //const data = JSON.stringify(this.props.navigation.getParam('Tienda'))
+     
+     this.props.navigation.setParams({titulo:this.state.nombre})
+    
+     
   }
 
   static navigationOptions = ({navigation}) => {
@@ -38,7 +43,8 @@ export default class Perfil extends Component {
   //const {direccionTienda} =this.state
    //console.log(direccionTienda)
    return{
-     header:null
+     title:params.titulo,
+     
    }
   
   }
@@ -53,29 +59,24 @@ export default class Perfil extends Component {
           style={styles.headerBackgroundImage}
           blurRadius={10}
           source={{
-            uri: this.state.datos_tienda.foto_url,
+            uri: this.state.foto,
           }}
         >
           <View style={styles.headerColumn}>
             <Image
               style={styles.userImage}
               source={{
-                uri: this.state.datos_tienda.foto_url,
+                uri: this.state.foto,
               }}
             />
-            <Text style={styles.userNameText}>{this.state.datos_tienda.nombre}</Text>
+            <Text style={styles.userNameText}></Text>
             <View style={styles.userAddressRow}>
               <View>
-                <Icon
-                  name="place"
-                  underlayColor="transparent"
-                  iconStyle={styles.placeIcon}
-                  onPress={this.onPressPlace}
-                />
+             
               </View>
               <View style={styles.userCityRow}>
                 <Text style={styles.userCityText}>
-                  {city}, {country}
+                 
                 </Text>
               </View>
             </View>
@@ -86,21 +87,108 @@ export default class Perfil extends Component {
   }
 
 
+  renderTel = ()=>{
+    return(
+      <TouchableOpacity>
+      <View style={[styles.containerTel,]}>
+        <View style={styles.iconRow}>
+          
+            <Icon
+              name="call"
+              underlayColor="transparent"
+              iconStyle={styles.telIcon}
+              onPress={() =>  Linking.openURL(`tel://${this.state.telefono}`).catch(err => console.log('Error:', err))}
+            />
+          
+        </View>
+        <View style={styles.telRow}>
+          <View style={styles.telNumberColumn}>
+            <Text style={styles.telNumberText}>{this.state.telefono}</Text>
+          </View>
+          <View style={styles.telNameColumn}>
+            
+              <Text style={styles.telNameText}>{this.state.nombre}</Text>
+            
+          </View>
+        </View>
+        <View style={styles.smsRow}>
+          <Icon2
+            name="logo-whatsapp"
+            underlayColor="transparent"
+            style={styles.smsIcon}
+            onPress={() => Linking.openURL(`https://wa.me/${this.state.telefono}`).catch(err => console.log('Error:', err))}
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+    )
+  }
 
 
 
+  Separator = () => (
+    <View style={styles.containerS}>
+      <View style={styles.separatorOffset} />
+      <View style={styles.separator} />
+    </View>
+  )
 
+  Direccion = () => {
+    const url = Platform.select({
+      ios: `maps://app?daddr=${this.state.direccion}`,
+      android: `google.navigation:q=${this.state.direccion}`,
+    })
+    return(<TouchableOpacity onPress={()=> Linking.openURL(url)}>
+      
+    <View style={[styles.containerD,styles.emailContainer]}>
+      <View style={styles.direccionRow}>
+        
+          <Icon3
+            name="directions"
+            underlayColor="transparent"
+            style={styles.telIcon}
+            //onPress={() => onPressEmail()}
+          />
+        
+      </View>
+      <View style={styles.telRow}>
+      <View style={styles.direccionNameColumn}>
+        <Text style={styles.direccionNameText}>Direccion</Text>
+    </View>
+        <View style={styles.direccionColumn}>
+          <Text style={styles.direccionText}>{this.state.direccion}</Text>
+        </View>
+       
+      </View>
+    </View>
+  </TouchableOpacity>)
+  }
+
+ 
   render() {
     const dhis = this
+    
     /// hay que mapear el state para obtener los datos de la tienda  agregar los elementos en el render 
-    console.log(this.state.datos_tienda)
+    //console.log()
+    console.log(this.state.foto)
+    console.log(this.state.nombre)
+    console.log(this.state.direccion)
+    console.log(this.state.telefono)
+  
   return (
   
     <ScrollView style={styles.scroll}>
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
-        
-       
+    
+      {this.renderHeader()}
+      
+      {this.Separator()}   
+
+      {this.renderTel()}    
+      {this.Separator()}
+      {this.Direccion()} 
+     
       </Card>
     </View>
   </ScrollView>)
@@ -144,7 +232,7 @@ const styles = StyleSheet.create({
     }),
   },
   placeIcon: {
-    color: 'white',
+    color: 'orange',
     fontSize: 26,
   },
   scroll: {
@@ -160,10 +248,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   userCityRow: {
-    backgroundColor: 'transparent',
+    //backgroundColor: 'transparent',
   },
   userCityText: {
-    color: '#A5A5A5',
+    color: 'black',
     fontSize: 15,
     fontWeight: '600',
     textAlign: 'center',
@@ -182,5 +270,102 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingBottom: 8,
     textAlign: 'center',
+  },
+  containerTel: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginBottom: 25,
+  },
+  iconRow: {
+    flex: 2,
+    justifyContent: 'center',
+  },
+  smsIcon: {
+    color: 'gray',
+    fontSize: 35,
+  },
+  smsRow: {
+    marginTop:5,
+    flex: 2,
+    justifyContent: 'flex-start',
+  },
+  telIcon: {
+    color: 'orange',
+    fontSize: 30,
+  },
+  telNameColumn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  telNameText: {
+    color: 'gray',
+    fontSize: 14,
+    fontWeight: '200',
+  },
+  telNumberColumn: {
+    marginTop:4,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginBottom: 5,
+  },
+  telNumberText: {
+    fontSize: 16,
+  },
+  telRow: {
+    flex: 6,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  containerS: {
+    flexDirection: 'row',
+  },
+  separatorOffset: {
+    flex: 2,
+    flexDirection: 'row',
+  },
+  separator: {
+    flex: 8,
+    flexDirection: 'row',
+    borderColor: '#EDEDED',
+    borderWidth: 0.8,
+  },
+
+
+  //style de direccion
+
+  containerD: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginBottom: 25,
+  },
+  direccionColumn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginBottom: 5,
+  },
+  direccionIcon: {
+    color: "orange",
+    fontSize: 30,
+  },
+  direccionNameColumn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  direccionNameText: {
+    color: 'gray',
+    fontSize: 14,
+    fontWeight: '200',
+  },
+  direccionRow: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  direccionText: {
+    fontSize: 16,
+  },
+  direccioniconRow: {
+    flex: 2,
+    justifyContent: 'center',
   },
 })

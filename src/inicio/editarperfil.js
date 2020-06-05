@@ -9,7 +9,7 @@ import Toast from 'react-native-simple-toast';
 
 
   import AsyncStorage from '@react-native-community/async-storage';
-  import AnimatedLoader from 'react-native-animated-loader';
+ 
 
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements'

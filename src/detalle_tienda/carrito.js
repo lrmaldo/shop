@@ -16,6 +16,11 @@ export default class Carrito extends Component {
         total:0,
         //direccionTienda: this.props.navigation.state.params.direccionTienda
         //direccionTienda:this.props.navigation.getParam('direccionTienda')
+        id_tienda:this.props.navigation.getParam('id_tienda'),
+        nombre: this.props.navigation.getParam('nombre'),
+        direccionT: this.props.navigation.getParam('direccionT'),
+        telefonot:this.props.navigation.getParam('telefonot')
+        
      };
   }
 
@@ -58,8 +63,11 @@ export default class Carrito extends Component {
 
   render() {
     //this.total()
-    this.comprobarcarro()
-   console.log(this.state.carritovacio)
+    this.comprobarcarro
+    console.log(this.state.id_tienda) 
+   console.log(this.state.nombre) 
+   console.log(this.state.direccionT) 
+   console.log(this.state.telefonot)
    // const {carritovacio} = this.state;
    
     if(this.state.carritovacio){ 
@@ -123,7 +131,8 @@ export default class Carrito extends Component {
                    padding:10,
                    borderRadius:5,
                    margin:20
-                 }} onPress={() => this.props.navigation.navigate('Checkout',{total: this.total()})}>
+                 }} onPress={() => this.props.navigation.navigate('Checkout',{total: this.total(),id_tienda:this.state.id_tienda ,nombre:this.state.nombre,
+                  direccionT:this.state.direccionT,fotot:this.state.fotoT,telefonot:this.state.telefonot})}>
                  <Text style={{
                      fontSize:24,
                      fontWeight:"bold",
@@ -146,34 +155,36 @@ export default class Carrito extends Component {
   }
   comprobarcarro  = async () =>{
      that =this;
-
-     if(this.total()==0){
-      console.log("no hay");
-      this.setState({carritovacio:true})
-      
-     }else{
-       console.log("si hay");
-     }
+    this.total()
+     
     
     
     
   }
 
    total(){
+    var arr =this.state.dataCart;
+    if(arr.length==0){
+      console.log("no hay");
+      this.setState({carritovacio:true})
       
-      var arr =this.state.dataCart;
-      //const cart = this.state.datacart;
-      console.log("dentro de  la funcion"+JSON.stringify(arr))
+     }else{
+       console.log("si hay");
      
-     var total = 0;
-      for (var i in arr){
-        //console.log(arr.push(object[i].food.titulo));
-        total = total +(arr[i].food.precio*arr[i].quantity);
-        console.log(arr[i].food.precio*arr[i].quantity);
-        console.log(total);
-       
-      }
-      return total;
+       //const cart = this.state.datacart;
+       console.log("dentro de  la funcion"+JSON.stringify(arr))
+      
+      var total = 0;
+       for (var i in arr){
+         //console.log(arr.push(object[i].food.titulo));
+         total = total +(arr[i].food.precio*arr[i].quantity);
+         console.log(arr[i].food.precio*arr[i].quantity);
+         console.log(total);
+        
+       }
+       return total;
+     }
+     
    
     
   }
