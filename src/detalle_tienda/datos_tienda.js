@@ -116,7 +116,7 @@ export default class Perfil extends Component {
             name="logo-whatsapp"
             underlayColor="transparent"
             style={styles.smsIcon}
-            onPress={() => Linking.openURL(`https://wa.me/${this.state.telefono}`).catch(err => console.log('Error:', err))}
+            onPress={() => Linking.openURL(`https://wa.me/52${this.state.telefono}`).catch(err => console.log('Error:', err))}
           />
         </View>
       </View>

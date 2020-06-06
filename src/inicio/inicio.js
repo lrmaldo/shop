@@ -70,7 +70,9 @@ export default class app extends Component {
   
     hideMenu = () => {
       this._menu.hide();
-      console.log("c")
+      this.props.navigation.navigate("Contactanos")
+      
+      
     };
   terminos = () =>{
     
@@ -100,7 +102,7 @@ export default class app extends Component {
       ref={params.setMenuRef}
       button={<Icon name="md-more" size={30}  color= 'white'/>}
     >
-      <MenuItem onPress={params.hideMenu}>Contactanos</MenuItem>
+      <MenuItem onPress={params.hideMenu}>Contáctanos</MenuItem>
       <MenuItem onPress={params.terminos}>Politicas de privacidad</MenuItem>
       <MenuItem onPress={params.info} >
         Info de la aplicación

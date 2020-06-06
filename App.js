@@ -204,7 +204,7 @@ const HomeNavigator = createStackNavigator({
   'Contactanos':{
     screen:Contactanos,
     navigationOptions:{
-          title:"Contactanos",
+          title:"Contáctanos",
           
           headerTitleAlign:'center',
           headerTitleStyle: {
