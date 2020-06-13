@@ -37,14 +37,15 @@ export default class ProductDetail extends Component {
         descripcion: this.props.navigation.getParam('descripcion'),
         precio: this.props.navigation.getParam('precio'),
         titulo: this.props.navigation.getParam('titulo'),
-        datos:this.props.navigation.getParam('datos')
+        datos:this.props.navigation.getParam('datos'),
+        cantidad:1,
 
     }
     
   }
 
 
-  static navigationOptions = ({navigation}) => {
+  /*static navigationOptions = ({navigation}) => {
     that =this;
    const { params = {} } = navigation.state;
    return{
@@ -59,7 +60,7 @@ export default class ProductDetail extends Component {
       </View>
     ),
    }
-  }
+  }*/
   clickEventListener() {
     //Alert.alert("Success", "Product has beed added to cart")
     this.onClickAddCart(this.state.datos)
@@ -76,7 +77,7 @@ export default class ProductDetail extends Component {
     const itemcart = {
       
       food: data,
-      quantity:  1,
+      quantity:  this.state.cantidad,
       precio: data.precio
     }
   
@@ -127,9 +128,42 @@ export default class ProductDetail extends Component {
       })
   }
 
+
+  onChangeQual =  async (i,type) =>
+  {
+    //const dataCar = this.state.cantidad
+    let cantd = this.state.cantidad
+
+    if (type) {
+     cantd = cantd + 1
+     
+     this.setState({cantidad:cantd})
+     console.log(" mas dos items");
+     //AsyncStorage.setItem('cart',JSON.stringify(dataCar));
+    }
+    else if (type==false&&cantd>=2){
+     cantd = cantd - 1
+     //dataCar[i].quantity = cantd
+     this.setState({cantidad:cantd})
+     console.log("dos items");
+     //AsyncStorage.setItem('cart',JSON.stringify(dataCar));
+    }
+    else if (type==false&&cantd==1){
+    //dataCar.splice(i,1)
+     this.setState({cantidad:1})
+       
+    
+    //console.log(dataCar);
+    //AsyncStorage.setItem('cart',JSON.stringify(dataCar));
+       }
+    
+  
+  }
+
   
 
   render() {
+    //this.onChangeQual()
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -148,6 +182,18 @@ export default class ProductDetail extends Component {
            
             
           </View>
+          <View style={{alignItems:'center',justifyContent:'space-between'}}>
+                           
+                           <View style={{flexDirection:'row', alignItems:'center'}}>
+                             <TouchableOpacity onPress={()=>this.onChangeQual(this.state.cantidad,false)}>
+                               <Icon name="ios-remove-circle" size={35} color={"#f9aa34"} />
+                             </TouchableOpacity>
+                             <Text style={{paddingHorizontal:8, fontWeight:'bold', fontSize:18}}>{this.state.cantidad}</Text>
+                             <TouchableOpacity onPress={()=>this.onChangeQual(this.state.cantidad,true)} >
+                               <Icon name="ios-add-circle" size={35} color={"#f9aa34"} />
+                             </TouchableOpacity>
+                           </View>
+                         </View>
           <View style={styles.separator}></View>
           <View style={styles.addToCarContainer}>
             <TouchableOpacity style={styles.shareButton} onPress={()=> this.clickEventListener()}>

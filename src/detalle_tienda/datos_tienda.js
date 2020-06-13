@@ -89,8 +89,11 @@ export default class Perfil extends Component {
 
   renderTel = ()=>{
     return(
+      
       <TouchableOpacity>
+        <View style={{marginTop:10}}></View>
       <View style={[styles.containerTel,]}>
+       
         <View style={styles.iconRow}>
           
             <Icon

@@ -2,7 +2,7 @@ import  React, { Component } from "react";
 import { Container, Content, Textarea, Form} from "native-base";
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements'
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Alert} from 'react-native'
 
 
 export default class App extends Component{
@@ -11,14 +11,58 @@ export default class App extends Component{
         super(props);
         this.state ={
             visible:false,
-            message:""
+            message:"" 
         }
     }
 
 
-    enviar =() =>{
-        console.log(this.state.message)
+    enviar = async()  =>{
+       // console.log(this.state.message)
+
+        this.setState({ visible: !this.state.visible });
+        var that = this;
+        //array del mensaje que ira en el body
+        let enviotienda = {
+          message: this.state.message,
+        }
+      
+      
+        //cambiar el url 
+        var url ="http://markettux.sattlink.com/api/recursos/store";
+        fetch(url,{
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(enviotienda)
+          }).then(function (response) {
+            return response.json();
+          }).then(function (result) { 
+            // console.log(result);
+            if(!result.error){
+           
+                        that.setState({ visible: false });
+                          Alert.alert(result.message);
+                          //that.props.navigation.navigate('Finalizar');
+                          //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
+         }else{
+         // Alert.alert(result.error_msg);
+          console.log(result);
+      }
+    }).catch(function (error) {
+      console.log("-------- error ------- "+error);
+      
+      //Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
+      
+      });
     }
+
+    
+
+ 
+
 
     render(){
         return(

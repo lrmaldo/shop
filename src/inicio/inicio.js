@@ -316,10 +316,10 @@ _renderItemFood(item){
           resizeMode="contain"
           source={{uri:item.foto_url}} />
           <View style={{height:((width/2)-20)-90, backgroundColor:'transparent', width:((width/2)-20)-10}} />
-          <Text style={{fontWeight:'bold',fontSize:25,textAlign:'center'}}>
+          <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>
             {item.nombre}
           </Text>
-          <Text style={{fontSize:18,color:"black", textAlign:"center"}}>{item.descripcion}</Text>
+          <Text style={{fontSize:16,color:"black", textAlign:"center"}}>{item.descripcion}</Text>
           
          
         </TouchableOpacity>

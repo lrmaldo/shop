@@ -175,6 +175,7 @@ export default class Perfil extends Component {
                        </View>
                        <View style={{alignItems:"center"}}>
                           <LoginButton  
+                                          visible={false}
                                           onLoginFinished={
                                             (error, result) => {
                                               if (error) {

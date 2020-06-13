@@ -100,7 +100,7 @@ export default class Carrito extends Component {
                        <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
                          <View>
                            <Text style={{fontWeight:"bold", fontSize:20}}>{item.food.titulo}</Text>
-                           <Text>{item.food.descripcion}</Text>
+                           <Text>{item.food.descripcion.substr(0,80)}...</Text>
                          </View>
                          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                            <Text style={{fontWeight:'bold',color:"#f9aa34",fontSize:20}}>${item.precio*item.quantity}</Text>

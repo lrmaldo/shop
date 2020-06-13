@@ -1,20 +1,46 @@
-import React,{ Component } from "react";
+import React,{ Component, useRef, useEffect } from "react";
 import { ImageBackground, StyleSheet, Text, View,
 Image,
 TouchableHighlight,
-Linking
+Linking,
+Animated
 } from "react-native";
 
+const FadeInView = (props) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
 
+  React.useEffect(() => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: 3000,
+      }
+    ).start();
+  }, [])
 
+  return (
+    <Animated.View                 // Special animatable View
+      style={{
+        ...props.style,
+        opacity: fadeAnim,         // Bind opacity to animated value
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+}
 
 export default class App extends Component{
+
+
 
     
         
         
     render(){
         return( <View style={styles.container}>
+            
            <ImageBackground
                         key={new Date()}
                         style={styles.headerBackgroundImage}
@@ -22,7 +48,7 @@ export default class App extends Component{
                         source={require('./../../image/fondo.jpg')}
                        
                       > 
-                  
+                          <FadeInView>
                             <View style={styles.trans}>
                                 
                             <Image
@@ -33,11 +59,14 @@ export default class App extends Component{
                             />
                             <Text style={styles.text}>Markettux </Text>
                             <Text style={styles.text1}>Versión 1.0 </Text>                        
-                            <Text style={styles.text1}>Miappshop by sattlink® </Text>
+                            <Text style={styles.text1}>Miappshop by Sattlink® </Text>
                             <TouchableHighlight>
-                            <Text  onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}></Text>
+                            <Text  style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>Desarrollado por:</Text>
                             </TouchableHighlight>
+                            <Text style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>Ing. Leonardo Maldonado</Text>
+                            
                           </View>
+                          </FadeInView>      
                      </ImageBackground>
           </View>)
     }
@@ -80,6 +109,13 @@ const styles = StyleSheet.create({
         color: "white",
         fontFamily:'sans-serif',
         fontSize: 20,
+        //fontWeight: "bold",
+       
+      },
+      text2: {
+        color: "white",
+        fontFamily:'sans-serif',
+        fontSize: 15,
         //fontWeight: "bold",
        
       },

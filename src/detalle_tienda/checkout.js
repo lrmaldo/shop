@@ -230,6 +230,7 @@ Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
   render() {
     const buttons = ['Pasar a la tienda', 'Servicio a domicilio']
   const { selectedIndex } = this.state
+  //console.log(this.state.id_tienda);
   this.retrieveData();
  //this.recargarDatostienda();
  // console.log(this.state.direccionTienda)
@@ -252,7 +253,7 @@ Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
 
                     <View style={{ marginBottom:10, flexDirection:"row",justifyContent:"space-evenly"}}>
                       <View style={{ flex:1, }}><Text style={{ textAlign:"left", fontSize:19}}>{item.food.titulo}</Text></View>
-                      <View style={{flex:1,flex:2}}></View>
+                      
                      
                       <View style={{flex:1,  }}><Text style={{ textAlign:"right", fontSize:19}}>${item.precio*item.quantity}</Text></View>
                     </View>

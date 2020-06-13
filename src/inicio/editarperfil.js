@@ -208,6 +208,23 @@ alert("result:"+error)
 }
   //
   guardarapiF(){
+
+   
+      if(this.state.email==null){
+        this.setState({email:"sin permiso"})
+      }
+      const dta =  JSON.stringify({
+        nombre: this.state.nombre,
+        correo: this.state.correo,
+        direccion: this.state.direccion,
+        cruzamientos:this.state.cruzamientos,
+        colonia:this.state.colonia,
+        referencias:this.state.referencias,
+        telefono:this.state.telefono,
+        id_facebook:this.state.id_facebook,
+        correoF:this.state.email,
+        nombreF:this.state.name})
+
     var that = this;
     var url ="http://markettux.sattlink.com/api/recursos/usersApp";
     fetch(url,{
@@ -237,6 +254,7 @@ alert("result:"+error)
                          wholeResult: result,
                       });
                       that.setState({ visible: false });
+                      console.log(dta)
                       Alert.alert(result.message);
                       //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
      }else{
@@ -244,7 +262,10 @@ alert("result:"+error)
       console.log(result);
 }
 }).catch(function (error) {
+  //console.log(result.json())
 console.log("-------- error ------- "+error);
+console.log(dta)
+//console.log(this.state.email)
 alert("result:"+error)
 });
   }
@@ -295,6 +316,7 @@ handleValidation(value) {
           <View style={styles.container}>
         
         <View style={styles.productRow}></View>
+        
            
            <View style={styles.inputContainer}>
 
@@ -487,7 +509,7 @@ handleValidation(value) {
     if (datajson.success) {
         console.log(datajson.data);
         console.warn("entro de nuevo");
-        this.setState({isLoggedin:true, name:datajson.data.name});
+        this.setState({isLoggedin:true, name:datajson.data.name,email:datajson.data.email});
        // variable para enviar post
         const data_fb =  {
           id_facebook: datajson.data.id,

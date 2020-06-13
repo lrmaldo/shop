@@ -104,7 +104,7 @@ export default class app extends Component {
    //const {direccionTienda} =this.state
     //console.log(direccionTienda)
     return{
-    title:params.titulo,
+   // title:params.titulo,
     headerRight:() => (   
    <View style={{flexDirection:"row"}}> 
        <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Datos_tienda',{nombre:params.titulo,
@@ -239,7 +239,7 @@ export default class app extends Component {
       />
       <View style={{ flex: 1,backgroundColor:"#f2f2f2" }}>
         <View style={{width: width, alignItems:'center'}} >
-        <Text style={styles.titleCatg}></Text>
+    <Text style={styles.titleCatg}>{this.state.nombretienda}</Text>
            
               <Swiper style={{height:width/2}}  showsButtons={false} autoplay={true} autoplayTimeout={2}>
                 {
@@ -297,7 +297,7 @@ export default class app extends Component {
           style={{width:100,height:80}}
           resizeMode="contain"
           source={{uri : item.url_foto}} />
-        <Text style={{fontWeight:'bold',fontSize:22}}>{item.titulo}</Text>
+        <Text style={{fontWeight:'bold',fontSize:16, textAlign:'center',width:160}}>{item.titulo}</Text>
       </TouchableOpacity>
     )
   }
@@ -314,10 +314,10 @@ _renderItemFood(item){
           resizeMode="contain"
           source={{uri:item.url_foto}} />
           <View style={{height:((width/2)-20)-90, backgroundColor:'transparent', width:((width/2)-20)-10}} />
-          <Text style={{fontWeight:'bold',fontSize:22,textAlign:'center'}}>
+          <Text style={{fontWeight:'bold',fontSize:18,textAlign:'center'}}>
             {item.titulo}
           </Text>
-          <Text>{item.descripcion}</Text>
+          <Text>{item.descripcion.substr(0,80)}...</Text>
           <Text style={{fontSize:20,color:"#f9aa34"}}>${item.precio}</Text>
           <TouchableOpacity
             onPress={()=>this.onClickAddCart(item)}
@@ -416,7 +416,8 @@ const styles = StyleSheet.create({
     backgroundColor:'red',
     margin:5, alignItems:'center',
     borderRadius:10,
-    padding:10
+    padding:10,
+    
   },
   titleCatg:{
     fontSize:30,
