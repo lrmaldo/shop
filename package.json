@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/netinfo": "^5.9.3",
     "formik": "^2.1.4",
     "jetifier": "^1.6.5",
     "link": "^0.1.5",

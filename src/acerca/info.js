@@ -61,9 +61,9 @@ export default class App extends Component{
                             <Text style={styles.text1}>Versión 1.0 </Text>                        
                             <Text style={styles.text1}>Miappshop by Sattlink® </Text>
                             <TouchableHighlight>
-                            <Text  style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>Desarrollado por:</Text>
+                            <Text  style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}></Text>
                             </TouchableHighlight>
-                            <Text style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>Ing. Leonardo Maldonado</Text>
+                            <Text style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>.</Text>
                             
                           </View>
                           </FadeInView>      

@@ -57,6 +57,8 @@ export default class app extends Component {
       descripcion: this.props.navigation.getParam('descripcion'),
       fotoTienda: this.props.navigation.getParam('fotoTienda'),
       telefonoTienda: this.props.navigation.getParam('telefonoT'),
+      lat:this.props.navigation.getParam('lat'),
+      long:this.props.navigation.getParam('long'),
       tienda:this.props.navigation.getParam('tienda')
     }
     
@@ -108,14 +110,14 @@ export default class app extends Component {
     headerRight:() => (   
    <View style={{flexDirection:"row"}}> 
        <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Datos_tienda',{nombre:params.titulo,
-        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot})}>
+        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot,lat:params.lat,long:params.long})}>
           <View>
             <Icon2 underlayColor='white' name="shopping-store" size={26} style={{marginRight:30}} color= 'white'  />
          </View>
        </TouchableOpacity>
 
       <TouchableOpacity underlayColor="white"  onPress={() => navigation.navigate('Carrito',{id_tienda:params.id_tienda,nombre:params.titulo,
-        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot})} ><View>
+        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot,lat:params.lat,long:params.long})} ><View>
       <Icon name="md-cart" size={30}
        style={{marginRight:20}}
        underlayColor={'#64b5f6'}
@@ -185,7 +187,8 @@ export default class app extends Component {
    
   componentDidMount(){
     this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda,direccionT:this.state.direccionTienda,
-    fotoT:this.state.fotoTienda,telefonot:this.state.telefonoTienda,id_tienda:this.state.id_tienda });
+    fotoT:this.state.fotoTienda,telefonot:this.state.telefonoTienda,id_tienda:this.state.id_tienda,
+    lat:this.state.lat, long:this.state.long });
     setInterval(() => {
       this.setState({
         visible: false

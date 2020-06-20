@@ -5,14 +5,27 @@ import {Text,
      View,
     StyleSheet,
      ScrollView,
+     Platform,
+     Linking,
      TouchableOpacity} from 'react-native';
 
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 // import icons
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons'
+import Icon3 from 'react-native-vector-icons/FontAwesome5'
 
 export default  class App extends Component{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      tipo:this.props.navigation.getParam('tipo'),/// si es true servicio a tienda
+      nombreTienda:this.props.navigation.getParam('nombretienda'),
+      lat:this.props.navigation.getParam('lat'),
+      long:this.props.navigation.getParam('long'),
+    }
+  }
 
     componentDidMount() {
         this.props.navigation.setParams({ regresar: this._regresar.bind(this) });
@@ -28,6 +41,7 @@ export default  class App extends Component{
        //console.log(direccionTienda)
        return{
       // title:params.titulo,
+      
       
          
        headerLeft: (       
@@ -58,6 +72,13 @@ export default  class App extends Component{
        }
 
     render(){
+        //variable de tipo logico
+        const tipo = this.state.tipo;
+        const url = Platform.select({
+          ios: `maps://app?ll=${this.state.lat},${this.state.long}`,
+          android: `google.navigation:q=${this.state.lat},${this.state.long}`,
+        })
+
         return(
             <View style={{ borderRadius:20, paddingVertical:30, backgroundColor:'white'}}>
                  <ScrollView>
@@ -73,6 +94,18 @@ export default  class App extends Component{
             <Text style={styles.description}>
             Tu orden de pedido lo ha recibido el vendedor
             </Text>
+            {tipo ? <View>
+              <Text style={styles.description}>Aquí esta la ruta hacia tienda</Text>
+                  <TouchableOpacity style={{alignItems:"center", marginTop:5}} onPress={() => Linking.openURL(url).catch(err => console.log('Error:', err))}>
+
+                    <Icon3
+                      name="directions"
+                      underlayColor="transparent"
+                      style={styles.telIcon}
+                      />
+                  </TouchableOpacity>
+              <Text style={styles.description} >Ir a mapa</Text>
+            </View>:<View></View>}
           </View>
           <View style={styles.starContainer}>
             
@@ -184,5 +217,10 @@ const styles = StyleSheet.create({
     },
     addToCarContainer:{
       marginHorizontal:30
-    }
+    },
+    telIcon: {
+     
+      color: 'orange',
+      fontSize: 30,
+    },
   }); 

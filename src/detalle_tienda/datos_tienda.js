@@ -26,6 +26,9 @@ export default class Perfil extends Component {
      direccion: this.props.navigation.getParam('direccionT'),
      foto:this.props.navigation.getParam('fotot'),
      telefono:this.props.navigation.getParam('telefonot'),
+     lat:this.props.navigation.getParam('lat'),
+     long: this.props.navigation.getParam('long')
+     
     };
   }
   
@@ -43,8 +46,8 @@ export default class Perfil extends Component {
   //const {direccionTienda} =this.state
    //console.log(direccionTienda)
    return{
-     title:params.titulo,
-     
+     title:"",
+     //header:null
    }
   
   }
@@ -137,10 +140,15 @@ export default class Perfil extends Component {
   )
 
   Direccion = () => {
-    const url = Platform.select({
+    /**const url = Platform.select({
       ios: `maps://app?daddr=${this.state.direccion}`,
       android: `google.navigation:q=${this.state.direccion}`,
+    })**/
+    const url = Platform.select({
+      ios: `maps://app?ll=${this.state.lat},${this.state.long}`,
+      android: `google.navigation:q=${this.state.lat},${this.state.long}`,
     })
+    
     return(<TouchableOpacity onPress={()=> Linking.openURL(url)}>
       
     <View style={[styles.containerD,styles.emailContainer]}>
@@ -176,7 +184,7 @@ export default class Perfil extends Component {
     console.log(this.state.foto)
     console.log(this.state.nombre)
     console.log(this.state.direccion)
-    console.log(this.state.telefono)
+    console.log(this.state.long)
   
   return (
   

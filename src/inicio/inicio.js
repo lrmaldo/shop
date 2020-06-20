@@ -309,7 +309,11 @@ _renderItemFood(item){
   {
     return(
       <TouchableOpacity style={styles.divFood}  onPress={() =>{ AsyncStorage.removeItem('cart');  this.props.navigation.navigate('Tienda',{productos: item.productos, categorias:item.categorias, bannert:item.bannert,
-       direccion:item.direccion, descripcion:item.descripcion,telefonoT:item.telefono,nombretienda:item.nombre, fotoTienda:item.foto_url, id_tienda:item.id,tienda:item })}}>
+       direccion:item.direccion, descripcion:item.descripcion,
+       telefonoT:item.telefono,nombretienda:item.nombre, 
+       fotoTienda:item.foto_url, id_tienda:item.id,tienda:item,
+       lat:item.lat,
+       long:item.long })}}>
         
         <Image
           style={styles.imageFood}

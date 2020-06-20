@@ -103,16 +103,16 @@ export default class Perfil extends Component {
                         key={new Date()}
                         style={styles.headerBackgroundImage}
                         blurRadius={10}
-                        source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-                        defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                        source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/img/logo.jpg'}}
+                        defaultSource={{uri:'http://markettux.sattlink.com/img/logo.jpg'}}
                       > 
                   
                             <View style={styles.headerColumn}>
                             <Image
                               key={new Date()}
                               style={styles.userImage}
-                              source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-                              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                              source={{uri: this.state.isLoggedin? this.state.picture.data.url :'http://markettux.sattlink.com/img/logo.jpg'}}
+                              defaultSource={{uri:'http://markettux.sattlink.com/img/logo.jpg'}}
                             />
                             <Text style={styles.userNameText}>Hola {this.state.name}</Text>
                         
