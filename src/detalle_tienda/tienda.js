@@ -30,6 +30,9 @@ import Icon2 from 'react-native-vector-icons/Fontisto';
 //swiper
 import Swiper from 'react-native-swiper'
 
+//imagen fast 
+import FastImage from 'react-native-fast-image'
+
 
 
 //animacion al cargar vista
@@ -104,20 +107,20 @@ export default class app extends Component {
      
     const { params = {} } = navigation.state;
    //const {direccionTienda} =this.state
-    //console.log(direccionTienda)
+    console.log(params.descripcion)
     return{
    // title:params.titulo,
     headerRight:() => (   
    <View style={{flexDirection:"row"}}> 
        <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Datos_tienda',{nombre:params.titulo,
-        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot,lat:params.lat,long:params.long})}>
+        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot,lat:params.lat,long:params.long,descripcion:params.descripcion})}>
           <View>
             <Icon2 underlayColor='white' name="shopping-store" size={26} style={{marginRight:30}} color= 'white'  />
          </View>
        </TouchableOpacity>
 
       <TouchableOpacity underlayColor="white"  onPress={() => navigation.navigate('Carrito',{id_tienda:params.id_tienda,nombre:params.titulo,
-        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot,lat:params.lat,long:params.long})} ><View>
+        direccionT:params.direccionT,fotot:params.fotoT,telefonot:params.telefonot,lat:params.lat,long:params.long,descripcion:params.descripcion})} ><View>
       <Icon name="md-cart" size={30}
        style={{marginRight:20}}
        underlayColor={'#64b5f6'}
@@ -187,7 +190,7 @@ export default class app extends Component {
    
   componentDidMount(){
     this.props.navigation.setParams({ regresar: this._regresar.bind(this),titulo: this.state.nombretienda,direccionT:this.state.direccionTienda,
-    fotoT:this.state.fotoTienda,telefonot:this.state.telefonoTienda,id_tienda:this.state.id_tienda,
+    fotoT:this.state.fotoTienda,telefonot:this.state.telefonoTienda,id_tienda:this.state.id_tienda,descripcion:this.state.descripcion,
     lat:this.state.lat, long:this.state.long });
     setInterval(() => {
       this.setState({
@@ -219,7 +222,7 @@ export default class app extends Component {
   }
   render() {
    // console.log("tienda"+this.state.direccionTienda);
-     //console.log("tienda: "+ this.state.id_tienda);
+     //console.log("tienda: "+ this.state.descripcion);
     return (
      
       <ScrollView  refreshControl={
@@ -312,10 +315,19 @@ _renderItemFood(item){
     return(
       <TouchableOpacity style={styles.divFood} onPress={()=>this.props.navigation.navigate("Detalle",{fotoitem:item.url_foto, titulo:item.titulo,
       descripcion:item.descripcion,precio:item.precio,Tienda:this.state.tienda, datos:item})}>
-        <Image
-          style={styles.imageFood}
-          resizeMode="contain"
-          source={{uri:item.url_foto}} />
+       
+       <FastImage
+            key={item.id}
+            style={styles.imageFood}
+            resizeMode={FastImage.resizeMode.contain}
+            source={{
+              uri: item.url_foto,
+              headers: { Authorization: 'someAuthToken' },
+              priority: FastImage.priority.normal,
+            }}
+          // defaultSource={{uri:item.foto_url}}
+          />
+      
           <View style={{height:((width/2)-20)-90, backgroundColor:'transparent', width:((width/2)-20)-10}} />
           <Text style={{fontWeight:'bold',fontSize:18,textAlign:'center'}}>
             {item.titulo}

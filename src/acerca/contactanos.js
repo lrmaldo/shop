@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Content, Textarea, Form } from "native-base";
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements'
-import { StyleSheet, Alert} from 'react-native'
+import { StyleSheet, Alert } from 'react-native'
 import NetInfo from "@react-native-community/netinfo";
 
 
@@ -15,7 +15,7 @@ export default class App extends Component {
     this.state = {
       visible: false,
       message: "",
-     
+
     }
   }
 
@@ -71,11 +71,11 @@ export default class App extends Component {
       console.log("Is connected?", state.isConnected);
     });
   }
-  
+
 
   render() {
 
-    
+
     return (
       <Container>
 

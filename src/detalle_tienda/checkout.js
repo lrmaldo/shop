@@ -151,8 +151,10 @@ export default class Checkout extends Component {
 
         that.setState({ visible: false });
         //  Alert.alert(result.message);
-        that.props.navigation.navigate('Finalizar', { tipo: true, nombretienda: that.state.direccionTienda,
-           lat: that.state.lat, long: that.state.long });
+        that.props.navigation.navigate('Finalizar', {
+          tipo: true, nombretienda: that.state.direccionTienda,
+          lat: that.state.lat, long: that.state.long
+        });
         //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
       } else {
         // Alert.alert(result.error_msg);
@@ -160,7 +162,7 @@ export default class Checkout extends Component {
       }
     }).catch(function (error) {
       console.log("-------- error ------- " + error);
-
+      that.setState({ visible: false });
       Toast.showWithGravity("Ocurrio un problema", Toast.LONG, Toast.CENTER);
 
     });

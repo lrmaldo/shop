@@ -54,12 +54,12 @@ export default class App extends Component{
                             <Image
                               key={new Date()}
                               style={styles.userImage}
-                              source={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
-                              defaultSource={{uri:'http://markettux.sattlink.com/imagenes/tiendas/2/perfil/imagen1589059888.jpg'}}
+                              source={{uri:'http://markettux.sattlink.com/img/logo.jpg'}}
+                              defaultSource={{uri:'http://markettux.sattlink.com/img/logo.jpg'}}
                             />
                             <Text style={styles.text}>Markettux </Text>
                             <Text style={styles.text1}>Versión 1.0 </Text>                        
-                            <Text style={styles.text1}>Miappshop by Sattlink® </Text>
+                            <Text style={styles.text1} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>Miappshop by Sattlink® </Text>
                             <TouchableHighlight>
                             <Text  style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}></Text>
                             </TouchableHighlight>

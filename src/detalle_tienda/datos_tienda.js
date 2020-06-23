@@ -18,43 +18,44 @@ import Icon3 from 'react-native-vector-icons/FontAwesome5'
 
 export default class Perfil extends Component {
 
-   
+
   constructor(props) {
-     super(props);
-     this.state = {
-     nombre: this.props.navigation.getParam('nombre'),
-     direccion: this.props.navigation.getParam('direccionT'),
-     foto:this.props.navigation.getParam('fotot'),
-     telefono:this.props.navigation.getParam('telefonot'),
-     lat:this.props.navigation.getParam('lat'),
-     long: this.props.navigation.getParam('long')
-     
+    super(props);
+    this.state = {
+      nombre: this.props.navigation.getParam('nombre'),
+      direccion: this.props.navigation.getParam('direccionT'),
+      foto: this.props.navigation.getParam('fotot'),
+      telefono: this.props.navigation.getParam('telefonot'),
+      lat: this.props.navigation.getParam('lat'),
+      long: this.props.navigation.getParam('long'),
+      descripcion: this.props.navigation.getParam('descripcion'),
+
     };
   }
-  
+
   componentDidMount() {
-     //const data = JSON.stringify(this.props.navigation.getParam('Tienda'))
-     
-     this.props.navigation.setParams({titulo:this.state.nombre})
-    
-     
+    //const data = JSON.stringify(this.props.navigation.getParam('Tienda'))
+
+    this.props.navigation.setParams({ titulo: this.state.nombre })
+
+
   }
 
-  static navigationOptions = ({navigation}) => {
-    that =this;
-   const { params = {} } = navigation.state;
-  //const {direccionTienda} =this.state
-   //console.log(direccionTienda)
-   return{
-     title:"",
-     //header:null
-   }
-  
+  static navigationOptions = ({ navigation }) => {
+    that = this;
+    const { params = {} } = navigation.state;
+    //const {direccionTienda} =this.state
+    //console.log(direccionTienda)
+    return {
+      title: "",
+      //header:null
+    }
+
   }
-  
-  
+
+
   renderHeader = () => {
-    
+
 
     return (
       <View style={styles.headerContainer}>
@@ -75,11 +76,11 @@ export default class Perfil extends Component {
             <Text style={styles.userNameText}></Text>
             <View style={styles.userAddressRow}>
               <View>
-             
+
               </View>
               <View style={styles.userCityRow}>
                 <Text style={styles.userCityText}>
-                 
+
                 </Text>
               </View>
             </View>
@@ -90,43 +91,47 @@ export default class Perfil extends Component {
   }
 
 
-  renderTel = ()=>{
-    return(
-      
-      <TouchableOpacity>
-        <View style={{marginTop:10}}></View>
-      <View style={[styles.containerTel,]}>
-       
-        <View style={styles.iconRow}>
-          
+  renderTel = () => {
+
+    return (
+
+      <View>
+        <View style={{ marginTop: 15 }}></View>
+        <View style={{ marginTop: 5, marginBottom: 15, alignItems: 'center' }}>
+          <Text style={styles.telNumberText}>{this.props.navigation.getParam('descripcion')} </Text>
+        </View>
+        <View style={[styles.containerTel,]}>
+
+          <TouchableOpacity style={styles.iconRow} onPress={() => Linking.openURL(`tel://${this.state.telefono}`).catch(err => console.log('Error:', err))}>
+
             <Icon
               name="call"
               underlayColor="transparent"
               iconStyle={styles.telIcon}
-              onPress={() =>  Linking.openURL(`tel://${this.state.telefono}`).catch(err => console.log('Error:', err))}
+              
             />
-          
-        </View>
-        <View style={styles.telRow}>
-          <View style={styles.telNumberColumn}>
-            <Text style={styles.telNumberText}>{this.state.telefono}</Text>
-          </View>
-          <View style={styles.telNameColumn}>
-            
+
+          </TouchableOpacity>
+          <View style={styles.telRow}>
+            <View style={styles.telNumberColumn}>
+              <Text style={styles.telNumberText}>{this.state.telefono}</Text>
+            </View>
+            <View style={styles.telNameColumn}>
+
               <Text style={styles.telNameText}>{this.state.nombre}</Text>
-            
+
+            </View>
           </View>
-        </View>
-        <View style={styles.smsRow}>
-          <Icon2
-            name="logo-whatsapp"
-            underlayColor="transparent"
-            style={styles.smsIcon}
-            onPress={() => Linking.openURL(`https://wa.me/52${this.state.telefono}`).catch(err => console.log('Error:', err))}
-          />
+          <TouchableOpacity style={styles.smsRow} onPress={() => Linking.openURL(`https://wa.me/52${this.state.telefono}`).catch(err => console.log('Error:', err))}>
+            <Icon2
+              name="logo-whatsapp"
+              underlayColor="transparent"
+              style={styles.smsIcon}
+              
+            />
+          </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
     )
   }
 
@@ -148,61 +153,63 @@ export default class Perfil extends Component {
       ios: `maps://app?ll=${this.state.lat},${this.state.long}`,
       android: `google.navigation:q=${this.state.lat},${this.state.long}`,
     })
-    
-    return(<TouchableOpacity onPress={()=> Linking.openURL(url)}>
-      
-    <View style={[styles.containerD,styles.emailContainer]}>
-      <View style={styles.direccionRow}>
-        
+
+    return (<TouchableOpacity onPress={() => Linking.openURL(url)}>
+
+      <View style={[styles.containerD, styles.emailContainer]}>
+        <View style={styles.direccionRow}>
+
           <Icon3
             name="directions"
             underlayColor="transparent"
             style={styles.telIcon}
-            //onPress={() => onPressEmail()}
+          //onPress={() => onPressEmail()}
           />
-        
-      </View>
-      <View style={styles.telRow}>
-      <View style={styles.direccionNameColumn}>
-        <Text style={styles.direccionNameText}>Direccion</Text>
-    </View>
-        <View style={styles.direccionColumn}>
-          <Text style={styles.direccionText}>{this.state.direccion}</Text>
+
         </View>
-       
+        <View style={styles.telRow}>
+          <View style={styles.direccionNameColumn}>
+            <Text style={styles.direccionNameText}>Direccion</Text>
+          </View>
+          <View style={styles.direccionColumn}>
+            <Text style={styles.direccionText}>{this.state.direccion}</Text>
+          </View>
+
+        </View>
       </View>
-    </View>
-  </TouchableOpacity>)
+    </TouchableOpacity>)
   }
 
- 
+
   render() {
     const dhis = this
-    
+
     /// hay que mapear el state para obtener los datos de la tienda  agregar los elementos en el render 
     //console.log()
-    console.log(this.state.foto)
-    console.log(this.state.nombre)
-    console.log(this.state.direccion)
-    console.log(this.state.long)
-  
-  return (
-  
-    <ScrollView style={styles.scroll}>
-    <View style={styles.container}>
-      <Card containerStyle={styles.cardContainer}>
-    
-      {this.renderHeader()}
-      
-      {this.Separator()}   
+    // console.log(this.state.foto)
+    // console.log(this.state.nombre)
+    // console.log(this.state.direccion)
+    // console.log(this.state.long)
+    // console.log(this.state.descripcion)
 
-      {this.renderTel()}    
-      {this.Separator()}
-      {this.Direccion()} 
-     
-      </Card>
-    </View>
-  </ScrollView>)
+
+    return (
+
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          <Card containerStyle={styles.cardContainer}>
+
+            {this.renderHeader()}
+
+            {this.Separator()}
+
+            {this.renderTel()}
+            {this.Separator()}
+            {this.Direccion()}
+
+          </Card>
+        </View>
+      </ScrollView>)
   }
 }
 
@@ -292,11 +299,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   smsIcon: {
-    color: 'gray',
+    color: 'orange',
     fontSize: 35,
   },
   smsRow: {
-    marginTop:5,
+    marginTop: 5,
     flex: 2,
     justifyContent: 'flex-start',
   },
@@ -314,7 +321,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
   telNumberColumn: {
-    marginTop:4,
+    marginTop: 4,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginBottom: 5,
