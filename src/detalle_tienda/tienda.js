@@ -214,7 +214,9 @@ export default class app extends Component {
 
   onRefresh() {
     //Clear old data of the list
-    this.setState({ dataBanner:[],
+    this.setState({ 
+      selectCatg:0,
+      dataBanner:[],
       dataCategories:[],
       dataFood:[],});
     //Call the Service to get the latest data

@@ -45,6 +45,7 @@ import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 //imagen fast 
 import FastImage from 'react-native-fast-image'
+import { isEmptyArray } from 'formik';
 
 export default class app extends Component {
 
@@ -64,7 +65,8 @@ export default class app extends Component {
       visible: false,
       refreshing: true,
       icon: null,
-      hasScrolled: false
+      hasScrolled: false,
+      dataaux: []
     }
     this.GetData1(this.page);
   }
@@ -179,20 +181,24 @@ export default class app extends Component {
 
     const url = `http://markettux.sattlink.com/api/recursos?page=${page}`;
     //const url =`http://markettux.sattlink.com/api/recursos?page=21`;
-    // console.log(page)
+     console.log(page)
+     //console.log(this.state.dataFood)
     this.setState({ loading: true })
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
         var listData = this.state.dataFood;
         var data = listData.concat(responseJson.data.tiendas);
+       var dataaux = responseJson.data.tiendas;
         // console.log(listData);
         this.setState({
           // isLoading: true,
-
+          dataBanner: responseJson.data.bannerP,
+          dataCategories: responseJson.data.giro,
           dataFood: data,
           refreshing: false,
           loading: false,
+          dataaux: dataaux
 
         });
 
@@ -223,10 +229,14 @@ export default class app extends Component {
       dataBanner: [],
       dataCategories: [],
       dataFood: [],
+      selectCatg: 0
     });
+    
     this.page = 1;
     //Call the Service to get the latest data
-    this.GetData();
+    this.GetData1(this.page)
+    //this.GetData();
+   
 
   }
 
@@ -271,7 +281,9 @@ export default class app extends Component {
 
   render() {
     const dhis = this
-
+    let catg = this.state.selectCatg
+    let dataaux = this.state.dataaux;
+    console.log(dataaux)
     if (this.state.refreshing) {
       return (
         //loading view while data is loading
@@ -294,16 +306,16 @@ export default class app extends Component {
         />}
         //onScroll={console.log("scr")}
         //onMomentumScrollBegin={()=>{this.onScroll()}}
-        onMomentumScrollEnd={() => { this.onScroll() }} //descomentar esto
+        onMomentumScrollEnd={() => {if (catg == 0) {this.onScroll(); console.log("activo")}else{null} }} //descomentar esto
       //removeClippedSubviews={false}
       >
 
         <StatusBar barStyle="light-content" backgroundColor="#f4511e" />
 
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
-          <Text style={styles.titleCatg}></Text>
+          
           <View style={{ width: width, alignItems: 'center' }} >
-            <Text style={styles.titleCatg}>{this.state.nombretienda}</Text>
+            <Text style={styles.titleCatg}></Text>
 
             <Swiper style={{ height: width / 2 }} key={this.state.dataBanner.length} showsButtons={false} autoplay={true} autoplayTimeout={4}>
               {
@@ -329,14 +341,16 @@ export default class app extends Component {
             />
             <FlatList
               //horizontal={true}
-              data={this.state.dataFood}
+              data={catg== 0 ? this.state.dataFood: this.state.dataFood.filter((item) => {
+                return item.id_giro.toLowerCase().match(catg)
+              })}
               numColumns={2}
               renderItem={({ item }) => this._renderItemFood(item)}
               keyExtractor={(item, index) => index.toString()}
               ItemSeparatorComponent={this.renderSeparator}
               ListFooterComponent={this.renderFooter.bind(this)}
               onEndReachedThreshold={0.5}
-            //onEndReached={this.handleLoadMore.bind(this)}
+              onEndReached={catg !=0  && !isEmptyArray(dataaux)? this.handleLoadMore.bind(this): null}
             //onScroll={console.log("termino")}
             />
 
@@ -371,9 +385,10 @@ export default class app extends Component {
   }
 
   _renderItemFood(item) {
-    // console.log(item.direccion);
+    // console.log(this.state.selectCatg);
     let catg = this.state.selectCatg
-    if (catg == 0 || catg == item.id_giro) {
+    //if (catg ) {
+    //if (catg == 0 || catg == item.id_giro) {
       return (
         <TouchableOpacity style={styles.divFood} onPress={() => {
           AsyncStorage.removeItem('cart'); this.props.navigation.navigate('Tienda', {
@@ -407,7 +422,7 @@ export default class app extends Component {
         </TouchableOpacity>
 
       )
-    }
+    //}
   }
 
 
