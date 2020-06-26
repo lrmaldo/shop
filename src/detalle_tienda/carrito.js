@@ -20,7 +20,8 @@ export default class Carrito extends Component {
       direccionT: this.props.navigation.getParam('direccionT'),
       telefonot: this.props.navigation.getParam('telefonot'),
       lat: this.props.navigation.getParam('lat'),
-      long: this.props.navigation.getParam('long')
+      long: this.props.navigation.getParam('long'),
+      fotoT:this.props.navigation.getParam('fotoT')
 
 
     };
@@ -134,7 +135,9 @@ export default class Carrito extends Component {
                 margin: 20
               }} onPress={() => this.props.navigation.navigate('Checkout', {
                 total: this.total(), id_tienda: this.state.id_tienda, nombre: this.state.nombre,
-                direccionT: this.state.direccionT, fotot: this.state.fotoT, telefonot: this.state.telefonot, lat: this.state.lat, long: this.state.long
+                direccionT: this.state.direccionT, fotot: this.state.fotoT, telefonot: this.state.telefonot, 
+                lat: this.state.lat, long: this.state.long,
+                
               })}>
                 <Text style={{
                   fontSize: 24,
@@ -175,7 +178,7 @@ export default class Carrito extends Component {
       console.log("si hay");
 
       //const cart = this.state.datacart;
-      console.log("dentro de  la funcion" + JSON.stringify(arr))
+      //console.log("dentro de  la funcion" + JSON.stringify(arr))
 
       var total = 0;
       for (var i in arr) {

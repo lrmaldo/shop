@@ -266,7 +266,8 @@ alert("result:"+error)
 console.log("-------- error ------- "+error);
 console.log(dta)
 //console.log(this.state.email)
-alert("result:"+error)
+Alert.alert("Ocurrio un problema con el servidor intentalo más tarde")
+that.setState({ visible: false });
 });
   }
 

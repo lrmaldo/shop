@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { ButtonGroup } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
+import Icon3 from 'react-native-vector-icons/Fontisto';
 import { Button } from 'react-native-elements'
 
 import Toast from 'react-native-simple-toast';
@@ -36,6 +37,7 @@ export default class Checkout extends Component {
       nombretienda: this.props.navigation.getParam('nombre'),
       direccionTienda: this.props.navigation.getParam('direccionT'),
       telefonoTienda: this.props.navigation.getParam('telefonot'),
+      fotoT:this.props.navigation.getParam('fotot'),
       lat: this.props.navigation.getParam('lat'),
       long: this.props.navigation.getParam('long'),
       visible: false,
@@ -150,7 +152,7 @@ export default class Checkout extends Component {
       if (!result.error) {
 
         that.setState({ visible: false });
-        //  Alert.alert(result.message);
+        that.guardarPedido("Recoger en tienda");// guardar pedido en el modulo del usuario "mis pedidos"
         that.props.navigation.navigate('Finalizar', {
           tipo: true, nombretienda: that.state.direccionTienda,
           lat: that.state.lat, long: that.state.long
@@ -158,7 +160,7 @@ export default class Checkout extends Component {
         //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
       } else {
         // Alert.alert(result.error_msg);
-        console.log(result);
+        //console.log(result);
       }
     }).catch(function (error) {
       console.log("-------- error ------- " + error);
@@ -208,8 +210,10 @@ export default class Checkout extends Component {
     }).then(function (result) {
       console.log(result);
       if (!result.error) {
+       
         that.setState({ visible: false });
         //Alert.alert(result.message);
+        that.guardarPedido("Servicio a domicilio");
         that.props.navigation.navigate('Finalizar', { tipo: false });
         //Toast.showWithGravity(result.message, Toast.LONG, Toast.CENTER);
       } else {
@@ -229,14 +233,66 @@ export default class Checkout extends Component {
 
   }
 
+  guardarPedido(tipos){
+    ///este metodo sirve para guardar el pedido 
+   // console.log(this.state.nombre)
+var that = this;
+   let newpedido =  {
+    datoscliente: {
+      nombre: that.state.nombre,
+      telefono: that.state.telefono,
+      email: that.state.email,
+      direccion: that.state.direccion,
+      cruzamientos: that.state.cruzamientos,
+      referencias: that.state.referencias,
+      colonia: that.state.colonia
+    },
+    datostienda: {
+      id_tienda: that.state.id_tienda,
+      nombretienda: that.state.nombretienda,
+      fotourl:that.state.fotoT,
+      direccionTienda:that.state.direccionTienda,
+      telefonot:that.state.telefonoTienda,
+      lat:that.state.lat,
+      long:that.state.long
+    },
+    pedido: that.state.cartconfirmado,
+    total: that.state.total,
+    tipo: tipos,
+    fecha: Date.now()
+  }
+    AsyncStorage.getItem('mispedidos').then((pedidos) => {
+      if (pedidos !== null) {
+        // We have data!!
+        const data_pedidos = JSON.parse(pedidos)
+
+        //console.log(data_pedidos)
+         
+        data_pedidos.push(newpedido)
+        AsyncStorage.setItem('mispedidos', JSON.stringify(data_pedidos));
+
+      }else{
+        console.log("no se encontro")
+        const pedido = []
+        //console.log(JSON.stringify(pedido))
+        pedido.push(newpedido)
+        AsyncStorage.setItem('mispedidos', JSON.stringify(pedido));
+      }
+      
+    })
+      .catch((err) => {
+       // alert(err)
+       console.log(err)
+      })
+  }
+
 
   render() {
     const buttons = ['Pasar a la tienda', 'Servicio a domicilio']
     const { selectedIndex } = this.state
-    //console.log(this.state.id_tienda);
+  
     this.retrieveData();
-    //this.recargarDatostienda();
-    // console.log(this.state.direccionTienda)
+    
     //console.log(selectedIndex);  al primer view se le tiene que agregar esto --> alignItems: 'center'
     return (
       <ScrollView>
@@ -294,10 +350,10 @@ export default class Checkout extends Component {
           <View>
             {this.state.selectedIndex == 0 ?
               <View>
-                <Text style={styles.description}> <Icon
-                  name="location-city"
+                <Text style={styles.description}> <Icon3
+                  name="shopping-store"
 
-                  size={45}
+                  size={38}
                   color="oracle"
 
                 /> </Text>
@@ -403,6 +459,7 @@ export default class Checkout extends Component {
                     disabled={this.state.botonactivo ? true : false}
                     loading={this.state.cargando ? true : false}
                     onPress={this.metododomicio}
+                   //onPress={this.guardarPedido.bind(this)}
                   />
                 </View>
               </View>

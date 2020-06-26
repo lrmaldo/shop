@@ -103,8 +103,9 @@ export default  class App extends Component{
                       underlayColor="transparent"
                       style={styles.telIcon}
                       />
-                  </TouchableOpacity>
+                 
               <Text style={styles.description} >Ir a mapa</Text>
+              </TouchableOpacity>
             </View>:<View></View>}
           </View>
           <View style={styles.starContainer}>
@@ -116,8 +117,8 @@ export default  class App extends Component{
           </View>
           <View style={styles.separator}></View>
           <View style={styles.addToCarContainer}>
-            <TouchableOpacity style={styles.shareButton} >
-              <Text style={styles.shareButtonText} onPress={this._regresar}>Regresar</Text>  
+            <TouchableOpacity style={styles.shareButton} onPress={this._regresar} >
+              <Text style={styles.shareButtonText} >Regresar</Text>  
             </TouchableOpacity>
           </View> 
           <View style={styles.separator}></View>

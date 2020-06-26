@@ -47,6 +47,7 @@ import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import FastImage from 'react-native-fast-image'
 import { isEmptyArray } from 'formik';
 
+
 export default class app extends Component {
 
 
@@ -171,7 +172,11 @@ export default class app extends Component {
 
       })
       .catch((error) => {
-        console.error(error);
+        Alert.alert("","Ocurrio un problema con el servidor intentalo más tarde")
+        this.setState({
+          refreshing: false,
+          loading: false,
+        }) 
       });
 
   };
@@ -204,7 +209,8 @@ export default class app extends Component {
 
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
+        Alert.alert("","Ocurrio un problema con el servidor intentalo más tarde")
       });
 
   };
@@ -217,7 +223,7 @@ export default class app extends Component {
 
     AsyncStorage.removeItem('cart');
     AsyncStorage.removeItem('datostienda');
-    this.GetData();//carga los banners;
+   // this.GetData();//carga los banners;
     //const url = "http://tutofox.com/foodapp/api.json"
 
 
@@ -305,8 +311,8 @@ export default class app extends Component {
 
         />}
         //onScroll={console.log("scr")}
-        //onMomentumScrollBegin={()=>{this.onScroll()}}
-        onMomentumScrollEnd={() => {if (catg == 0) {this.onScroll(); console.log("activo")}else{null} }} //descomentar esto
+        //onMomentumScrollBegin={()=>{this.onScroll()}}!isEmptyArray(dataaux)? this.handleLoadMore.bind(this): null
+        onMomentumScrollEnd={() => {if (catg == 0 ) {this.onScroll();}else{null} }} //descomentar esto
       //removeClippedSubviews={false}
       >
 
@@ -395,7 +401,7 @@ export default class app extends Component {
             productos: item.productos, categorias: item.categorias, bannert: item.bannert,
             direccion: item.direccion, descripcion: item.descripcion,
             telefonoT: item.telefono, nombretienda: item.nombre,
-            fotoTienda: item.foto_url, id_tienda: item.id, tienda: item,
+            fotoTienda: item.foto_url, id_tienda: item.id,
             lat: item.lat,
             long: item.long
           })

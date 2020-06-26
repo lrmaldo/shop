@@ -203,7 +203,13 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':lottie-react-native')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'com.facebook.fresco:fresco:1.+'
+    implementation 'com.facebook.fresco:animated-gif:1.+'
 
+    // For WebP support, including animated WebP
+    implementation 'com.facebook.fresco:animated-webp:1.+'
+    implementation 'com.facebook.fresco:webpsupport:1.+'
+    
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }

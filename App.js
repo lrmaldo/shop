@@ -41,8 +41,14 @@ import Contactanos from './src/acerca/contactanos'
 import  Info from './src/acerca/info'
 import  Terminos from './src/acerca/terminos'
 
+//import de layout mis pedidos
+
+import Mispedidos from './src/mispedidos/mispedidos'
+import Detallepedidos from './src/mispedidos/detallePedidos'
+
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -57,8 +63,8 @@ const TabIconPerfil = (props) => (
   
 )
 
-const IconCarrito = (props) => (
-  <Icon name="md-cart" size={30} color= 'white'    onPress={() => this.props.navigation.navigate('Inicio')}/>
+const TabIconMispedidos = (props) => (
+  <Icon2 name="shopping-bag" size={30} color={props.focused ? 'white' : 'darkgrey'}/>
   
 )
 
@@ -68,7 +74,7 @@ const HomeNavigator = createStackNavigator({
   'Home':{
     screen: Inicio,
     navigationOptions:{
-          title:"M@rkettux",
+          title:"Markettux",
           
           headerTitleAlign:'center',
           headerTitleStyle: {
@@ -316,6 +322,48 @@ const PerfilNavigator = createStackNavigator({
   
   
 });
+const MispedidosNavigator = createStackNavigator({
+  'Mispedidos':{
+    screen: Mispedidos,
+    navigationOptions:{
+          title:"Mis pedidos",
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+
+      
+        
+        
+    },
+  },
+  "Detallepedido":{
+    screen: Detallepedidos,
+    navigationOptions:{
+          title:"",
+          headerTitleAlign:'center',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+        headerTintColor:"white",
+        headerBackground:<View>
+        <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+        <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
+      </View>,
+
+      
+        
+        
+    },
+  },
+  
+  
+});
 
 
 
@@ -340,7 +388,19 @@ const BottonNavegation = createBottomTabNavigator({
       
      // tabBarIcon: ({activeTintColor}) => <FontAwesome name="home" color={"white"}></FontAwesome>
     },
+    
   },
+  Pedidos:{
+    screen: MispedidosNavigator,
+    navigationOptions:{
+      title:'Mis pedidos',
+      tabBarIcon: TabIconMispedidos,
+      
+     // tabBarIcon: ({activeTintColor}) => <FontAwesome name="home" color={"white"}></FontAwesome>
+    },
+    
+  },
+  
   
   
   /**Notificacion: {

@@ -54,7 +54,7 @@ export default class App extends Component{
                             <Image
                               key={new Date()}
                               style={styles.userImage}
-                              source={{uri:'http://markettux.sattlink.com/img/logo.jpg'}}
+                              source={require('./../../image/logo.jpg')}
                               defaultSource={{uri:'http://markettux.sattlink.com/img/logo.jpg'}}
                             />
                             <Text style={styles.text}>Markettux </Text>
@@ -63,7 +63,7 @@ export default class App extends Component{
                             <TouchableHighlight>
                             <Text  style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}></Text>
                             </TouchableHighlight>
-                            <Text style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}>.</Text>
+                            <Text style={styles.text2} onPress={() => Linking.openURL(`https://wa.me/529851050030`).catch(err => console.log('Error:', err))}></Text>
                             
                           </View>
                           </FadeInView>      
