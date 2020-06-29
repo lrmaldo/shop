@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Linking,
+    requireNativeComponent,
 
 } from 'react-native';
 
@@ -30,7 +31,7 @@ export default class App extends Component {
             nombretienda: "",
             telefonotienda: "",
             direcciontienda: "",
-            fototienda: "",
+            fototienda: this.props.navigation.getParam('fotourl'),
             lat: "",
             long: "",
 
@@ -39,7 +40,7 @@ export default class App extends Component {
             fecha: "",
             total: ""
         }
-
+        //this.cargardatos();
     }
 
     cargardatos() {
@@ -55,7 +56,7 @@ export default class App extends Component {
                 nombretienda: item.datostienda.nombretienda,
                 telefonotienda: item.datostienda.telefonot,
                 direcciontienda: item.datostienda.direccionTienda,
-                fototienda: item.datostienda.fotourl,
+               // fototienda: item.datostienda.fotourl,
                 lat: item.datostienda.lat,
                 long: item.datostienda.long,
 
@@ -67,7 +68,7 @@ export default class App extends Component {
         })
     }
 
-    async componentDidMount() {
+     componentDidMount() {
         this.cargardatos()
     }
 
@@ -86,6 +87,7 @@ export default class App extends Component {
                         style={styles.imageFood}
                         key={new Date()}
                         source={{ uri: this.state.fototienda }}
+                        defaultSource={require("./../../image/logo.jpg")}
                     />
                     {/* <Image
             style={styles.imageFood}

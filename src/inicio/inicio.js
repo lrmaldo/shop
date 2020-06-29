@@ -349,7 +349,7 @@ export default class app extends Component {
               //horizontal={true}
               data={catg== 0 ? this.state.dataFood: this.state.dataFood.filter((item) => {
                 return item.id_giro.toLowerCase().match(catg)
-              })}
+              })}// busca el filtro de categorias si encuentra renderiza el flatlist
               numColumns={2}
               renderItem={({ item }) => this._renderItemFood(item)}
               keyExtractor={(item, index) => index.toString()}
@@ -494,12 +494,12 @@ export default class app extends Component {
 
 const styles = StyleSheet.create({
   imageBanner: {
-    height: 200,
-    width: width - 20,
+    height: 180,
+    width: width - 30,
     borderRadius: 10,
     // marginHorizontal: 20,
     marginLeft: 10,
-    marginRight: 20,
+    marginRight: 10,
     resizeMode: 'contain'
 
   },

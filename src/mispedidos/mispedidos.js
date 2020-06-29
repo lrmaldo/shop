@@ -81,7 +81,7 @@ export default class App extends Component {
        
         var d = new Date(item.fecha)
        return (<TouchableOpacity style={styles.divFood} onPress={() => {
-        this.props.navigation.navigate('Detallepedido', {mipedido:item})
+        this.props.navigation.navigate('Detallepedido', {mipedido:item, fotourl:item.datostienda.fotourl})
     }}>
 
          <FastImage

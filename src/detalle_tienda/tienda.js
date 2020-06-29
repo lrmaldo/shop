@@ -38,6 +38,7 @@ import FastImage from 'react-native-fast-image'
 
 //animacion al cargar vista
 import AnimatedLoader from "react-native-animated-loader";
+import { object } from 'yup';
 
 
 
@@ -123,12 +124,12 @@ export default class app extends Component {
 
           <TouchableOpacity underlayColor="white" onPress={() => navigation.navigate('Carrito', {
             id_tienda: params.id_tienda, nombre: params.titulo,
-            direccionT: params.direccionT, fotot: params.fotoT, 
-            telefonot: params.telefonot, 
+            direccionT: params.direccionT, fotot: params.fotoT,
+            telefonot: params.telefonot,
             lat: params.lat,
-             long: params.long,
-             descripcion: params.descripcion,
-             fotoT:params.fotoT
+            long: params.long,
+            descripcion: params.descripcion,
+            fotoT: params.fotoT
           })} ><View>
               <Icon name="md-cart" size={30}
                 style={{ marginRight: 20 }}
@@ -204,7 +205,7 @@ export default class app extends Component {
   componentDidMount() {
     this.props.navigation.setParams({
       regresar: this._regresar.bind(this), titulo: this.state.nombretienda, direccionT: this.state.direccionTienda,
-      fotoT:this.state.fotoTienda, telefonot: this.state.telefonoTienda, id_tienda: this.state.id_tienda, descripcion: this.state.descripcion,
+      fotoT: this.state.fotoTienda, telefonot: this.state.telefonoTienda, id_tienda: this.state.id_tienda, descripcion: this.state.descripcion,
       lat: this.state.lat, long: this.state.long
     });
     setInterval(() => {
@@ -332,7 +333,7 @@ export default class app extends Component {
       return (
         <TouchableOpacity style={styles.divFood} onPress={() => this.props.navigation.navigate("Detalle", {
           fotoitem: item.url_foto, titulo: item.titulo,
-          descripcion: item.descripcion, precio: item.precio, datos:item
+          descripcion: item.descripcion, precio: item.precio, datos: item
         })}>
 
           <FastImage
@@ -392,6 +393,17 @@ export default class app extends Component {
 
         // We have data!!
         const cart = JSON.parse(datacart)
+      /*   const busco = cart.filter((item) =>{
+          return item.food.id == 1
+        })
+        console.log("funcion filtre "+JSON.stringify(busco)) */
+      /*   const object = new Object(datacart);
+        const d = object.filter((item) => {
+          return item.id.toLowerCase().match(1)
+        })
+        console.log(d) */
+
+
 
 
 
@@ -399,15 +411,16 @@ export default class app extends Component {
         function encontrar(object, nombre) {
           var arr = [];
           for (var i in object) {
-            console.log(arr.push(object[i].food.titulo));
+            console.log(arr.push(object[i].food.id));
             console.log(object[i].food.titulo);
           }
           return arr.indexOf(nombre) > -1;
         }
-        var x = encontrar(cart, data.titulo);
+        var x = encontrar(cart, data.id);
         if (x === true) {
           Alert.alert("Ya lo agregaste al carrito")
           console.log("encontrado");
+          
         } else {
           cart.push(itemcart)
           console.log("no encontrado");
