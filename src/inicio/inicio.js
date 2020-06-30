@@ -107,7 +107,7 @@ export default class app extends Component {
     return {
       headerTitle:()=>( <Image
         source={require('./../../image/MarkettuxB.png')}
-        style={{ width: 180, height: 40 }}
+        style={{ width: 100, height: 28 }}
       />),
       headerRight: () => (
         <View style={{ flexDirection: "row" }}>

@@ -275,12 +275,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   userImage: {
-    borderColor: "orange",
-    borderRadius: 85,
+    //borderColor: "orange",
+    //borderRadius: 85,
     borderWidth: 3,
     height: 170,
     marginBottom: 15,
     width: 170,
+    resizeMode:'contain'
   },
   userNameText: {
     color: '#FFF',
