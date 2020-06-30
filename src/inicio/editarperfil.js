@@ -88,7 +88,7 @@ export default class app extends Component {
         console.log(e)
         this.setState({ 
           nombre:e.nombre, 
-          correo:e.correo,
+          //correo:e.correo,
           direccion:e.direccion,
           cruzamientos:e.cruzamientos,
           referencias:e.referencias,
@@ -110,7 +110,7 @@ export default class app extends Component {
       //if (!nombre && !correo) return
       let perfil ={
         nombre:nombre,
-        correo:correo,
+        //correo:correo,
         direccion:direccion,
         cruzamientos:cruzamientos,
         colonia:colonia,
@@ -126,24 +126,13 @@ export default class app extends Component {
 
   handleSubmit = () => {
 
-    if(this.state.nombre && this.state.correo && this.state.colonia && this.state.direccion && this.state.referencias &&this.state.telefono ){
-    //  if(!this.validateEmail(this.state.correo)){
+    if(this.state.nombre && this.state.colonia && this.state.direccion && this.state.referencias &&this.state.telefono ){
+ 
       
-        if(this.validateEmail(this.state.correo)){
-
-         // Alert.alert("siguiente if")
-          
+      this.onSubmitEditing();
        
-         this.onSubmitEditing();
-        }else{
-          Toast.showWithGravity('No es un correo valido', Toast.LONG, Toast.CENTER);
-         
-        }
-
       }else{
-        //Toast.showWithGravity('Llene todo los campos', Toast.LONG, Toast.CENTER);
-       
-        //Alert.alert('correo valido')
+        
         Toast.showWithGravity('Llena todos los campos.', Toast.LONG, Toast.CENTER);
 
       }
@@ -177,7 +166,7 @@ guardarapi(){
       },
       body: JSON.stringify({
         nombre: this.state.nombre,
-        correo: this.state.correo,
+        correo: "null",
         direccion: this.state.direccion,
         cruzamientos:this.state.cruzamientos,
         colonia:this.state.colonia,
@@ -215,7 +204,7 @@ alert("result:"+error)
       }
       const dta =  JSON.stringify({
         nombre: this.state.nombre,
-        correo: this.state.correo,
+        correo: "null",
         direccion: this.state.direccion,
         cruzamientos:this.state.cruzamientos,
         colonia:this.state.colonia,
@@ -236,7 +225,7 @@ alert("result:"+error)
       },
       body: JSON.stringify({
         nombre: this.state.nombre,
-        correo: this.state.correo,
+        correo: "null",
         direccion: this.state.direccion,
         cruzamientos:this.state.cruzamientos,
         colonia:this.state.colonia,
@@ -340,7 +329,7 @@ handleValidation(value) {
               />
            
           </View>
-          <View style={styles.inputContainer}>
+         {/*  <View style={styles.inputContainer}>
               <TextInput style={styles.inputs}
                 placeholder="Email"
                 fontSize={20}
@@ -357,7 +346,7 @@ handleValidation(value) {
                 value={correo}
                 />
                 
-          </View>
+          </View> */}
           <View style={styles.inputContainer}>
               <TextInput style={styles.inputsArea}
                 fontSize={20}

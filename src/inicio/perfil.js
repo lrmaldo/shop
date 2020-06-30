@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import {  Dimensions,  Image,
+import {    Image,
   ImageBackground,
   StatusBar,
   Platform,
   ScrollView,
-  TouchableOpacity,
   StyleSheet,
   Text,
   View,} from 'react-native';
-var { width } = Dimensions.get("window")
+
 import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
-import { Card, Avatar ,Button } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LottieView from 'lottie-react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 export default class Perfil extends Component {
 
-   url ="https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1367133923474897&width=500&ext=1592067816&hash=AeRMb6U0xNeU_qWB"
+   //url ="https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1367133923474897&width=500&ext=1592067816&hash=AeRMb6U0xNeU_qWB"
   constructor(props) {
      super(props);
      this.state = {
@@ -59,7 +58,7 @@ export default class Perfil extends Component {
        //console.log("hola")
         this.setState({ 
           nombre:e.nombre, 
-          correo:e.correo,
+         // correo:e.correo,
           direccion:e.direccion,
           cruzamientos:e.cruzamientos,
           referencias:e.referencias,

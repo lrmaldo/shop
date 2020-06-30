@@ -11,8 +11,11 @@ import {
 
 import AsyncStorage from '@react-native-community/async-storage';
 import FastImage from 'react-native-fast-image'
+import 'moment/min/moment-with-locales'
 
-import Moment from 'moment';
+
+import Moment from 'moment'
+import   'moment/locale/es';
 var { height, width } = Dimensions.get('window');
 export default class App extends Component {
 
@@ -22,112 +25,137 @@ export default class App extends Component {
             mispedidos: [],
             exitedatos: false
         }
-        
+
     }
 
-     cargardatos = async () => {
-      // AsyncStorage.removeItem('mispedidos')
-      await AsyncStorage.getItem('mispedidos').then((pedidos) => {
-        if (pedidos !== null) {
-              // We have data!!
-              const mispedidos = JSON.parse(pedidos)
+    cargardatos = async () => {
+        // AsyncStorage.removeItem('mispedidos')
 
-             // console.log("desde mispedidos "+pedidos)
-             this.setState({
-              mispedidos: mispedidos,
-                 exitedatos: true
-              })
+        const pedidos = await AsyncStorage.getItem('mispedidos');
+        if (pedidos != null) {
+            const mispedidos = JSON.parse(pedidos)
+            // console.log("se encontro pedidos")
+            this.setState({
+                mispedidos: mispedidos,
+                exitedatos: true
+            })
+        } else {
+            // console.log("no se encontro pedidos") 
+            this.setState({
+                exitedatos: false
+            })
+        }
 
-          }
-      })
-          .catch((err) => {
-              console.log(err)
-          })  
 
 
+    }
+    async UNSAFE_componentWillMount() {
+        this.cargardatos()
     }
 
     render() {
-       
+        Moment.locale('es')
+        //console.log(Moment.locale('es')) 
+
         this.cargardatos()
-        if (!this.state.exitedatos) {
-            return (
-                <View style={styles.container1}>
+        return (<View style={styles.containerPrincipal}>
+            {!this.state.exitedatos ? <View style={styles.container1}>
+                <Image
+                    style={{ width: 300, height: 200, alignSelf: 'center' }}
+                    source={require('./../../image/10415-data-mango.gif')} />
+                <Text style={styles.textpedidovacio}>Aún no tienes pedidos</Text>
 
-                    <Image
-                        style={{ width: 300, height: 200, alignSelf: 'center' }}
-                        source={require('./../../image/10415-data-mango.gif')} />
-                    <Text style={styles.textpedidovacio}>Aún no tienes pedidos</Text>
-                </View>
-            );
-        }
-        return (<View style={styles.container}>
-              <FlatList
-              // horizontal={false}
-              data={this.state.mispedidos.reverse()}
-             // numColumns={2} 
-              renderItem={({ item }) => this.listaPedidos(item)}
-              keyExtractor={(item, index) => index.toString()}
+            </View> :
+                <View style={styles.container}>
+                    <FlatList
+                        // horizontal={false}
+                        data={this.state.mispedidos.reverse()}
+                        // numColumns={2} 
+                        renderItem={({ item }) => this.listaPedidos(item)}
+                        keyExtractor={(item, index) => index.toString()}
 
-            />
-            
-                </View>);
+                    />
+                </View>}
+        </View>)
+
+        /*  if (!this.state.exitedatos) {
+             return (
+                 <View style={styles.container1}>
+ 
+                     <Image
+                         style={{ width: 300, height: 200, alignSelf: 'center' }}
+                         source={require('./../../image/10415-data-mango.gif')} />
+                     <Text style={styles.textpedidovacio}>Aún no tienes pedidos</Text>
+                 </View>
+             );
+         }
+         return (<View style={styles.container}>
+               <FlatList
+               // horizontal={false}
+               data={this.state.mispedidos.reverse()}
+              // numColumns={2} 
+               renderItem={({ item }) => this.listaPedidos(item)}
+               keyExtractor={(item, index) => index.toString()}
+ 
+             />
+             
+                 </View>); */
     }
 
 
-    listaPedidos (item)  {
-       //console.log(item)
-       
-       
-        var d = new Date(item.fecha)
-       return (<TouchableOpacity style={styles.divFood} onPress={() => {
-        this.props.navigation.navigate('Detallepedido', {mipedido:item, fotourl:item.datostienda.fotourl})
-    }}>
+    listaPedidos(item) {/// renderiza el flatlist  de los pedidos
+        //console.log(item)
 
-         <FastImage
-           key={item.fecha}
-           style={styles.imageFood}
-           resizeMode={FastImage.resizeMode.contain}
-           source={{
-             uri:item.datostienda.fotourl,
-             headers: { Authorization: 'someAuthToken' },
-             priority: FastImage.priority.normal,
-           }}
-         // defaultSource={{uri:item.foto_url}}
-         /> 
-        {/* <Image
+
+        var d = new Date(item.fecha)
+        return (<TouchableOpacity style={styles.divFood} onPress={() => {
+            this.props.navigation.navigate('Detallepedido', { mipedido: item, fotourl: item.datostienda.fotourl })
+        }}>
+
+            <FastImage
+                key={item.fecha}
+                style={styles.imageFood}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{
+                    uri: item.datostienda.fotourl,
+                    headers: { Authorization: 'someAuthToken' },
+                    priority: FastImage.priority.normal,
+                }}
+            // defaultSource={{uri:item.foto_url}}
+            />
+            {/* <Image
             style={styles.imageFood}
 
             source={require('./../../image/10415-data-mango.gif')} /> */}
 
 
-        <View style={{ height: ((width / 2) - 20) - 90, backgroundColor: 'transparent', width: ((width / 2) - 20) - 10 }} />
-        
-        <View style={{flexDirection:'row'}}>
-         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: "#696969" }}>
-          Tienda: 
+            <View style={{ height: ((width / 2) - 20) - 90, backgroundColor: 'transparent', width: ((width / 2) - 20) - 10 }} />
+
+            <View style={{ flexDirection: 'row', marginTop:10 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: "#696969" }}>
+                    Tienda:
          </Text>
-         <Text style={{  fontSize: 20, textAlign: 'center', color: "#696969" }}> {item.datostienda.nombretienda}</Text>
+                <Text style={{ fontSize: 20, textAlign: 'center', color: "#696969" }}> {item.datostienda.nombretienda}</Text>
 
-        </View>
-         <View style={{flexDirection:'row'}}>
-         <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', color: "#696969" }}>
-        Tipo de servicio:  
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, textAlign: 'center', color: "#696969" }}>
+                    Tipo de servicio:
          </Text>
-         <Text style={{ fontSize: 16, textAlign: 'center',color: "#696969" }} > {item.tipo}</Text>
-         </View>
+                <Text style={{ fontSize: 16, textAlign: 'center', color: "#696969" }} > {item.tipo}</Text>
+            </View>
 
-         <View style={{flexDirection:"row"}}>
-         <Text style={{ fontWeight:"bold", fontSize: 16, color: "#696969", textAlign: "center" }}>Fecha de pedido:</Text>     
-         <Text style={{ fontSize: 16, color: "black", textAlign: "center",color: "#696969" }}> {Moment(d).format('D MM YYYY, h:mm:ss a')}</Text> 
-         </View>
-
-        
+            <View style={{ flexDirection: "row" }}>
+                <Text style={{ fontWeight: "bold", fontSize: 16, color: "#696969", textAlign: "center" }}>Fecha de pedido:</Text>
+                <Text style={{ fontSize: 16, color: "black", textAlign: "center", color: "#696969" }}> {Moment(d,'YYYYMMDD').fromNow()}</Text>
+            </View>
 
 
-    </TouchableOpacity>
 
-    )
+
+        </TouchableOpacity>
+
+        )
     }
 }
 
@@ -149,6 +177,18 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 20,
         backgroundColor: 'white'
+
+
+
+    },
+    containerPrincipal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        width: width,
+        borderRadius: 20,
+        paddingVertical: 20,
+        //backgroundColor: 'white'
 
 
 

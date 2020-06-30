@@ -144,7 +144,7 @@ export default class Carrito extends Component {
                   fontWeight: "bold",
                   color: 'white'
                 }}>
-                  (${this.total()}) Terminar compra
+                  ({currencyFormat(parseFloat(this.total()))}) Terminar compra
                  </Text>
               </TouchableOpacity>
 
@@ -226,4 +226,10 @@ export default class Carrito extends Component {
       console.log("entro")
     }
   }
+}
+
+//formato moneda
+
+function currencyFormat(num) {
+  return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }

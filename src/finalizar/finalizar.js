@@ -108,6 +108,7 @@ export default  class App extends Component{
               </TouchableOpacity>
             </View>:<View></View>}
           </View>
+          
           <View style={styles.starContainer}>
             
           </View>

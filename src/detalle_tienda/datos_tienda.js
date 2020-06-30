@@ -97,8 +97,8 @@ export default class Perfil extends Component {
 
       <View>
         <View style={{ marginTop: 15 }}></View>
-        <View style={{ marginTop: 5, marginBottom: 15, alignItems: 'center' }}>
-          <Text style={styles.telNumberText}>{this.props.navigation.getParam('descripcion')} </Text>
+        <View style={{ marginTop: 5, marginBottom: 15, alignItems: 'center', marginLeft:10, marginRight:10, padding:5 }}>
+          <Text style={styles.TextDescripcion}>{this.props.navigation.getParam('descripcion')} </Text>
         </View>
         <View style={[styles.containerTel,]}>
 
@@ -328,6 +328,12 @@ const styles = StyleSheet.create({
   },
   telNumberText: {
     fontSize: 16,
+
+  },
+  TextDescripcion: {
+    fontSize: 16,
+    textAlign:'center'
+    
   },
   telRow: {
     flex: 6,

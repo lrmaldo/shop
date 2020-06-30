@@ -422,7 +422,7 @@ export default class app extends Component {
           <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>
             {item.nombre}
           </Text>
-          <Text style={{ fontSize: 16, color: "black", textAlign: "center" }}>{item.descripcion}</Text>
+          <Text style={{ fontSize: 16, color: "black", textAlign: "center" }}>{item.descripcion.substr(0, 100)}...</Text>
 
 
         </TouchableOpacity>

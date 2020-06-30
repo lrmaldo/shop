@@ -8,13 +8,15 @@ import {
     TouchableOpacity,
     ScrollView,
     Linking,
-    requireNativeComponent,
+    
 
 } from 'react-native';
 
 import { Icon } from 'react-native-elements'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import Icon3 from 'react-native-vector-icons/FontAwesome5'
+
+import moment from 'moment/src/locale/es';
 import Moment from 'moment';//formato de fechas
 
 var { height, width } = Dimensions.get('window');
@@ -74,7 +76,7 @@ export default class App extends Component {
 
     render() {
         var fecha = new Date(this.state.fecha)
-        Moment.locale('es');
+       
         const url = Platform.select({
             ios: `maps://app?ll=${this.state.lat},${this.state.long}`,
             android: `google.navigation:q=${this.state.lat},${this.state.long}`,
@@ -162,7 +164,7 @@ export default class App extends Component {
                 <View style={{marginTop:10}} />
                 
                 <Text style={{fontSize:16, color:"black", fontWeight:'bold'}}>Fecha:</Text>
-                <Text style={{fontSize:16, color:"black"}}>{Moment(fecha).format('D MM YYYY, h:mm:ss a')}</Text>
+                <Text style={{fontSize:16, color:"black"}}>{Moment(fecha).format('dddd D [de] MMMM [de] YYYY, [a las] h:mm a')}</Text>
                 <View style={{marginBottom:10}} />
             </View>
             </ScrollView>

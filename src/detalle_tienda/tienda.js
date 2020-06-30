@@ -353,7 +353,7 @@ export default class app extends Component {
             {item.titulo}
           </Text>
           <Text>{item.descripcion.substr(0, 80)}...</Text>
-          <Text style={{ fontSize: 20, color: "#f9aa34" }}>${item.precio}</Text>
+          <Text style={{ fontSize: 20, color: "#f9aa34" }}>{currencyFormat(parseFloat(item.precio))}</Text>
           <TouchableOpacity
             onPress={() => this.onClickAddCart(item)}
             style={{
@@ -366,7 +366,7 @@ export default class app extends Component {
               padding: 4
             }}>
             <Text style={{ fontSize: 12, color: "white", fontWeight: "bold" }}>Agregar carrito</Text>
-            <View style={{ width: 10 }} />
+            <View style={{ width: 12 }} />
             <Icon name="ios-add-circle" size={15} color={"white"} />
           </TouchableOpacity>
         </TouchableOpacity>
@@ -505,4 +505,8 @@ const styles = StyleSheet.create({
   }
 
 });
+
+function currencyFormat(num) {
+  return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
 
