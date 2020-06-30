@@ -15,7 +15,7 @@
 
 
 import React from 'react';
-import { Text, View, Button} from 'react-native';
+import { View, Image} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -50,7 +50,18 @@ import Detallepedidos from './src/mispedidos/detallePedidos'
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 
-import AsyncStorage from '@react-native-community/async-storage';
+
+
+class LogoTitle extends React.Component {
+  render() {
+    return (
+      <Image
+        source={require('./image/MarkettuxB.png')}
+        style={{ width: 30, height: 30 }}
+      />
+    );
+  }
+}
 
 
 
@@ -74,13 +85,13 @@ const HomeNavigator = createStackNavigator({
   'Home':{
     screen: Inicio,
     navigationOptions:{
-          title:"Markettux",
+          //title:() => <LogoTitle />,
           
           headerTitleAlign:'center',
-          headerTitleStyle: {
+          /* headerTitleStyle: {
             fontWeight: 'bold',
         },
-        headerTintColor:"white",
+        headerTintColor:"white", */
         headerBackground:<View>
         <View style={{height:60, backgroundColor:"#000000", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>
         <View style={{height:55, backgroundColor:"#f2682a", position:'absolute', top:0, left:0, right:0, borderBottomRightRadius:0}}/>

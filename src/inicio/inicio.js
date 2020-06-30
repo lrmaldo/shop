@@ -23,7 +23,7 @@ import {
   RefreshControl,
 
   Alert,
-  TouchableNativeFeedbackBase
+  
 } from 'react-native';
 var { height, width } = Dimensions.get('window');
 // import AsyncStorage
@@ -105,6 +105,10 @@ export default class app extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
+      headerTitle:()=>( <Image
+        source={require('./../../image/MarkettuxB.png')}
+        style={{ width: 180, height: 40 }}
+      />),
       headerRight: () => (
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity underlayColor="black" onPress={params.showMenu} style={{
