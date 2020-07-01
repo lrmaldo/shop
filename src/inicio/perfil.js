@@ -16,7 +16,7 @@ import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 export default class Perfil extends Component {
 
-   //url ="https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1367133923474897&width=500&ext=1592067816&hash=AeRMb6U0xNeU_qWB"
+   
   constructor(props) {
      super(props);
      this.state = {

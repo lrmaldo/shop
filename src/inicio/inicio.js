@@ -46,6 +46,7 @@ import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 //imagen fast 
 import FastImage from 'react-native-fast-image'
 import { isEmptyArray } from 'formik';
+import NetInfo from "@react-native-community/netinfo";
 
 
 export default class app extends Component {
@@ -214,7 +215,8 @@ export default class app extends Component {
       })
       .catch((error) => {
         //console.error(error);
-        Alert.alert("","Ocurrio un problema con el servidor intentalo más tarde")
+        this.setState({refreshing:false, loading:false})
+        //Alert.alert("","Ocurrio un problema con el servidor intentalo más tarde")
       });
 
   };
@@ -230,6 +232,8 @@ export default class app extends Component {
    // this.GetData();//carga los banners;
     //const url = "http://tutofox.com/foodapp/api.json"
 
+    //prueba si hay red
+    this.pruebared()
 
   }
 
@@ -289,10 +293,24 @@ export default class app extends Component {
     //console.log("dentro de"+this.state.hasScrolled)
   }
 
+  //estado de red 
+
+    pruebared =  async()  =>{
+      await NetInfo.fetch().then(state => {
+        console.log("Connection type", state.type);
+        console.log("Is connected?", state.isConnected);
+        if(!state.isConnected){
+          Alert.alert("Red no disponible",
+          "Al parecer no tienes acceso internet")
+        }
+      });
+    }
+
   render() {
     const dhis = this
     let catg = this.state.selectCatg
     let dataaux = this.state.dataaux;
+   
     console.log(dataaux)
     if (this.state.refreshing) {
       return (

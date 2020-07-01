@@ -135,7 +135,7 @@ export default class App extends Component {
                                 name="directions"
                                 underlayColor="transparent"
                                 style={styles.telIcon}
-                            //onPress={() => onPressEmail()}
+                           
                             />
                         </TouchableOpacity>
 

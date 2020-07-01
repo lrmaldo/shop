@@ -275,7 +275,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   userImage: {
-    //borderColor: "orange",
+    // 
+    
+    borderColor: "orange",
     //borderRadius: 85,
     borderWidth: 3,
     height: 170,

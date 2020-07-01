@@ -3,7 +3,7 @@ import { Container, Content, Textarea, Form } from "native-base";
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements'
 import { StyleSheet, Alert } from 'react-native'
-import NetInfo from "@react-native-community/netinfo";
+   
 
 
 
